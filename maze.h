@@ -6,6 +6,7 @@
 
 #include <QWidget>
 #include <vector>
+#include <iostream>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;

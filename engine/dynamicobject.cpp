@@ -6,6 +6,8 @@ DynamicObject::DynamicObject() {
     std::cerr << "yes" << std::endl;
 }
 
+DynamicObject::DynamicObject(QPixmap texture_, std::vector<QPixmap> *frames_) : MazeObject (texture_, frames_) {}
+
 DynamicObject::~DynamicObject()
 {
 

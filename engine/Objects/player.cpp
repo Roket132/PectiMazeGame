@@ -1,13 +1,7 @@
 #include "player.h"
 
-Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_)
-{
-    texture = texture_;
-    frames.clear();
-    for (auto it : *frames_) {
-        frames.push_back(it);
-    }
-}
+
+Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) : DynamicObject (texture_, frames_) {}
 
 Player::~Player()
 {

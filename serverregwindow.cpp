@@ -29,7 +29,7 @@ void ServerRegWindow::closeEvent(QCloseEvent *event)
 
 void ServerRegWindow::on_choiseMazeButton_clicked()
 {
-    QString path = QFileDialog::getExistingDirectory(0, "Choise maze", "");
+    QString path = QFileDialog::getOpenFileName(0, "Choise maze", "", "*.txt");
     ui->mazePathEdit->setText(path);
 }
 
@@ -44,8 +44,17 @@ void ServerRegWindow::on_startServerButton_clicked()
         std::cerr << e.what() << std::endl;
     }
 
+    std::cerr << "servRegWin: " << ui->mazePathEdit->text().toStdString() << std::endl;
+
     ServerSettings &serverSettings = ServerSettings::getServerSettings(ui->mazePathEdit->text().toStdString()); // first singleton call
+    std::cerr << "servRegWin: " << ui->mazePathEdit->text().toStdString() << std::endl;
     serverSettings.startServer();
+
+    serverWindow = new ServerWindow();
+    connect(serverWindow, &ServerWindow::showServerRegWindow, this, &ServerRegWindow::show);
+    serverWindow->show();
+    this->hide();
+
     //Закинуть в конструктр все настройки сервера
     // Сервер не может быть запущени без выбора настроек, think about it
 }

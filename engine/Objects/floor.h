@@ -7,6 +7,8 @@ class Floor : public StateObject
 {
 public:
     Floor();
+    Floor(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    ~Floor() override = default;
 
 private:
     void update() override;

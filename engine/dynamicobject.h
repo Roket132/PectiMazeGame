@@ -7,6 +7,7 @@ class DynamicObject : public MazeObject
 {
 public:
     DynamicObject();
+    DynamicObject(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~DynamicObject() override;
 
 protected:

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QCloseEvent>
 
 namespace Ui {
 class ServerWindow;
@@ -21,6 +22,11 @@ public:
 private:
     Ui::ServerWindow *ui;
     QLabel* scenes[30*30];
+
+     void closeEvent(QCloseEvent *event) override;
+
+signals:
+    void showServerRegWindow();
 
 };
 

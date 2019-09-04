@@ -4,7 +4,6 @@
 #include "engine/Objects/player.h"
 #include "engine/Objects/wall.h"
 
-#include <iostream>
 #include <fstream>
 
 /*
@@ -54,12 +53,13 @@ Maze::Maze(fs::path path)
             if (ch == '#') {
                 maze[i][j] = new Wall(QPixmap(":/res/image/image_40/wall.jpg"));
             } else if (ch == '.') {
-                //maze[i][j] = 0;
+                maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
             } else {
                 //maze[i][j] = ch - '0';
             }
         }
     }
+    in.close();
 }
 
 

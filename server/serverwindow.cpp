@@ -28,6 +28,8 @@ ServerWindow::ServerWindow(QWidget *parent) :
     // Horizontal spacers
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
+
+    draw();
 }
 
 ServerWindow::~ServerWindow()
@@ -41,15 +43,22 @@ void ServerWindow::draw()
     Maze* maze = server.getMaze();
 
     int curScene = 0;
-    for (int i = 0; i <= 25; i++) {
-        for (int j = 0; j <= 25; j++) {
+    for (int i = 0; i < 25; i++) {
+        for (int j = 0; j < 25; j++) {
             if (i >= maze->height() || j >= maze->width()) {
                 //set default picture
+                curScene++;
                 continue;
             }
             MazeObject* Object = maze->getMazeObject(i, j);
-            scenes[curScene]->setPixmap(Object->getTexture());
+            scenes[curScene++]->setPixmap(Object->getTexture());
         }
     }
 
+}
+
+void ServerWindow::closeEvent(QCloseEvent *event)
+{
+    emit showServerRegWindow();
+    event->accept();
 }

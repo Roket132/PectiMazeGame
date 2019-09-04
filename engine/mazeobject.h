@@ -10,7 +10,6 @@
 class MazeObject {
 public:
     MazeObject();
-
     MazeObject(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
 
     virtual ~MazeObject() = default;

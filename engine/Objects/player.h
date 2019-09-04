@@ -7,6 +7,7 @@
 
 class Player : public DynamicObject {
 public:
+    Player();
     Player(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~Player() override;
 

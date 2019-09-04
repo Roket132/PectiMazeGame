@@ -7,10 +7,11 @@ class StateObject : public MazeObject
 {
 public:
     StateObject();
+
+    StateObject(QPixmap texture_, std::vector<QPixmap> *frames_ = nullptr);
+
     ~StateObject() override;
-protected:
-    QPixmap texture;
-    std::vector<QPixmap> frames;
+
 };
 
 #endif // STATEOBJECT_H

@@ -1,7 +1,10 @@
 #ifndef SERVERREGWINDOW_H
 #define SERVERREGWINDOW_H
 
+#include "server/serverwindow.h"
+
 #include <QWidget>
+#include <iostream>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
@@ -20,6 +23,7 @@ public:
 
 private:
     Ui::ServerRegWindow *ui;
+    ServerWindow* serverWindow;
 
     void closeEvent(QCloseEvent *event) override;
 

@@ -5,6 +5,7 @@
 #include "server.h"
 
 #include <QWidget>
+#include <iostream>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;

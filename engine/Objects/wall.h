@@ -3,10 +3,13 @@
 
 #include "engine/stateobject.h"
 
+#include <QPixmap>
+
 class Wall : public StateObject
 {
 public:
     Wall();
+    Wall(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
 
 private:
     void update() override;
