@@ -1,0 +1,24 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>image/image_40/bonfire.png</file>
+        <file>image/image_40/door.jpg</file>
+        <file>image/image_40/dragon_off.png</file>
+        <file>image/image_40/dragon_on.png</file>
+        <file>image/image_40/fog.png</file>
+        <file>image/image_40/girl_2.jpg</file>
+        <file>image/image_40/gitrl_1.jpg</file>
+        <file>image/image_40/gold40_off.png</file>
+        <file>image/image_40/gold40_on.png</file>
+        <file>image/image_40/lamp.jpg</file>
+        <file>image/image_40/lion.jpg</file>
+        <file>image/image_40/lion_off.png</file>
+        <file>image/image_40/man_1.jpg</file>
+        <file>image/image_40/man_2.jpg</file>
+        <file>image/image_40/man_3.jpg</file>
+        <file>image/image_40/pecti40.png</file>
+        <file>image/image_40/PectPatchi40.png</file>
+        <file>image/image_40/torch_off.png</file>
+        <file>image/image_40/torch_on.png</file>
+        <file>image/image_40/wall.jpg</file>
+    </qresource>
+</RCC>

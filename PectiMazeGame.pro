@@ -1,0 +1,80 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2019-09-03T00:59:25
+#
+#-------------------------------------------------
+
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+TARGET = PectiMazeGame
+TEMPLATE = app
+
+# The following define makes your compiler emit warnings if you use
+# any feature of Qt which has been marked as deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
+
+# You can also make your code fail to compile if you use deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+CONFIG += c++17
+
+SOURCES += \
+        client/client.cpp \
+        clientregwindow.cpp \
+        engine/Objects/floor.cpp \
+        engine/Objects/player.cpp \
+        engine/Objects/wall.cpp \
+        engine/dynamicobject.cpp \
+        engine/engine.cpp \
+        engine/mazeobject.cpp \
+        engine/stateobject.cpp \
+        main.cpp \
+        mainwindow.cpp \
+        maze.cpp \
+        server/server.cpp \
+        server/serversettings.cpp \
+        server/serverwindow.cpp \
+        serverregwindow.cpp
+
+HEADERS += \
+        client/client.h \
+        clientregwindow.h \
+        engine/Objects/floor.h \
+        engine/Objects/player.h \
+        engine/Objects/wall.h \
+        engine/dynamicobject.h \
+        engine/engine.h \
+        engine/mazeobject.h \
+        engine/stateobject.h \
+        mainwindow.h \
+        maze.h \
+        server/server.h \
+        server/serversettings.h \
+        server/serverwindow.h \
+        serverregwindow.h
+
+FORMS += \
+        clientregwindow.ui \
+        mainwindow.ui \
+        server/serverwindow.ui \
+        serverregwindow.ui
+
+QT += \
+    network \
+    widgets
+
+LIBS += -lstdc++fs
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    image.qrc
