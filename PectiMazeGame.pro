@@ -26,6 +26,9 @@ CONFIG += c++17
 
 SOURCES += \
         client/client.cpp \
+        client/clientinfo.cpp \
+        client/clientsettings.cpp \
+        client/clientwindow.cpp \
         clientregwindow.cpp \
         engine/Objects/floor.cpp \
         engine/Objects/player.cpp \
@@ -37,6 +40,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         maze.cpp \
+        parsing/parsingtools.cpp \
         server/server.cpp \
         server/serversettings.cpp \
         server/serverwindow.cpp \
@@ -44,6 +48,9 @@ SOURCES += \
 
 HEADERS += \
         client/client.h \
+        client/clientinfo.h \
+        client/clientsettings.h \
+        client/clientwindow.h \
         clientregwindow.h \
         engine/Objects/floor.h \
         engine/Objects/player.h \
@@ -54,12 +61,14 @@ HEADERS += \
         engine/stateobject.h \
         mainwindow.h \
         maze.h \
+        parsing/parsingtools.h \
         server/server.h \
         server/serversettings.h \
         server/serverwindow.h \
         serverregwindow.h
 
 FORMS += \
+        client/clientwindow.ui \
         clientregwindow.ui \
         mainwindow.ui \
         server/serverwindow.ui \

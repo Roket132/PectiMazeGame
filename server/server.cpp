@@ -1,5 +1,7 @@
 #include "server.h"
+#include "parsing/parsingtools.h"
 
+#include <iostream>
 #include <QtNetwork>
 #include <QMessageBox>
 
@@ -28,7 +30,7 @@ Server::Server(int nPort, QWidget* pwgt /*=0*/) : QWidget(pwgt), m_nNextBlockSiz
             this,          SLOT(slotReadClient())
            );
 
-    sendToClient(pClientSocket, "Server Response: Connected!");
+    //sendToClient(pClientSocket, "Server Response: Connected!");
 }
 
 void Server::slotReadClient()
@@ -47,11 +49,22 @@ void Server::slotReadClient()
         if (pClientSocket->bytesAvailable() < m_nNextBlockSize) {
             break;
         }
-        /*
+
         QTime   time;
         QString str;
         in >> time >> str;
-        */
+
+        std::cerr << "prishlo " << str.toStdString() << std::endl;
+        std::vector<QString> requests = pars::splitRequests(str);
+        for (auto it : requests) {
+            std::vector<QString> req = pars::parseRequest(it);
+            if (req[0] == "reg") {
+                emit signalRegNewClient(it, pClientSocket);
+            } else if (req[0] == "enter") {
+                emit signalEnterClient(it, pClientSocket);
+            }
+        }
+
         m_nNextBlockSize = 0;
     }
 }

@@ -1,5 +1,7 @@
 #include "client.h"
 
+#include <QTime>
+
 Client::Client(const QString& strHost,
                    int            nPort,
                    QWidget*       pwgt /*=0*/
@@ -13,7 +15,12 @@ Client::Client(const QString& strHost,
     connect(m_pTcpSocket, SIGNAL(readyRead()), SLOT(slotReadyRead()));
     connect(m_pTcpSocket, SIGNAL(error(QAbstractSocket::SocketError)),
             this,         SLOT(slotError(QAbstractSocket::SocketError))
-           );
+            );
+}
+
+void Client::sendToServer(const QString &str)
+{
+    slotSendToServer(str);
 }
 
 void Client::slotReadyRead()
@@ -31,11 +38,20 @@ void Client::slotReadyRead()
         if (m_pTcpSocket->bytesAvailable() < m_nNextBlockSize) {
             break;
         }
-        /*
+
         QTime   time;
         QString str;
         in >> time >> str;
-        */
+
+        std::vector<QString> requests = pars::splitRequests(str);
+        for (auto it : requests) {
+            std::vector<QString> req = pars::parseRequest(it);
+            if (req[0] == "success") {
+                emit signalSignInSuccess();
+            } else if (req[0] == "faild") {
+                emit signalSignInFaild();
+            }
+        }
 
         m_nNextBlockSize = 0;
     }
@@ -55,18 +71,17 @@ void Client::slotError(QAbstractSocket::SocketError err)
                     );
 }
 
-void Client::slotSendToServer()
+void Client::slotSendToServer(const QString &str)
 {
     QByteArray  arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_2);
-    //out << quint16(0) << QTime::currentTime() << m_ptxtInput->text();
+    out << quint16(0) << QTime::currentTime() << str;
 
     out.device()->seek(0);
     out << quint16(arrBlock.size() - sizeof(quint16));
 
     m_pTcpSocket->write(arrBlock);
-    //m_ptxtInput->setText("");
 }
 
 void Client::slotConnected()

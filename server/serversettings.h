@@ -3,6 +3,8 @@
 
 #include "maze.h"
 #include "server.h"
+#include "client/clientinfo.h"
+#include "parsing/parsingtools.h"
 
 #include <QWidget>
 #include <iostream>
@@ -14,7 +16,8 @@ namespace fs = std::experimental::filesystem;
  * Singleton object
  */
 
-class ServerSettings {
+class ServerSettings : public QWidget {
+Q_OBJECT
 public:
     static ServerSettings &getServerSettings(fs::path path = "");
 
@@ -32,7 +35,11 @@ private:
 private:
     Server *server;
     Maze   *maze;
+    std::vector<ClientInfo*> clients;
 
+private slots:
+    void slotRegNewPlayer(QString str, QTcpSocket* socket);
+    void slotEnterClient(QString str, QTcpSocket* socket);
 };
 
 #endif // SERVERSETTINGS_H

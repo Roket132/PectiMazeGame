@@ -1,6 +1,8 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include "parsing/parsingtools.h"
+
 #include <QWidget>
 #include <QTcpSocket>
 
@@ -16,11 +18,17 @@ private:
 public:
     Client(const QString& strHost, int nPort, QWidget* pwgt = nullptr);
 
+    void sendToServer(const QString &str);
+
 private slots:
     void slotReadyRead   (                            );
     void slotError       (QAbstractSocket::SocketError);
-    void slotSendToServer(                            );
+    void slotSendToServer(const QString &str          );
     void slotConnected   (                            );
+
+signals:
+    void signalSignInFaild();
+    void signalSignInSuccess();
 };
 
 #endif // CLIENT_H

@@ -14,11 +14,16 @@ private:
     QTextEdit*  m_ptxt;
     quint16     m_nNextBlockSize;
 
-private:
+public:
     void sendToClient(QTcpSocket* pSocket, const QString& str);
 
 public:
     Server(int nPort, QWidget* pwgt = nullptr);
+
+signals:
+    void signalRegNewClient(QString str, QTcpSocket* socket);
+    void signalEnterClient(QString str, QTcpSocket* socket);
+
 
 public slots:
     virtual void slotNewConnection();

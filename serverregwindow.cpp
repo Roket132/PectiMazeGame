@@ -44,10 +44,7 @@ void ServerRegWindow::on_startServerButton_clicked()
         std::cerr << e.what() << std::endl;
     }
 
-    std::cerr << "servRegWin: " << ui->mazePathEdit->text().toStdString() << std::endl;
-
     ServerSettings &serverSettings = ServerSettings::getServerSettings(ui->mazePathEdit->text().toStdString()); // first singleton call
-    std::cerr << "servRegWin: " << ui->mazePathEdit->text().toStdString() << std::endl;
     serverSettings.startServer();
 
     serverWindow = new ServerWindow();
