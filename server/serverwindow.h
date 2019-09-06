@@ -1,6 +1,9 @@
 #ifndef SERVERWINDOW_H
 #define SERVERWINDOW_H
 
+#include "engine/Objects/player.h"
+#include "serversettings.h"
+
 #include <QWidget>
 #include <QLabel>
 #include <QCloseEvent>
@@ -9,8 +12,7 @@ namespace Ui {
 class ServerWindow;
 }
 
-class ServerWindow : public QWidget
-{
+class ServerWindow : public QWidget {
     Q_OBJECT
 
 public:

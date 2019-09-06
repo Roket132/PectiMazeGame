@@ -18,6 +18,7 @@ public:
     int width();
     int height();
     MazeObject* getMazeObject(size_t x, size_t y);
+    std::pair<int, int> getFreeStartPlace();
 
 private:
     int h, w;

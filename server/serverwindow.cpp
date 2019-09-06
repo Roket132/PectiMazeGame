@@ -1,8 +1,6 @@
 #include "serverwindow.h"
 #include "ui_serverwindow.h"
 
-#include "serversettings.h"
-
 ServerWindow::ServerWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ServerWindow)
@@ -50,8 +48,13 @@ void ServerWindow::draw()
                 curScene++;
                 continue;
             }
-            MazeObject* Object = maze->getMazeObject(i, j);
-            scenes[curScene++]->setPixmap(Object->getTexture());
+            Player* player = server.isPlayer(i, j);
+            if (player != nullptr) {
+                scenes[curScene++]->setPixmap(player->getTexture());
+            } else {
+                MazeObject* Object = maze->getMazeObject(i, j);
+                scenes[curScene++]->setPixmap(Object->getTexture());
+            }
         }
     }
 

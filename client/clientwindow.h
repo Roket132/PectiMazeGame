@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QCloseEvent>
+#include <QLabel>
 
 namespace Ui {
 class ClientWindow;
@@ -18,6 +19,7 @@ public:
 
 private:
     Ui::ClientWindow *ui;
+    QLabel* scenes[30*30];
 
     void closeEvent(QCloseEvent *event) override;
 

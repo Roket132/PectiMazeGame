@@ -3,15 +3,27 @@
 
 #include "mazeobject.h"
 
-class DynamicObject : public MazeObject
-{
+class DynamicObject : public MazeObject {
 public:
     DynamicObject();
     DynamicObject(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~DynamicObject() override;
 
 protected:
-    void move(int x, int y);
+    int x_, y_;
+
+public:
+    void moveTo(int x, int y);
+
+    void moveRight();
+
+    void moveLeft();
+
+    void moveDown();
+
+    void moveUp();
+
+    std::pair<int, int> getPlace();
 };
 
 #endif // DYNAMICOBJECT_H

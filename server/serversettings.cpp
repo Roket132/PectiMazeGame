@@ -26,7 +26,8 @@ Maze* ServerSettings::createMaze(std::experimental::filesystem::__cxx11::path pa
 }
 
 void ServerSettings::slotRegNewPlayer(QString str, QTcpSocket* socket) {
-    ClientInfo* newClient = new ClientInfo(str, socket);
+    std::pair<int, int> stPlace = maze->getFreeStartPlace();
+    ClientInfo* newClient = new ClientInfo(str, socket, stPlace.first, stPlace.second);
     clients.push_back(newClient);
     server->sendToClient(socket, "success;");
 }
@@ -58,4 +59,13 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket)
 
 Maze* ServerSettings::getMaze() {
     return maze;
+}
+
+Player* ServerSettings::isPlayer(int x, int y) {
+    for (auto it : clients) {
+        if (it->isPlayerPlace(x, y)) {
+            return it->getPlayer();
+        }
+    }
+    return nullptr;
 }

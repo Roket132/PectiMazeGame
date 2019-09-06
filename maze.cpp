@@ -54,8 +54,9 @@ Maze::Maze(fs::path path)
                 maze[i][j] = new Wall(QPixmap(":/res/image/image_40/wall.jpg"));
             } else if (ch == '.') {
                 maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
-            } else {
-                //maze[i][j] = ch - '0';
+            } else if (ch == 'S') {
+                enableStartPlaces.push_back({{i, j}, true});
+                maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
             }
         }
     }
@@ -76,4 +77,13 @@ int Maze::height()
 MazeObject *Maze::getMazeObject(size_t x, size_t y)
 {
     return maze[x][y];
+}
+
+std::pair<int, int> Maze::getFreeStartPlace() {
+    for (auto it : enableStartPlaces) {
+        if (it.second) {
+            it.second = false;
+            return {it.first.first, it.first.second};
+        }
+    }
 }

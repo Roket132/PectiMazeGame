@@ -25,6 +25,8 @@ public:
     Maze* createMaze(fs::path);
     Maze* getMaze();
 
+    Player* isPlayer(int x, int y);
+
 
 private:
     ServerSettings(fs::path path);
