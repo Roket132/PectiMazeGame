@@ -2,7 +2,6 @@
 #define MAZE_H
 
 #include "engine/mazeobject.h"
-#include "engine/player.h"
 
 #include <QWidget>
 #include <vector>
@@ -13,11 +12,15 @@ namespace fs = std::experimental::filesystem;
 
 class Maze {
 public:
-    Maze(fs::path path);
+    Maze();
+    explicit Maze(fs::path path);
+    explicit Maze(std::string map);
+    explicit Maze(QString map);
 
     int width();
     int height();
     MazeObject* getMazeObject(size_t x, size_t y);
+    QString getTypeObject(size_t x, size_t y); // Return Type of object in SmallFormat
     std::pair<int, int> getFreeStartPlace();
 
 private:

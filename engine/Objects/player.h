@@ -3,12 +3,14 @@
 
 #include "engine/dynamicobject.h"
 
-#include <QPixmap>
-
 class Player : public DynamicObject {
 public:
+    Player();
     Player(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
-    ~Player() override;
+    ~Player() override = default;
+
+    const QString TYPE = "player";
+    QString getTypeObject() override;
 
 private:
     void update() override;

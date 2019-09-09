@@ -1,8 +1,9 @@
 #include "maze.h"
 
-#include "engine/Objects/floor.h"
 #include "engine/Objects/player.h"
+#include "engine/Objects/floor.h"
 #include "engine/Objects/wall.h"
+#include "parsing/parsingtools.h"
 
 #include <fstream>
 
@@ -22,12 +23,15 @@
  * 77 - Death dragon
  * $ - chest (11)
  * 12 - chest_off(12)
- *
+ * P - player
  *
  * */
 
-Maze::Maze(fs::path path)
-{
+Maze::Maze() {
+
+}
+
+Maze::Maze(fs::path path) {
     std::fstream in;
     try {
         in.open(path.string());
@@ -63,20 +67,62 @@ Maze::Maze(fs::path path)
     in.close();
 }
 
+Maze::Maze(std::string map) {
+    Maze(QString::fromStdString(map));
+}
 
-int Maze::width()
-{
+Maze::Maze(QString map) {
+    std::vector<QString> req = pars::parseRequest(map);
+    h = req[1].toInt();
+    w = req[2].toInt();
+    std::cerr << "new Maze QString: h == " << h << " " << w << std::endl;
+    maze.resize(static_cast<size_t>(h), std::vector<MazeObject*>(static_cast<size_t>(w)));
+
+
+
+    size_t pos = 3; // first pos_map from [3]
+    for (size_t i = 0; i < h; i++) {
+        for (size_t j = 0; j < w; j++) {
+            if (req[pos] == ".") {
+                std::cerr << "req = ." << std::endl;
+               maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
+            } else if (req[pos] == "#") {
+                std::cerr << "req = #" << std::endl;
+                maze[i][j] = new Wall(QPixmap(":/res/image/image_40/wall.jpg"));
+            } else if (req[pos][0] == 'P') {
+                std::cerr << "req = P" << std::endl;
+                maze[i][j] = new Player(QPixmap(":/res/image/image_40/man_1.jpg"));
+            } else {
+                std::cerr << "req = else" << std::endl;
+                maze[i][j] = new Floor(QPixmap(":/res/image/image_40/lamp.jpg"));
+            }
+            pos++;
+        }
+    }
+}
+
+
+int Maze::width() {
     return w;
 }
 
-int Maze::height()
-{
+int Maze::height() {
     return h;
 }
 
-MazeObject *Maze::getMazeObject(size_t x, size_t y)
-{
+MazeObject *Maze::getMazeObject(size_t x, size_t y) {
     return maze[x][y];
+}
+
+QString Maze::getTypeObject(size_t x, size_t y) {
+    QString type = maze[x][y]->getTypeObject();
+    if (type == "player") {
+        return "P";
+    } else if (type == "wall") {
+        return "#";
+    } else if (type == "floor") {
+        return ".";
+    }
 }
 
 std::pair<int, int> Maze::getFreeStartPlace() {
@@ -86,4 +132,5 @@ std::pair<int, int> Maze::getFreeStartPlace() {
             return {it.first.first, it.first.second};
         }
     }
+    return {-1, -1};
 }

@@ -8,11 +8,11 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->setupUi(this);
     int dimensions = 25;
 
-    int cnt = 0;
+    //int cnt = 0;
     for (int i = 0; i < dimensions; i ++) {
         for (int j = 0; j < dimensions; j++) {
             QLabel *cell = new QLabel(this);
-            scenes[cnt++] = cell;
+            scenes.push_back(cell);
             cell->setFixedSize(40, 40);
             cell->setStyleSheet("QLabel { background-color : white; }");
             ui->mapLayout->addWidget(cell, i + 1, j + 1);
@@ -40,11 +40,11 @@ void ServerWindow::draw()
     ServerSettings &server = ServerSettings::getServerSettings();
     Maze* maze = server.getMaze();
 
-    int curScene = 0;
+    size_t curScene = 0;
     for (int i = 0; i < 25; i++) {
         for (int j = 0; j < 25; j++) {
             if (i >= maze->height() || j >= maze->width()) {
-                //set default picture
+                //TODO set default picture
                 curScene++;
                 continue;
             }

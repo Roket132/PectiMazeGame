@@ -1,9 +1,13 @@
 #ifndef CLIENTSETTINGS_H
 #define CLIENTSETTINGS_H
 
-#include "client.h"
-#include <QString>
 #include <experimental/filesystem>
+#include <QString>
+
+#include "client.h"
+#include "maze.h"
+
+
 
 namespace fs = std::experimental::filesystem;
 
@@ -17,16 +21,25 @@ public:
 
     const Client* getClient();
 
+    void createEmptyMaze();
+    Maze* getMaze();
+
 private:
     ClientSettings();
     ~ClientSettings() {}
     ClientSettings& operator=(ClientSettings&) = delete;
     ClientSettings(const ClientSettings&) = delete;
+    void clientConnects();
+
+private slots:
+    void slotSetMap(QString);
+
 
 private:
     Client* client;
     QString login;
     QString password;
+    Maze* clientMaze;
 };
 
 #endif // CLIENTSETTINGS_H

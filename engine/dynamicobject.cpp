@@ -1,9 +1,7 @@
 #include "dynamicobject.h"
 
-#include <iostream>
-
 DynamicObject::DynamicObject() {
-    std::cerr << "yes" << std::endl;
+
 }
 
 DynamicObject::DynamicObject(QPixmap texture_, std::vector<QPixmap> *frames_) : MazeObject (texture_, frames_), x_(0), y_(0) {}

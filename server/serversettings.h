@@ -16,6 +16,11 @@ namespace fs = std::experimental::filesystem;
  * Singleton object
  */
 
+/*
+ * TODO
+ * 1. maze must save clients, not server
+ */
+
 class ServerSettings : public QWidget {
 Q_OBJECT
 public:
@@ -25,8 +30,10 @@ public:
     Maze* createMaze(fs::path);
     Maze* getMaze();
 
-    Player* isPlayer(int x, int y);
+    QString getMapPlayerBySocket(QTcpSocket* socket);
+    QString getMapPlayerByPlace(int x, int y);
 
+    Player* isPlayer(int x, int y);
 
 private:
     ServerSettings(fs::path path);
@@ -40,7 +47,7 @@ private:
     std::vector<ClientInfo*> clients;
 
 private slots:
-    void slotRegNewPlayer(QString str, QTcpSocket* socket);
+    void slotRegNewClient(QString str, QTcpSocket* socket);
     void slotEnterClient(QString str, QTcpSocket* socket);
 };
 

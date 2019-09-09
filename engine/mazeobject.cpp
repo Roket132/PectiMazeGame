@@ -1,7 +1,6 @@
 #include "mazeobject.h"
 
-MazeObject::MazeObject()
-{
+MazeObject::MazeObject() {
 
 }
 
@@ -16,8 +15,7 @@ MazeObject::MazeObject(QPixmap texture_, std::vector<QPixmap> *frames_)
     }
 }
 
-QPixmap MazeObject::getTexture()
-{
+QPixmap MazeObject::getTexture() {
     return texture;
 }
 

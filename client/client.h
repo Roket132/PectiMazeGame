@@ -29,6 +29,7 @@ private slots:
 signals:
     void signalSignInFaild();
     void signalSignInSuccess();
+    void signalSetMap(QString);
 };
 
 #endif // CLIENT_H

@@ -1,14 +1,16 @@
 #include "player.h"
 
-
-Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) : DynamicObject (texture_, frames_) {}
-
-Player::~Player()
-{
+Player::Player() {
 
 }
 
-void Player::update()
-{
+Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) : DynamicObject (texture_, frames_) {}
+
+QString Player::getTypeObject() {
+    return TYPE;
+}
+
+
+void Player::update() {
 
 }

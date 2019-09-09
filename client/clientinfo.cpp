@@ -1,6 +1,6 @@
 #include "clientinfo.h"
 
-ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y) {
+ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_) {
     std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 2(3) parametrs "type login password"
     login = info[1];
     password = info[2];
@@ -31,4 +31,9 @@ bool ClientInfo::isPlayerPlace(int x, int y) {
 
 Player* ClientInfo::getPlayer() {
     return player;
+}
+
+const QTcpSocket *ClientInfo::getTcpSocket()
+{
+    return pTcpSocket;
 }

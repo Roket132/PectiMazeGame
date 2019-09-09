@@ -4,6 +4,10 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QLabel>
+#include <vector>
+
+#include "client/clientsettings.h"
+#include "engine/engine.h"
 
 namespace Ui {
 class ClientWindow;
@@ -19,9 +23,12 @@ public:
 
 private:
     Ui::ClientWindow *ui;
-    QLabel* scenes[30*30];
+    //QLabel* scenes[30*30];
+    std::vector<QLabel*> scenes;
 
     void closeEvent(QCloseEvent *event) override;
+
+    void draw();
 
 signals:
     void showClientRegWindow();

@@ -16,6 +16,9 @@ public:
 
     virtual void update() = 0;
 
+    virtual QString getTypeObject() = 0; //Return type of object in FullFormata
+
+public:
     QPixmap getTexture();
 
 protected:

@@ -3,12 +3,14 @@
 
 #include "engine/stateobject.h"
 
-class Floor : public StateObject
-{
+class Floor : public StateObject {
 public:
     Floor();
     Floor(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~Floor() override = default;
+
+    const QString TYPE = "floor";
+    QString getTypeObject() override;
 
 private:
     void update() override;

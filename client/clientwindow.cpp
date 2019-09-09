@@ -1,6 +1,7 @@
 #include "clientwindow.h"
 #include "ui_clientwindow.h"
 
+#include <QThread>
 
 ClientWindow::ClientWindow(QWidget *parent) :
     QWidget(parent),
@@ -9,12 +10,11 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui->setupUi(this);
 
     int dimensions = 5;
-
-    int cnt = 0;
+    //int cnt = 0;
     for (int i = 0; i < dimensions; i ++) {
         for (int j = 0; j < dimensions; j++) {
             QLabel *cell = new QLabel(this);
-            scenes[cnt++] = cell;
+            scenes.push_back(cell);
             cell->setFixedSize(40, 40);
             cell->setStyleSheet("QLabel { background-color : white; }");
             ui->mapLayout->addWidget(cell, i + 1, j + 1);
@@ -28,6 +28,17 @@ ClientWindow::ClientWindow(QWidget *parent) :
     // Horizontal spacers
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
+
+    ClientSettings &clientSetting = ClientSettings::getClientSettings();
+    clientSetting.createEmptyMaze();
+
+    QThread *thread = new QThread();
+    Engine* eng = new Engine(scenes);
+    eng->moveToThread(thread);
+    //eng->drawClientMap(scenes);
+    connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
+
+    thread->start();
 }
 
 ClientWindow::~ClientWindow()

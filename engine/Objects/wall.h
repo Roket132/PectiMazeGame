@@ -11,6 +11,9 @@ public:
     Wall();
     Wall(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
 
+    const QString TYPE = "wall";
+    QString getTypeObject() override;
+
 private:
     void update() override;
 };

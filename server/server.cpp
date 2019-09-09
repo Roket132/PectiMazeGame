@@ -1,5 +1,6 @@
 #include "server.h"
 #include "parsing/parsingtools.h"
+#include "server/serversettings.h"
 
 #include <iostream>
 #include <QtNetwork>
@@ -67,6 +68,13 @@ void Server::slotReadClient()
 
         m_nNextBlockSize = 0;
     }
+
+    std::cerr << "ok1" << std::endl;
+    ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
+    std::cerr << "o21" << std::endl;
+    sendToClient(pClientSocket, serverSettings.getMapPlayerBySocket(pClientSocket) + ";");
+    std::cerr << "ok3" << std::endl;
+
 }
 
 void Server::sendToClient(QTcpSocket* pSocket, const QString& str)

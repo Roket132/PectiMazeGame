@@ -1,5 +1,6 @@
 #include "client.h"
 
+#include <iostream>
 #include <QTime>
 
 Client::Client(const QString& strHost,
@@ -43,6 +44,8 @@ void Client::slotReadyRead()
         QString str;
         in >> time >> str;
 
+        std::cerr << "Client enter: " << str.toStdString() << std::endl;
+
         std::vector<QString> requests = pars::splitRequests(str);
         for (auto it : requests) {
             std::vector<QString> req = pars::parseRequest(it);
@@ -50,6 +53,8 @@ void Client::slotReadyRead()
                 emit signalSignInSuccess();
             } else if (req[0] == "faild") {
                 emit signalSignInFaild();
+            } else if (req[0] == "map") {
+                emit signalSetMap(it);
             }
         }
 

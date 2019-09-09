@@ -10,7 +10,7 @@
 
 class ClientInfo {
 public:
-    ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y);
+    ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_);
 
     QString getLogin();
     QString getPassword();
@@ -20,8 +20,10 @@ public:
     bool isPlayerPlace(int x, int y);
 
     Player* getPlayer();
+    const QTcpSocket* getTcpSocket();
 
 private:
+    int id;
     QString login;
     QString password;
 
