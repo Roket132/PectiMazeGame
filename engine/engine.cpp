@@ -7,14 +7,22 @@ Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {
 
 }
 
+void Engine::stopEngine() {
+    _STOP_ = true;
+}
+
+
 
 
 void Engine::drawClientMap() {
     ClientSettings &client = ClientSettings::getClientSettings();
 
     while (true) {
-        size_t curScene = 0;
+        if (_STOP_) return;
+
         Maze* maze = client.getMaze();
+        size_t curScene = 0;
+
         if (maze == nullptr) continue;
         for (int i = 0; i < maze->height(); i++) {
             for (int j = 0; j < maze->height(); j++) {
@@ -22,17 +30,20 @@ void Engine::drawClientMap() {
                 scenes[curScene++]->setPixmap(Object->getTexture());
             }
         }
-        std::this_thread::sleep_for (std::chrono::milliseconds(2000));
+        std::this_thread::sleep_for (std::chrono::milliseconds(100));
     }
 
 }
 
+
 void Engine::drawServerMap() {
     ServerSettings &server = ServerSettings::getServerSettings();
     while (true) {
-        Maze* maze = server.getMaze();
+        if (_STOP_) return;
 
+        Maze* maze = server.getMaze();
         size_t curScene = 0;
+
         for (int i = 0; i < 25; i++) {
             for (int j = 0; j < 25; j++) {
                 if (i >= maze->height() || j >= maze->width()) {
@@ -49,7 +60,7 @@ void Engine::drawServerMap() {
                 }
             }
         }
-        std::this_thread::sleep_for (std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for (std::chrono::milliseconds(100));
     }
 }
 

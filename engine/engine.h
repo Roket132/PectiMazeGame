@@ -14,12 +14,17 @@ Q_OBJECT
 public:
     explicit Engine(std::vector<QLabel*> scenes_);
 
+    void stopEngine();
+
 private:
     std::vector<QLabel*> scenes;
 
+    bool _STOP_ = false;
+
 public slots:
-    void drawClientMap();
-    void drawServerMap();
+     void drawClientMap();
+
+     void drawServerMap();
 };
 
 #endif // ENGINE_H

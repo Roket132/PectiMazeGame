@@ -51,22 +51,42 @@ void ClientWindow::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
+/*
+ * clientMap size == 5,5
+ *
+ * # 0 1 2 3 4
+ * 0 . . . . .
+ * 1 . . U . .
+ * 2 . L P R .
+ * 3 . . D . .
+ * 4 . . . . .
+ *
+ */
+
 void ClientWindow::on_upButton_clicked() {
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
-    clientSetting.getClient()->sendToServer("move 1 0;");
+    if (clientSetting.getMaze()->isPossibleToGoTo(1, 2)) {
+        clientSetting.getClient()->sendToServer("move 1 0;");
+    }
 }
 
 void ClientWindow::on_rightButton_clicked() {
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
-    clientSetting.getClient()->sendToServer("move 0 1;");
+    if (clientSetting.getMaze()->isPossibleToGoTo(2, 3)) {
+        clientSetting.getClient()->sendToServer("move 0 1;");
+    }
 }
 
 void ClientWindow::on_downButton_clicked() {
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
-    clientSetting.getClient()->sendToServer("move -1 0;");
+    if (clientSetting.getMaze()->isPossibleToGoTo(3, 2)) {
+        clientSetting.getClient()->sendToServer("move -1 0;");
+    }
 }
 
 void ClientWindow::on_leftButton_clicked() {
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
-    clientSetting.getClient()->sendToServer("move 0 -1;");
+    if (clientSetting.getMaze()->isPossibleToGoTo(2, 1)) {
+        clientSetting.getClient()->sendToServer("move 0 -1;");
+    }
 }

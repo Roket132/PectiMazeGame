@@ -20,7 +20,7 @@ class ClientWindow : public QWidget
 
 public:
     explicit ClientWindow(QWidget *parent = nullptr);
-    ~ClientWindow();
+    ~ClientWindow() override;
 
 private:
     Ui::ClientWindow *ui;

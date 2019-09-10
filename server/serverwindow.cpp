@@ -36,8 +36,6 @@ ServerWindow::ServerWindow(QWidget *parent) :
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawServerMap()));
     thread->start();
-
-    //draw();
 }
 
 ServerWindow::~ServerWindow()
@@ -45,30 +43,6 @@ ServerWindow::~ServerWindow()
     delete ui;
 }
 
-void ServerWindow::draw()
-{
-    ServerSettings &server = ServerSettings::getServerSettings();
-    Maze* maze = server.getMaze();
-
-    size_t curScene = 0;
-    for (int i = 0; i < 25; i++) {
-        for (int j = 0; j < 25; j++) {
-            if (i >= maze->height() || j >= maze->width()) {
-                //TODO set default picture
-                curScene++;
-                continue;
-            }
-            Player* player = server.isPlayer(i, j);
-            if (player != nullptr) {
-                scenes[curScene++]->setPixmap(player->getTexture());
-            } else {
-                MazeObject* Object = maze->getMazeObject(i, j);
-                scenes[curScene++]->setPixmap(Object->getTexture());
-            }
-        }
-    }
-
-}
 
 void ServerWindow::closeEvent(QCloseEvent *event)
 {

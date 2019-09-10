@@ -19,6 +19,8 @@ public:
 
     int width();
     int height();
+    bool isPossibleToGoTo(size_t x, size_t y);
+
     MazeObject* getMazeObject(size_t x, size_t y);
     QString getTypeObject(size_t x, size_t y); // Return Type of object in SmallFormat
     std::pair<int, int> getFreeStartPlace();

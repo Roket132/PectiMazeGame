@@ -110,6 +110,10 @@ int Maze::height() {
     return h;
 }
 
+bool Maze::isPossibleToGoTo(size_t x, size_t y) {
+    return (maze[x][y]->getTypeObject() == "floor");
+}
+
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {
     return maze[x][y];
 }

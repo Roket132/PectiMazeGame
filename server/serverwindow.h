@@ -18,9 +18,7 @@ class ServerWindow : public QWidget {
 
 public:
     explicit ServerWindow(QWidget *parent = nullptr);
-    ~ServerWindow();
-
-    void draw();
+    ~ServerWindow() override;
 
 private:
     Ui::ServerWindow *ui;
