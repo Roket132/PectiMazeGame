@@ -13,6 +13,7 @@ ServerRegWindow::ServerRegWindow(QWidget *parent) :
     ui(new Ui::ServerRegWindow)
 {    
     ui->setupUi(this);
+    ui->unvisableBtn->hide();
 }
 
 ServerRegWindow::~ServerRegWindow()
@@ -22,7 +23,6 @@ ServerRegWindow::~ServerRegWindow()
 
 void ServerRegWindow::closeEvent(QCloseEvent *event)
 {
-    emit showMainWindow();
     event->accept();
 }
 
@@ -54,4 +54,10 @@ void ServerRegWindow::on_startServerButton_clicked()
 
     //Закинуть в конструктр все настройки сервера
     // Сервер не может быть запущени без выбора настроек, think about it
+}
+
+void ServerRegWindow::on_backButton_clicked()
+{
+    emit showMainWindow();
+    this->close();
 }

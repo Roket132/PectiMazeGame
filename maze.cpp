@@ -55,12 +55,12 @@ Maze::Maze(fs::path path) {
             //set MazeObject
 
             if (ch == '#') {
-                maze[i][j] = new Wall(QPixmap(":/res/image/image_40/wall.jpg"));
+                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
             } else if (ch == '.') {
-                maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
+                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
             } else if (ch == 'S') {
                 enableStartPlaces.push_back({{i, j}, true});
-                maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
+                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
             }
         }
     }
@@ -85,10 +85,10 @@ Maze::Maze(QString map) {
         for (size_t j = 0; j < w; j++) {
             if (req[pos] == ".") {
                 std::cerr << "req = ." << std::endl;
-               maze[i][j] = new Floor(QPixmap(":/res/image/image_40/PectPatchi40.png"));
+               maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
             } else if (req[pos] == "#") {
                 std::cerr << "req = #" << std::endl;
-                maze[i][j] = new Wall(QPixmap(":/res/image/image_40/wall.jpg"));
+                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
             } else if (req[pos][0] == 'P') {
                 std::cerr << "req = P" << std::endl;
                 maze[i][j] = new Player(QPixmap(":/res/image/image_40/man_1.jpg"));

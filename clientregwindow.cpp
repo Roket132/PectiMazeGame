@@ -8,6 +8,7 @@ ClientRegWindow::ClientRegWindow(QWidget *parent) :
     ui(new Ui::ClientRegWindow)
 {
     ui->setupUi(this);
+    ui->unvisibleBtn->hide();
     ui->messageLabel->hide();
 }
 
@@ -18,7 +19,6 @@ ClientRegWindow::~ClientRegWindow()
 
 void ClientRegWindow::closeEvent(QCloseEvent *event)
 {
-    emit showMainWindow();
     event->accept();
 }
 
@@ -57,4 +57,10 @@ void ClientRegWindow::slotSignInFaild()
     std::cerr << "faild" << std::endl;
     ui->messageLabel->setText("Login or password incorrect");
     ui->messageLabel->show();
+}
+
+void ClientRegWindow::on_backButton_clicked()
+{
+    emit showMainWindow();
+    this->close();
 }

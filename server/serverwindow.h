@@ -6,6 +6,7 @@
 #include <QCloseEvent>
 #include <vector>
 
+#include "engine/engine.h"
 #include "engine/Objects/player.h"
 #include "serversettings.h"
 
@@ -25,6 +26,8 @@ private:
     //QLabel* scenes[30*30];
     std::vector<QLabel*> scenes;
 
+    Engine* eng;
+    QThread* thread;
 
      void closeEvent(QCloseEvent *event) override;
 

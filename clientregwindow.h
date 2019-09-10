@@ -33,6 +33,7 @@ private slots:
 
     void slotSignInSuccess();
     void slotSignInFaild();
+    void on_backButton_clicked();
 };
 
 #endif // CLIENTREGWINDOW_H

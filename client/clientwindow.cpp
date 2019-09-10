@@ -32,8 +32,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     clientSetting.createEmptyMaze();
 
-    QThread *thread = new QThread();
-    Engine* eng = new Engine(scenes);
+    thread = new QThread();
+    eng = new Engine(scenes);
     eng->moveToThread(thread);
     //eng->drawClientMap(scenes);
     connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
@@ -47,6 +47,8 @@ ClientWindow::~ClientWindow() {
 }
 
 void ClientWindow::closeEvent(QCloseEvent *event) {
+    eng->stopEngine();
+    thread->quit();
     emit showClientRegWindow();
     event->accept();
 }

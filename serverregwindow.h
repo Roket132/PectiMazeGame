@@ -33,6 +33,7 @@ signals:
 private slots:
     void on_choiseMazeButton_clicked();  //choice path for maze settings
     void on_startServerButton_clicked(); // start server with selected settings
+    void on_backButton_clicked();
 };
 
 #endif // SERVERREGWINDOW_H

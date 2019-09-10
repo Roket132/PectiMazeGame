@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/texture_80/floor">
+        <file>src/texture_80/floor/floorTile.jpg</file>
+    </qresource>
+    <qresource prefix="/texture_80/wall">
+        <file>src/texture_80/wall/WallCave.jpg</file>
+    </qresource>
+</RCC>

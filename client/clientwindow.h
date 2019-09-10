@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QLabel>
+#include <QThread>
 #include <vector>
 
 #include "client/clientsettings.h"
@@ -27,12 +28,16 @@ private:
     //QLabel* scenes[30*30];
     std::vector<QLabel*> scenes;
 
+    Engine* eng;
+    QThread* thread;
+
     void closeEvent(QCloseEvent *event) override;
 
     void draw();
 
 signals:
     void showClientRegWindow();
+
 private slots:
     void on_upButton_clicked();
     void on_rightButton_clicked();

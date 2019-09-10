@@ -31,8 +31,8 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
 
-    QThread* thread = new QThread();
-    Engine* eng = new Engine(scenes);
+    thread = new QThread();
+    eng = new Engine(scenes);
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawServerMap()));
     thread->start();
@@ -46,6 +46,8 @@ ServerWindow::~ServerWindow()
 
 void ServerWindow::closeEvent(QCloseEvent *event)
 {
+    eng->stopEngine();
+    thread->quit();
     emit showServerRegWindow();
     event->accept();
 }
