@@ -63,6 +63,8 @@ void Server::slotReadClient()
                 emit signalRegNewClient(it, pClientSocket);
             } else if (req[0] == "enter") {
                 emit signalEnterClient(it, pClientSocket);
+            } else if (req[0] == "move") {
+                emit signalMovePlayer(it, pClientSocket);
             }
         }
 

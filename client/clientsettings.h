@@ -4,10 +4,13 @@
 #include <experimental/filesystem>
 #include <QString>
 
+#include "clientinfo.h"
 #include "client.h"
 #include "maze.h"
 
-
+/*
+ * class for save all client settings on client
+ */
 
 namespace fs = std::experimental::filesystem;
 
@@ -19,7 +22,7 @@ public:
     void startNewClient(QString login_, QString password_);
     void startOldClient(QString login_, QString password_);
 
-    const Client* getClient();
+    Client* getClient();
 
     void createEmptyMaze();
     Maze* getMaze();
@@ -37,8 +40,10 @@ private slots:
 
 private:
     Client* client;
+
     QString login;
     QString password;
+
     Maze* clientMaze;
 };
 

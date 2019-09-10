@@ -18,6 +18,7 @@ void ServerSettings::startServer() {
     server = new Server(1337);
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
     Q_ASSERT(c1);
 }
 
@@ -61,6 +62,14 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket)
 
 }
 
+void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
+    Player* player = getPlayerBySocket(socket);
+    std::vector<QString> req = pars::parseRequest(str);
+    int dx = req[1].toInt();
+    int dy = req[2].toInt();
+    player->move(dx, dy);
+}
+
 Maze* ServerSettings::getMaze() {
     return maze;
 }
@@ -96,6 +105,15 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y) {
 Player* ServerSettings::isPlayer(int x, int y) {
     for (auto it : clients) {
         if (it->isPlayerPlace(x, y)) {
+            return it->getPlayer();
+        }
+    }
+    return nullptr;
+}
+
+Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
+    for (auto it : clients) {
+        if (it->getTcpSocket() == socket) {
             return it->getPlayer();
         }
     }

@@ -30,8 +30,7 @@ void ClientSettings::startOldClient(QString login_, QString password_) {
     clientConnects();
 }
 
-const Client *ClientSettings::getClient()
-{
+Client *ClientSettings::getClient() {
     return client;
 }
 

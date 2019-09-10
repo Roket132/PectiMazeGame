@@ -19,6 +19,7 @@ Client::Client(const QString& strHost,
             );
 }
 
+
 void Client::sendToServer(const QString &str)
 {
     slotSendToServer(str);

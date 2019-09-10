@@ -34,6 +34,7 @@ public:
     QString getMapPlayerByPlace(int x, int y);
 
     Player* isPlayer(int x, int y);
+    Player* getPlayerBySocket(QTcpSocket* socket);
 
 private:
     ServerSettings(fs::path path);
@@ -49,6 +50,7 @@ private:
 private slots:
     void slotRegNewClient(QString str, QTcpSocket* socket);
     void slotEnterClient(QString str, QTcpSocket* socket);
+    void slotMovePlayer(QString str, QTcpSocket* socket);
 };
 
 #endif // SERVERSETTINGS_H

@@ -1,6 +1,10 @@
 #include "serverwindow.h"
 #include "ui_serverwindow.h"
 
+#include <QThread>
+
+#include "engine/engine.h"
+
 ServerWindow::ServerWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ServerWindow)
@@ -27,7 +31,13 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
 
-    draw();
+    QThread* thread = new QThread();
+    Engine* eng = new Engine(scenes);
+    eng->moveToThread(thread);
+    connect(thread, SIGNAL(started()), eng, SLOT(drawServerMap()));
+    thread->start();
+
+    //draw();
 }
 
 ServerWindow::~ServerWindow()

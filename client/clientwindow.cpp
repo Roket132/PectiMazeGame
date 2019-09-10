@@ -39,15 +39,34 @@ ClientWindow::ClientWindow(QWidget *parent) :
     connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
 
     thread->start();
+    //thread->quit();
 }
 
-ClientWindow::~ClientWindow()
-{
+ClientWindow::~ClientWindow() {
     delete ui;
 }
 
-void ClientWindow::closeEvent(QCloseEvent *event)
-{
+void ClientWindow::closeEvent(QCloseEvent *event) {
     emit showClientRegWindow();
     event->accept();
+}
+
+void ClientWindow::on_upButton_clicked() {
+    ClientSettings &clientSetting = ClientSettings::getClientSettings();
+    clientSetting.getClient()->sendToServer("move 1 0;");
+}
+
+void ClientWindow::on_rightButton_clicked() {
+    ClientSettings &clientSetting = ClientSettings::getClientSettings();
+    clientSetting.getClient()->sendToServer("move 0 1;");
+}
+
+void ClientWindow::on_downButton_clicked() {
+    ClientSettings &clientSetting = ClientSettings::getClientSettings();
+    clientSetting.getClient()->sendToServer("move -1 0;");
+}
+
+void ClientWindow::on_leftButton_clicked() {
+    ClientSettings &clientSetting = ClientSettings::getClientSettings();
+    clientSetting.getClient()->sendToServer("move 0 -1;");
 }

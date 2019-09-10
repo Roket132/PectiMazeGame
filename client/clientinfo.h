@@ -8,6 +8,14 @@
 #include <QString>
 #include <QTcpSocket>
 
+/*
+ *
+ * class for save client on server,
+ * on client all settigns be kept in @clientsettings@
+ * don't use this class, for save clientInfo on client
+ *
+ */
+
 class ClientInfo {
 public:
     ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_);

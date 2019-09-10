@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "client/clientsettings.h"
+#include"server/serversettings.h"
 #include "engine/mazeobject.h"
 
 class Engine : public QObject {
@@ -18,6 +19,7 @@ private:
 
 public slots:
     void drawClientMap();
+    void drawServerMap();
 };
 
 #endif // ENGINE_H

@@ -10,6 +10,13 @@ DynamicObject::~DynamicObject() {
 
 }
 
+void DynamicObject::move(int dx, int dy) {
+    if (dx > 0 && !dy) moveUp();
+    else if (dx < 0 && !dy) moveDown();
+    else if (!dx && dy > 0) moveRight();
+    else if (!dx && dy < 0) moveLeft();
+}
+
 void DynamicObject::moveTo(int x, int y) {
     x_ = x;
     y_ = y;
