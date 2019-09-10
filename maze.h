@@ -13,9 +13,10 @@ namespace fs = std::experimental::filesystem;
 class Maze {
 public:
     Maze();
-    explicit Maze(fs::path path);
-    explicit Maze(std::string map);
-    explicit Maze(QString map);
+    explicit Maze(fs::path path); // create maze for server with @40@ size
+
+    explicit Maze(std::string map); // convert string to QString and call Maze(QString)
+    explicit Maze(QString map); // create maze for client with @80@ size
 
     int width();
     int height();

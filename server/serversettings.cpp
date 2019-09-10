@@ -68,6 +68,7 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
     int dx = req[1].toInt();
     int dy = req[2].toInt();
     player->move(dx, dy);
+    doCellAction(player);
 }
 
 Maze* ServerSettings::getMaze() {
@@ -76,20 +77,23 @@ Maze* ServerSettings::getMaze() {
 
 QString ServerSettings::getMapPlayerBySocket(QTcpSocket *socket) {
     for (auto it : clients) {
-        std::cerr << "it = ?" << std::endl;
         if (it->getTcpSocket() == socket) {
-            std::pair<int, int> pl = it->getPlayer()->getPlace();
-            return getMapPlayerByPlace(pl.first, pl.second);
+            std::pair<int, int> pl = it->getPlayer()->getPosition();
+            return getMapPlayerByPlace(pl.first, pl.second, it->getPlayer()->isExtraVis());
         }
     }
     return "map 0 0";
 }
 
 
-QString ServerSettings::getMapPlayerByPlace(int x, int y) {
-    QString ans = QStringLiteral("map %1 %2").arg(maze->height()).arg(maze->width());
+QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
+    QString ans = QStringLiteral("map %1 %2").arg(5).arg(5);
     for (int i = x - 2/*??*/; i <= x + 2; i++) {
         for (int j = y - 2; j <= y + 2; j++) {
+            if (!extra && (abs(x - i) > 1 || abs(y - j) > 1)) {
+                ans += " fog";
+                continue;
+            }
             if (i < 0 || j < 0 || i >= maze->height() || j >= maze->width()) {
                 ans += " -1";
             } else if (i == x && j == y) {
@@ -118,4 +122,22 @@ Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
         }
     }
     return nullptr;
+}
+
+void ServerSettings::doCellAction(Player *player) {
+    player->action();
+
+    std::pair<size_t, size_t> pos = player->getPosition();
+    MazeObject* obj = maze->getMazeObject(pos.first, pos.second);
+
+    QString type = obj->getTypeObject();
+
+    if (type == "lamp") {
+        player->setExtraLight(true);
+    } else if (type == "light_source") {
+        if (player->isExtraLight()) {
+            player->setExtraVision(10); // TODO set dif time
+        }
+    }
+
 }

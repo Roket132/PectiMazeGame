@@ -31,6 +31,9 @@ SOURCES += \
         client/clientwindow.cpp \
         clientregwindow.cpp \
         engine/Objects/floor.cpp \
+        engine/Objects/fog.cpp \
+        engine/Objects/lamp.cpp \
+        engine/Objects/lightsource.cpp \
         engine/Objects/player.cpp \
         engine/Objects/wall.cpp \
         engine/dynamicobject.cpp \
@@ -53,6 +56,9 @@ HEADERS += \
         client/clientwindow.h \
         clientregwindow.h \
         engine/Objects/floor.h \
+        engine/Objects/fog.h \
+        engine/Objects/lamp.h \
+        engine/Objects/lightsource.h \
         engine/Objects/player.h \
         engine/Objects/wall.h \
         engine/dynamicobject.h \

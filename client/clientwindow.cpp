@@ -15,7 +15,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
         for (int j = 0; j < dimensions; j++) {
             QLabel *cell = new QLabel(this);
             scenes.push_back(cell);
-            cell->setFixedSize(40, 40);
+            cell->setFixedSize(80, 80);
             cell->setStyleSheet("QLabel { background-color : white; }");
             ui->mapLayout->addWidget(cell, i + 1, j + 1);
         }

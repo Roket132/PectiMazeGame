@@ -25,7 +25,7 @@ void ClientInfo::setSocket(QTcpSocket *socket)
 }
 
 bool ClientInfo::isPlayerPlace(int x, int y) {
-    std::pair<int, int> pl = player->getPlace();
+    std::pair<int, int> pl = player->getPosition();
     return (x == pl.first && y == pl.second);
 }
 

@@ -38,7 +38,7 @@ void DynamicObject::moveUp() {
     moveTo(x_ - 1, y_);
 }
 
-std::pair<int, int> DynamicObject::getPlace() {
+std::pair<size_t, size_t> DynamicObject::getPosition() {
     return {x_, y_};
 }
 

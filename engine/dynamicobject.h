@@ -13,7 +13,7 @@ protected:
     int x_, y_;
 
 public:
-    void move(int dx, int dy);
+    virtual void move(int dx, int dy);
 
     void moveTo(int x, int y);
 
@@ -25,7 +25,7 @@ public:
 
     void moveUp();
 
-    std::pair<int, int> getPlace();
+    std::pair<size_t, size_t> getPosition();
 };
 
 #endif // DYNAMICOBJECT_H

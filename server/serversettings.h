@@ -31,10 +31,19 @@ public:
     Maze* getMaze();
 
     QString getMapPlayerBySocket(QTcpSocket* socket);
-    QString getMapPlayerByPlace(int x, int y);
+    QString getMapPlayerByPlace(int x, int y, bool extra);
 
     Player* isPlayer(int x, int y);
     Player* getPlayerBySocket(QTcpSocket* socket);
+
+    /*
+     *
+     * all settings about rules for action in this metod
+     * void doCellAction(Player* player);
+     *
+     */
+
+    void doCellAction(Player* player); // check are there any actions on cell which player stay and do it;
 
 private:
     ServerSettings(fs::path path);
