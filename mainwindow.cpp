@@ -16,7 +16,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_startServerButton_clicked()
 {
-    serverRegWindow = new ServerRegWindow(this);
+    serverRegWindow = new ServerRegWindow();
     connect(serverRegWindow, &ServerRegWindow::showMainWindow, this, &MainWindow::show);
     serverRegWindow->setFixedSize(924, 609);
     serverRegWindow->show();
@@ -25,7 +25,7 @@ void MainWindow::on_startServerButton_clicked()
 
 void MainWindow::on_startGameButton_clicked()
 {
-    clientRegWindow = new ClientRegWindow(this);
+    clientRegWindow = new ClientRegWindow();
     connect(clientRegWindow, &ClientRegWindow::showMainWindow, this, &MainWindow::show);
     clientRegWindow->setFixedSize(924, 609);
     clientRegWindow->show();

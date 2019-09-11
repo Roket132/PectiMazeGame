@@ -18,6 +18,8 @@ public:
     explicit Maze(std::string map); // convert string to QString and call Maze(QString)
     explicit Maze(QString map); // create maze for client with @80@ size
 
+    ~Maze();
+
     int width();
     int height();
     bool isPossibleToGoTo(size_t x, size_t y);

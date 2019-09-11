@@ -49,7 +49,7 @@ public:
 
 private:
     ServerSettings(fs::path path);
-    ~ServerSettings() {}
+    ~ServerSettings();
     ServerSettings& operator=(ServerSettings&) = delete;
     ServerSettings(const ServerSettings&) = delete;
 
