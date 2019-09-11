@@ -9,6 +9,11 @@ ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y
     player->moveTo(start_x, start_y);
 }
 
+ClientInfo::~ClientInfo() {
+    delete pTcpSocket;
+    delete player;
+}
+
 QString ClientInfo::getLogin()
 {
     return login;

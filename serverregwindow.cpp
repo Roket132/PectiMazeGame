@@ -47,7 +47,7 @@ void ServerRegWindow::on_startServerButton_clicked()
     ServerSettings &serverSettings = ServerSettings::getServerSettings(ui->mazePathEdit->text().toStdString()); // first singleton call
     serverSettings.startServer();
 
-    serverWindow = new ServerWindow();
+    serverWindow = new ServerWindow(this);
     connect(serverWindow, &ServerWindow::showServerRegWindow, this, &ServerRegWindow::show);
     serverWindow->show();
     this->hide();

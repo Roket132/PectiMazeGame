@@ -12,6 +12,11 @@ ClientSettings::ClientSettings() {
 
 }
 
+ClientSettings::~ClientSettings() {
+    delete clientMaze;
+    delete client;
+}
+
 void ClientSettings::startNewClient(QString login_, QString password_) {
     login = login_;
     password = password_;
@@ -28,6 +33,10 @@ void ClientSettings::startOldClient(QString login_, QString password_) {
     client->sendToServer(QStringLiteral("enter %1 %2;").arg(login_).arg(password_));
     std::cerr << "otpravil enter" << std::endl;
     clientConnects();
+}
+
+void ClientSettings::closeClient() {
+    if (client != nullptr) delete client;
 }
 
 Client *ClientSettings::getClient() {

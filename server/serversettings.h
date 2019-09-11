@@ -27,6 +27,8 @@ public:
     static ServerSettings &getServerSettings(fs::path path = "");
 
     void startServer();
+    void closeServer();
+
     Maze* createMaze(fs::path);
     Maze* getMaze();
 

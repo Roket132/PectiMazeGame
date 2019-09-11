@@ -9,6 +9,11 @@ ServerSettings::ServerSettings(fs::path path) : server(nullptr) {
     maze = createMaze(path);
 }
 
+ServerSettings::~ServerSettings() {
+    delete server;
+    delete maze;
+}
+
 ServerSettings &ServerSettings::getServerSettings(fs::path path) {
     static ServerSettings instance(path);
     return instance;
@@ -20,6 +25,10 @@ void ServerSettings::startServer() {
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
     Q_ASSERT(c1);
+}
+
+void ServerSettings::closeServer() {
+    if (server != nullptr) delete server;
 }
 
 Maze* ServerSettings::createMaze(std::experimental::filesystem::__cxx11::path path) {

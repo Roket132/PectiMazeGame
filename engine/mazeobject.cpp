@@ -4,8 +4,7 @@ MazeObject::MazeObject() {
 
 }
 
-MazeObject::MazeObject(QPixmap texture_, std::vector<QPixmap> *frames_)
-{
+MazeObject::MazeObject(QPixmap texture_, std::vector<QPixmap> *frames_) {
     texture = texture_;
     if (frames_ != nullptr) {
         frames.clear();

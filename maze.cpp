@@ -111,6 +111,15 @@ Maze::Maze(QString map) {
     }
 }
 
+Maze::~Maze() {
+    for (auto raw : maze) {
+        for (auto it : raw) {
+            delete it;
+        }
+    }
+    maze.clear();
+}
+
 
 int Maze::width() {
     return w;

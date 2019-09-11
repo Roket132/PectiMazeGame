@@ -46,7 +46,7 @@ void ClientRegWindow::on_startClientButton_clicked()
 void ClientRegWindow::slotSignInSuccess()
 {
     std::cerr << "success" << std::endl;
-    clientWindow = new ClientWindow();
+    clientWindow = new ClientWindow(this);
     connect(clientWindow, &ClientWindow::showClientRegWindow, this, &ClientRegWindow::show);
     clientWindow->show();
     this->hide();

@@ -19,6 +19,7 @@
 class ClientInfo {
 public:
     ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_);
+    ~ClientInfo();
 
     QString getLogin();
     QString getPassword();
