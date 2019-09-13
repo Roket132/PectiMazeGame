@@ -109,7 +109,7 @@
      <item>
       <widget class="QLabel" name="messageLabel">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Message Label</string>
        </property>
        <property name="margin">
         <number>5</number>

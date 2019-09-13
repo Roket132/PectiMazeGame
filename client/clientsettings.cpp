@@ -17,23 +17,18 @@ ClientSettings::~ClientSettings() {
     delete client;
 }
 
-void ClientSettings::startNewClient(QString login_, QString password_) {
+void ClientSettings::startClient(QString login_, QString password_, bool old) {
     mutex_ = new std::mutex;
 
+    // save input settings
     login = login_;
     password = password_;
-    client = new Client("localhost", 1337);
-    client->sendToServer(QStringLiteral("reg %1 %2;").arg(login_).arg(password_));
-    std::cerr << "otpravil reg" << std::endl;
-    clientConnects();
-}
 
-void ClientSettings::startOldClient(QString login_, QString password_) {
-    login = login_;
-    password = password_;
+    // start client;
+
     client = new Client("localhost", 1337);
-    client->sendToServer(QStringLiteral("enter %1 %2;").arg(login_).arg(password_));
-    std::cerr << "otpravil enter" << std::endl;
+    client->sendToServer(QStringLiteral("%1 %2 %3;").arg(old ? "enter" : "reg").arg(login_).arg(password_));
+    std::cerr << "otpravil old??" << " " << (old ? "enter" : "reg") << std::endl;
     clientConnects();
 }
 

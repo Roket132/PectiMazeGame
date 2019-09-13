@@ -57,6 +57,12 @@ void ClientRegWindow::on_regClientButton_clicked() {
     ui->messageLabel->hide();
 }
 
+void ClientRegWindow::registrationConnects(const Client *client) {
+    bool c1 = connect(client, SIGNAL(signalSignInFaild()), this, SLOT(slotSignInFaild()));
+    bool c2 = connect(client, SIGNAL(signalSignInSuccess()), this, SLOT(slotSignInSuccess()));
+     Q_ASSERT(c1); Q_ASSERT(c2);
+}
+
 void ClientRegWindow::on_startClientButton_clicked() {
     if (ui->loginEdit->text() == "" || ui->passwordEdit->text() == "") {
         ui->messageLabel->setText("Введите логин и пароль");
@@ -64,11 +70,11 @@ void ClientRegWindow::on_startClientButton_clicked() {
         return;
     }
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
-    clientSettings.startOldClient(ui->loginEdit->text(), ui->passwordEdit->text());
+    //clientSettings.startOldClient(ui->loginEdit->text(), ui->passwordEdit->text());
+    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), true);
     const Client* client = clientSettings.getClient();
-    bool c1 = connect(client, SIGNAL(signalSignInFaild()), this, SLOT(slotSignInFaild()));
-    bool c2 = connect(client, SIGNAL(signalSignInSuccess()), this, SLOT(slotSignInSuccess()));
-    Q_ASSERT(c1); Q_ASSERT(c2);
+    registrationConnects(client);
+
 }
 
 void ClientRegWindow::on_registrationButton_clicked() {
@@ -85,11 +91,10 @@ void ClientRegWindow::on_registrationButton_clicked() {
 
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     if (ui->passwordEdit->text() == ui->repeatEdit->text()) {
-        clientSettings.startNewClient(ui->loginEdit->text(), ui->passwordEdit->text());
+        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text());
+        //clientSettings.startNewClient(ui->loginEdit->text(), ui->passwordEdit->text());
         const Client* client = clientSettings.getClient();
-        bool c1 = connect(client, SIGNAL(signalSignInFaild()), this, SLOT(slotSignInFaild()));
-        bool c2 = connect(client, SIGNAL(signalSignInSuccess()), this, SLOT(slotSignInSuccess()));
-        Q_ASSERT(c1); Q_ASSERT(c2);
+        registrationConnects(client);
     } else {
         ui->messageLabel->setText("Пароли не совпадают");
         ui->messageLabel->show();
@@ -138,3 +143,5 @@ void ClientRegWindow::on_backEnterButton_clicked() {
     ui->regClientButton->show();
     ui->startClientButton->show();
 }
+
+
