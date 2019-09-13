@@ -35,6 +35,7 @@ private slots:
     void slotSignInFaild();
     void on_backButton_clicked();
     void on_registrationButton_clicked();
+    void on_backEnterButton_clicked();
 };
 
 #endif // CLIENTREGWINDOW_H

@@ -29,7 +29,6 @@ public:
     void createEmptyMaze();
     Maze* getMaze();
 
-    void closeClient();
 private:
     ClientSettings();
     ~ClientSettings();
