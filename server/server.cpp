@@ -55,7 +55,8 @@ void Server::slotReadClient()
         QString str;
         in >> time >> str;
 
-        std::cerr << "prishlo " << str.toStdString() << std::endl;
+        //std::cerr << "prishlo " << str.toStdString() << std::endl;
+
         std::vector<QString> requests = pars::splitRequests(str);
         for (auto it : requests) {
             std::vector<QString> req = pars::parseRequest(it);

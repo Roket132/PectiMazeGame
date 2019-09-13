@@ -28,9 +28,10 @@ public:
     void createEmptyMaze();
     Maze* getMaze();
 
+    void closeClient();
 private:
     ClientSettings();
-    ~ClientSettings() {}
+    ~ClientSettings();
     ClientSettings& operator=(ClientSettings&) = delete;
     ClientSettings(const ClientSettings&) = delete;
     void clientConnects();
