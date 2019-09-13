@@ -8,6 +8,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui(new Ui::ClientWindow)
 {
     ui->setupUi(this);
+    qApp->installEventFilter(this);
 
     int dimensions = 5;
     //int cnt = 0;
@@ -92,4 +93,23 @@ void ClientWindow::on_leftButton_clicked() {
     if (clientSetting.getMaze()->isPossibleToGoTo(2, 1)) {
         clientSetting.getClient()->sendToServer("move 0 -1;");
     }
+}
+
+bool ClientWindow::eventFilter(QObject *obj, QEvent *event) {
+    if (event->type() == QEvent::KeyPress) {
+        if (obj->objectName() == "ClientWindowWindow") {
+            QKeyEvent* e = static_cast<QKeyEvent*>(event);
+            switch(e->key()) {
+            case Qt::Key_Up: ui->upButton->setFocus(); ui->upButton->setFocus(); on_upButton_clicked(); break;
+            case Qt::Key_Down: ui->downButton->setFocus(); ui->downButton->setFocus(); on_downButton_clicked(); break;
+            case Qt::Key_Left: ui->leftButton->setFocus(); ui->leftButton->setFocus(); on_leftButton_clicked(); break;
+            case Qt::Key_Right: ui->rightButton->setFocus(); ui->rightButton->setFocus(); on_rightButton_clicked(); break;
+            }
+        }
+    }
+
+}
+
+bool ClientWindow::focusNextPrevChild(bool next) {
+    return false;
 }

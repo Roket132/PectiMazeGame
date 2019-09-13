@@ -118,6 +118,7 @@ Maze::Maze(QString map) {
 }
 
 Maze::~Maze() {
+    std::lock_guard<std::mutex> lg(*mutex_);
     for (auto raw : maze) {
         for (auto it : raw) {
             delete it;

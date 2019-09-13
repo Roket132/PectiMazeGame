@@ -9,7 +9,7 @@ ClientSettings &ClientSettings::getClientSettings() {
 }
 
 ClientSettings::ClientSettings() {
-
+    mutex_ = new std::mutex;
 }
 
 ClientSettings::~ClientSettings() {
@@ -18,6 +18,8 @@ ClientSettings::~ClientSettings() {
 }
 
 void ClientSettings::startNewClient(QString login_, QString password_) {
+    mutex_ = new std::mutex;
+
     login = login_;
     password = password_;
     client = new Client("localhost", 1337);
@@ -50,6 +52,7 @@ void ClientSettings::createEmptyMaze() {
 }
 
 Maze *ClientSettings::getMaze() {
+    std::lock_guard<std::mutex> lg(*mutex_);
     return clientMaze;
 }
 
@@ -58,6 +61,7 @@ void ClientSettings::clientConnects() {
 }
 
 void ClientSettings::slotSetMap(QString map) {
+    std::lock_guard<std::mutex> lg(*mutex_);
     if (clientMaze) delete clientMaze;
     clientMaze = new Maze(map);
 }

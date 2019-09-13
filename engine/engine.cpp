@@ -25,7 +25,7 @@ void Engine::drawClientMap() {
 
         if (maze == nullptr) continue;
         for (int i = 0; i < maze->height(); i++) {
-            for (int j = 0; j < maze->height(); j++) {
+            for (int j = 0; j < maze->width(); j++) {
                 MazeObject* Object = maze->getMazeObject(static_cast<size_t>(i), static_cast<size_t>(j));
                 scenes[curScene++]->setPixmap(Object->getTexture());
             }

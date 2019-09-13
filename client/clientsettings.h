@@ -3,6 +3,7 @@
 
 #include <experimental/filesystem>
 #include <QString>
+#include <mutex>
 
 #include "clientinfo.h"
 #include "client.h"
@@ -33,6 +34,8 @@ private:
     ClientSettings& operator=(ClientSettings&) = delete;
     ClientSettings(const ClientSettings&) = delete;
     void clientConnects();
+
+    std::mutex *mutex_;
 
 private slots:
     void slotSetMap(QString);

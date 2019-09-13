@@ -43,6 +43,10 @@ private slots:
     void on_rightButton_clicked();
     void on_downButton_clicked();
     void on_leftButton_clicked();
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *event) override;
+    bool focusNextPrevChild(bool next) override;
 };
 
 #endif // CLIENTWINDOW_H
