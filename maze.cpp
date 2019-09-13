@@ -44,9 +44,6 @@ Maze::Maze(fs::path path) {
         return;
     }
 
-    mutex_ = new std::mutex;
-    std::lock_guard<std::mutex> lg(*mutex_);
-
     in >> h >> w;
 
     //TODO (if h < 0 || w < 0)
@@ -83,9 +80,6 @@ Maze::Maze(std::string map) {
 }
 
 Maze::Maze(QString map) {
-    mutex_ = new std::mutex;
-    std::lock_guard<std::mutex> lg(*mutex_);
-
     std::vector<QString> req = pars::parseRequest(map);
     h = req[1].toInt();
     w = req[2].toInt();
@@ -128,34 +122,28 @@ Maze::~Maze() {
 
 
 int Maze::width() {
-    std::lock_guard<std::mutex> lg(*mutex_);
     return w;
 }
 
 int Maze::height() {
-    std::lock_guard<std::mutex> lg(*mutex_);
     return h;
 }
 
 bool Maze::isPossibleToGoTo(size_t x, size_t y) {
-    std::lock_guard<std::mutex> lg(*mutex_);
     return (maze[x][y]->getTypeObject() == "floor" ||
             maze[x][y]->getTypeObject() == "lamp" ||
             maze[x][y]->getTypeObject() == "light_source");
 }
 
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {
-    std::lock_guard<std::mutex> lg(*mutex_);
     return maze[x][y];
 }
 
 QString Maze::getTypeObject(size_t x, size_t y) {
-    std::lock_guard<std::mutex> lg(*mutex_);
     return maze[x][y]->getTypeObject();
 }
 
 std::pair<int, int> Maze::getFreeStartPlace() {
-    std::lock_guard<std::mutex> lg(*mutex_);
     for (auto &it : enableStartPlaces) {
         if (it.second) {
             it.second = false;

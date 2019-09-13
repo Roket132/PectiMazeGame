@@ -3,11 +3,10 @@
 
 #include "engine/mazeobject.h"
 
-#include <mutex>
+#include <QWidget>
 #include <vector>
 #include <iostream>
 #include <experimental/filesystem>
-#include <QWidget>
 
 namespace fs = std::experimental::filesystem;
 
@@ -33,8 +32,6 @@ private:
     int h, w;
     std::vector<std::vector<MazeObject*>> maze;
     std::vector<std::pair<std::pair<int, int>, bool>> enableStartPlaces;
-
-    std::mutex* mutex_;
 };
 
 #endif // MAZE_H
