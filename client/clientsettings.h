@@ -22,6 +22,7 @@ public:
 
     void startNewClient(QString login_, QString password_);
     void startOldClient(QString login_, QString password_);
+    void closeClient();
 
     Client* getClient();
 
