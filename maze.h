@@ -3,10 +3,11 @@
 
 #include "engine/mazeobject.h"
 
-#include <QWidget>
+#include <mutex>
 #include <vector>
 #include <iostream>
 #include <experimental/filesystem>
+#include <QWidget>
 
 namespace fs = std::experimental::filesystem;
 
@@ -17,6 +18,8 @@ public:
 
     explicit Maze(std::string map); // convert string to QString and call Maze(QString)
     explicit Maze(QString map); // create maze for client with @80@ size
+
+    ~Maze();
 
     int width();
     int height();
@@ -30,6 +33,8 @@ private:
     int h, w;
     std::vector<std::vector<MazeObject*>> maze;
     std::vector<std::pair<std::pair<int, int>, bool>> enableStartPlaces;
+
+    std::mutex* mutex_;
 };
 
 #endif // MAZE_H
