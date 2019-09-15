@@ -31,3 +31,12 @@ void MainWindow::on_startGameButton_clicked()
     clientRegWindow->show();
     this->close();
 }
+
+void MainWindow::on_settingsButton_clicked()
+{
+    settingsWindow = new SettingsWindow();
+    connect(settingsWindow, &SettingsWindow::showMainWindow, this, &MainWindow::show);
+    settingsWindow->setFixedSize(924, 609);
+    settingsWindow->show();
+    this->close();
+}

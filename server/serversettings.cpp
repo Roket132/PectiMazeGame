@@ -5,22 +5,21 @@
  * 1. getMapPlayer By Place, need add demension
  */
 
-ServerSettings::ServerSettings(fs::path path) : server(nullptr) {
-    maze = createMaze(path);
+ServerSettings::ServerSettings() : server(nullptr) {
 }
 
 ServerSettings::~ServerSettings() {
-    delete server;
-    delete maze;
 }
 
-ServerSettings &ServerSettings::getServerSettings(fs::path path) {
-    static ServerSettings instance(path);
+ServerSettings &ServerSettings::getServerSettings() {
+    static ServerSettings instance;
     return instance;
 }
 
-void ServerSettings::startServer() {
+void ServerSettings::startServer(fs::path path) {
     server = new Server(1337);
+    maze = new Maze(path);
+
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
@@ -28,7 +27,8 @@ void ServerSettings::startServer() {
 }
 
 void ServerSettings::closeServer() {
-    if (server != nullptr) delete server;
+    delete server;
+    delete maze;
 }
 
 Maze* ServerSettings::createMaze(std::experimental::filesystem::__cxx11::path path) {

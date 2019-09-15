@@ -19,7 +19,7 @@ class ServerRegWindow : public QWidget
 
 public:
     explicit ServerRegWindow(QWidget *parent = nullptr);
-    ~ServerRegWindow();
+    ~ServerRegWindow() override;
 
 private:
     Ui::ServerRegWindow *ui;

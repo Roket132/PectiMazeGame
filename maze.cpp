@@ -8,6 +8,7 @@
 #include "engine/Objects/lightsource.h"
 
 #include "parsing/parsingtools.h"
+#include "appsettings.h"
 
 #include <fstream>
 
@@ -47,6 +48,9 @@ Maze::Maze(fs::path path) {
     mutex_ = new std::mutex;
     std::lock_guard<std::mutex> lg(*mutex_);
 
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     in >> h >> w;
 
     //TODO (if h < 0 || w < 0)
@@ -62,12 +66,12 @@ Maze::Maze(fs::path path) {
             //set MazeObject
 
             if (ch == '#') {
-                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
+                maze[i][j] = new Wall(QPixmap(QStringLiteral(":/%1/src/texture_80/%1/wall.jpg").arg(stylePrefix)));
             } else if (ch == '.') {
-                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+                maze[i][j] = new Floor(QPixmap(QStringLiteral(":/%1/src/texture_80/%1/floor.jpg").arg(stylePrefix)));
             } else if (ch == 'S') {
                 enableStartPlaces.push_back({{i, j}, true});
-                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+                maze[i][j] = new Floor(QPixmap(QStringLiteral(":/%1/src/texture_80/%1/floor.jpg").arg(stylePrefix)));
             } else if (ch == 'T') {
                 maze[i][j] = new Lamp(QPixmap(":/res/image/image_40/torch_off.png"));
             } else if (ch == 'B') {
@@ -86,6 +90,9 @@ Maze::Maze(QString map) {
     mutex_ = new std::mutex;
     std::lock_guard<std::mutex> lg(*mutex_);
 
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     std::vector<QString> req = pars::parseRequest(map);
     h = req[1].toInt();
     w = req[2].toInt();
@@ -95,9 +102,9 @@ Maze::Maze(QString map) {
     for (size_t i = 0; i < h; i++) {
         for (size_t j = 0; j < w; j++) {
             if (req[pos] == "floor") {
-               maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+               maze[i][j] = new Floor(QPixmap(QStringLiteral(":/%1/src/texture_80/%1/floor.jpg").arg(stylePrefix)));
             } else if (req[pos] == "wall") {
-                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
+                maze[i][j] = new Wall(QPixmap(QStringLiteral(":/%1/src/texture_80/%1/wall.jpg").arg(stylePrefix)));
             } else if (req[pos][0] == 'P') {
 
                 // TODO add different players ??

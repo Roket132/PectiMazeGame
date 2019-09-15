@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 
 SOURCES += \
+        appsettings.cpp \
         client/client.cpp \
         client/clientinfo.cpp \
         client/clientsettings.cpp \
@@ -47,9 +48,11 @@ SOURCES += \
         server/server.cpp \
         server/serversettings.cpp \
         server/serverwindow.cpp \
-        serverregwindow.cpp
+        serverregwindow.cpp \
+        settingswindow.cpp
 
 HEADERS += \
+        appsettings.h \
         client/client.h \
         client/clientinfo.h \
         client/clientsettings.h \
@@ -71,14 +74,16 @@ HEADERS += \
         server/server.h \
         server/serversettings.h \
         server/serverwindow.h \
-        serverregwindow.h
+        serverregwindow.h \
+        settingswindow.h
 
 FORMS += \
         client/clientwindow.ui \
         clientregwindow.ui \
         mainwindow.ui \
         server/serverwindow.ui \
-        serverregwindow.ui
+        serverregwindow.ui \
+        settingswindow.ui
 
 QT += \
     network \

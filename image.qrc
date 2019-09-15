@@ -41,7 +41,5 @@
         <file>image/image_80/swords.png</file>
         <file>image/image_80/torch_off.png</file>
         <file>image/image_80/torch_on.png</file>
-        <file>image/image_80/wall.jpg</file>
-        <file>image/image_80/white.jpg</file>
     </qresource>
 </RCC>
