@@ -1,7 +1,7 @@
 #include "clientsettings.h"
 
 #include <iostream>
-
+#include "settingswindow.h"
 
 ClientSettings &ClientSettings::getClientSettings() {
     static ClientSettings instance;
@@ -39,6 +39,7 @@ void ClientSettings::closeClient() {
 Client *ClientSettings::getClient() {
     return client;
 }
+
 
 void ClientSettings::createEmptyMaze() {
     if (clientMaze != nullptr) delete clientMaze;

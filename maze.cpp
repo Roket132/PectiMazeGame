@@ -8,6 +8,7 @@
 #include "engine/Objects/lightsource.h"
 
 #include "parsing/parsingtools.h"
+#include "appsettings.h"
 
 #include <fstream>
 
@@ -47,6 +48,9 @@ Maze::Maze(fs::path path) {
     mutex_ = new std::mutex;
     std::lock_guard<std::mutex> lg(*mutex_);
 
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     in >> h >> w;
 
     //TODO (if h < 0 || w < 0)
@@ -62,12 +66,12 @@ Maze::Maze(fs::path path) {
             //set MazeObject
 
             if (ch == '#') {
-                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
+                maze[i][j] = new Wall(40);
             } else if (ch == '.') {
-                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+                maze[i][j] = new Floor(40);
             } else if (ch == 'S') {
                 enableStartPlaces.push_back({{i, j}, true});
-                maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+                maze[i][j] = new Floor(40);
             } else if (ch == 'T') {
                 maze[i][j] = new Lamp(QPixmap(":/res/image/image_40/torch_off.png"));
             } else if (ch == 'B') {
@@ -76,6 +80,8 @@ Maze::Maze(fs::path path) {
         }
     }
     in.close();
+
+    ShapeWalls();
 }
 
 Maze::Maze(std::string map) {
@@ -86,6 +92,9 @@ Maze::Maze(QString map) {
     mutex_ = new std::mutex;
     std::lock_guard<std::mutex> lg(*mutex_);
 
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     std::vector<QString> req = pars::parseRequest(map);
     h = req[1].toInt();
     w = req[2].toInt();
@@ -95,9 +104,9 @@ Maze::Maze(QString map) {
     for (size_t i = 0; i < h; i++) {
         for (size_t j = 0; j < w; j++) {
             if (req[pos] == "floor") {
-               maze[i][j] = new Floor(QPixmap(":/texture_80/floor/src/texture_80/floor/floorTile.jpg"));
+               maze[i][j] = new Floor(80);
             } else if (req[pos] == "wall") {
-                maze[i][j] = new Wall(QPixmap(":/texture_80/wall/src/texture_80/wall/WallCave.jpg"));
+                maze[i][j] = new Wall(80);
             } else if (req[pos][0] == 'P') {
 
                 // TODO add different players ??
@@ -110,11 +119,12 @@ Maze::Maze(QString map) {
             } else if (req[pos] == "fog") {
                 maze[i][j] = new Fog(QPixmap(":/res/image/image_80/fog.png"));
             } else {
-                maze[i][j] = new Floor(QPixmap(":/res/image/image_80/lamp.jpg"));
+                maze[i][j] = new Wall(80);
             }
             pos++;
         }
     }
+    ShapeWalls();
 }
 
 Maze::~Maze() {
@@ -164,4 +174,19 @@ std::pair<int, int> Maze::getFreeStartPlace() {
         }
     }
     return {-1, -1};
+}
+
+void Maze::ShapeWalls() {
+    for (size_t i = 0; i < maze.size(); i++) {
+        for (size_t j = 0; j < maze[i].size(); j++) {
+            if (maze[i][j]->getTypeObject() == "wall") {
+                Wall *wl = dynamic_cast<Wall*>(maze[i][j]);
+                MazeObject *up = (i > 0 ? maze[i - 1][j] : maze[i][j]);
+                MazeObject *right = (j < maze[i].size() - 1 ? maze[i][j + 1] : maze[i][j]);
+                MazeObject *down = (i < maze.size() - 1 ? maze[i + 1][j] : maze[i][j]);
+                MazeObject *left = (j > 0 ? maze[i][j - 1] : maze[i][j]);
+                wl->setShape(up, right, down, left);
+            }
+        }
+    }
 }

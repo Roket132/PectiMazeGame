@@ -24,9 +24,9 @@ namespace fs = std::experimental::filesystem;
 class ServerSettings : public QWidget {
 Q_OBJECT
 public:
-    static ServerSettings &getServerSettings(fs::path path = "");
+    static ServerSettings &getServerSettings();
 
-    void startServer();
+    void startServer(fs::path path);
     void closeServer();
 
     Maze* createMaze(fs::path);
@@ -48,7 +48,7 @@ public:
     void doCellAction(Player* player); // check are there any actions on cell which player stay and do it;
 
 private:
-    ServerSettings(fs::path path);
+    ServerSettings();
     ~ServerSettings();
     ServerSettings& operator=(ServerSettings&) = delete;
     ServerSettings(const ServerSettings&) = delete;

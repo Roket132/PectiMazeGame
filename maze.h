@@ -34,6 +34,8 @@ private:
     std::vector<std::vector<MazeObject*>> maze;
     std::vector<std::pair<std::pair<int, int>, bool>> enableStartPlaces;
 
+    void ShapeWalls();
+
     std::mutex* mutex_;
 };
 

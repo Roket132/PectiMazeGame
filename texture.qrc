@@ -1,8 +1,22 @@
 <RCC>
-    <qresource prefix="/texture_80/floor">
-        <file>src/texture_80/floor/floorTile.jpg</file>
+    <qresource prefix="/dark">
+        <file>src/texture_80/dark/floor.jpg</file>
+        <file>src/texture_80/dark/wall.jpg</file>
+        <file>src/texture_40/dark/floor.jpg</file>
+        <file>src/texture_40/dark/wall1.jpg</file>
+        <file>src/texture_40/dark/wall2.jpg</file>
+        <file>src/texture_40/dark/wall3.jpg</file>
+        <file>src/texture_40/dark/wall4.jpg</file>
+        <file>src/texture_40/dark/wall5.jpg</file>
+        <file>src/texture_40/dark/wall.jpg</file>
+        <file>src/texture_80/dark/wall1.jpg</file>
+        <file>src/texture_80/dark/wall2.jpg</file>
+        <file>src/texture_80/dark/wall3.jpg</file>
+        <file>src/texture_80/dark/wall4.jpg</file>
+        <file>src/texture_80/dark/wall5.jpg</file>
     </qresource>
-    <qresource prefix="/texture_80/wall">
-        <file>src/texture_80/wall/WallCave.jpg</file>
+    <qresource prefix="/default">
+        <file>src/texture_80/default/floor.jpg</file>
+        <file>src/texture_80/default/wall.jpg</file>
     </qresource>
 </RCC>

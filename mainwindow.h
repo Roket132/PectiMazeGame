@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <serverregwindow.h>
 #include <clientregwindow.h>
+#include <settingswindow.h>
 
 namespace Ui {
 class MainWindow;
@@ -21,11 +22,14 @@ private slots:
 
     void on_startGameButton_clicked();
 
+    void on_settingsButton_clicked();
+
 private:
     Ui::MainWindow *ui;
 
     ClientRegWindow *clientRegWindow;
     ServerRegWindow *serverRegWindow;
+    SettingsWindow *settingsWindow;
 };
 
 #endif // MAINWINDOW_H
