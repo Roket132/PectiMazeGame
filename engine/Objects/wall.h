@@ -8,13 +8,16 @@
 class Wall : public StateObject
 {
 public:
-    Wall();
-    Wall(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    Wall(size_t size);
 
     const QString TYPE = "wall";
     QString getTypeObject() override;
 
+    void setShape(MazeObject *up, MazeObject *right, MazeObject *down, MazeObject *left);
+
 private:
+    size_t size_;
+
     void update() override;
 };
 

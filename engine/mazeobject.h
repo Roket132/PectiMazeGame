@@ -23,6 +23,7 @@ public:
 
 protected:
     QPixmap texture;
+    QPixmap def_texture;
     std::vector<QPixmap> frames;
 
 

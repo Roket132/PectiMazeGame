@@ -5,8 +5,7 @@
 
 class Floor : public StateObject {
 public:
-    Floor();
-    Floor(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    Floor(size_t size);
     ~Floor() override = default;
 
     const QString TYPE = "floor";

@@ -32,9 +32,5 @@ void SettingsWindow::on_okButton_clicked() {
     AppSettings &settings = AppSettings::getAppSettings();
     settings.setStyle(ui->styleBox->currentText().toLower());
 
-
-
-    std::cerr << settings.getStyle().toStdString() << std::endl;
-
     on_backBtn_clicked();
 }
