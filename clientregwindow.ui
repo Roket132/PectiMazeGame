@@ -109,7 +109,7 @@
      <item>
       <widget class="QLabel" name="messageLabel">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Message Label</string>
        </property>
        <property name="margin">
         <number>5</number>
@@ -120,6 +120,13 @@
       <widget class="QPushButton" name="registrationButton">
        <property name="text">
         <string>Зарегестрироваться</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="backEnterButton">
+       <property name="text">
+        <string>Уже есть аккаунт?</string>
        </property>
       </widget>
      </item>

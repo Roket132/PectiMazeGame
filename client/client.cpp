@@ -45,7 +45,7 @@ void Client::slotReadyRead()
         QString str;
         in >> time >> str;
 
-        //std::cerr << "Client enter: " << str.toStdString() << std::endl;
+        std::cerr << "Client enter: " << str.toStdString() << std::endl;
 
         std::vector<QString> requests = pars::splitRequests(str);
         for (auto it : requests) {

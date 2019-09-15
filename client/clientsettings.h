@@ -20,8 +20,7 @@ Q_OBJECT
 public:
     static ClientSettings &getClientSettings();
 
-    void startNewClient(QString login_, QString password_);
-    void startOldClient(QString login_, QString password_);
+    void startClient(QString login_, QString password_, bool old = false); // (old == true) if it first start for this client
     void closeClient();
 
     Client* getClient();
@@ -29,7 +28,6 @@ public:
     void createEmptyMaze();
     Maze* getMaze();
 
-    void closeClient();
 private:
     ClientSettings();
     ~ClientSettings();
