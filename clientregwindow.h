@@ -38,7 +38,6 @@ private slots:
     void on_backEnterButton_clicked();
 
     void registrationConnects(const Client* client);
-
 };
 
 #endif // CLIENTREGWINDOW_H

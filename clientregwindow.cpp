@@ -2,6 +2,7 @@
 #include "ui_clientregwindow.h"
 
 #include <QCloseEvent>
+#include <QRegExpValidator>
 
 ClientRegWindow::ClientRegWindow(QWidget *parent) :
     QWidget(parent),
@@ -18,6 +19,11 @@ ClientRegWindow::ClientRegWindow(QWidget *parent) :
 
     ui->changeAvatarButton->setText("Изменить\nаватар");
     ui->avatarLabel->setPixmap(QPixmap(":/res/image/image_80/man_1.jpg"));
+
+    ui->passwordEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
+    ui->loginEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
+    ui->repeatEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
+
 }
 
 ClientRegWindow::~ClientRegWindow() {
