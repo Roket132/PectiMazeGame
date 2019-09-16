@@ -19,10 +19,15 @@ public:
     void setExtraVision(int time); // set extra vis for @time@ moves
     void setExtraLight(bool set);
 
+    void takePectiArrow();
+    bool usePectiArrow(); // return true if pectiArrow use
+    int getCntPectiArrow();
+
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off
     bool extraVision; // if true then player can see more
     bool extraLight; // if true then player has extra light source
+    int cntPectiArrow;
 
     void update() override;
 };

@@ -1,18 +1,15 @@
 #include "engine.h"
 
 #include <thread>
+#include "client/hud.h"
 
+Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {}
 
-Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {
-
-}
+Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QLabel *> invScenes_) : scenes(scenes_), invScenes(invScenes_) {}
 
 void Engine::stopEngine() {
     _STOP_ = true;
 }
-
-
-
 
 void Engine::drawClientMap() {
     ClientSettings &client = ClientSettings::getClientSettings();
@@ -20,8 +17,16 @@ void Engine::drawClientMap() {
     while (true) {
         if (_STOP_) return;
 
+        HUD *hud = client.getHUD();
+
+        size_t used = 0;
+        for (auto it : hud->inventory) {
+            invScenes[used++]->setPixmap(it.first->getTexture());
+            if (used == 3) break;
+        }
+
         Maze* maze = client.getMaze();
-        size_t curScene = 0;
+        size_t curScene = 0;        
 
         if (maze == nullptr) continue;
         for (int i = 0; i < maze->height(); i++) {

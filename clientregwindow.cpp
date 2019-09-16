@@ -76,7 +76,6 @@ void ClientRegWindow::on_startClientButton_clicked() {
         return;
     }
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
-    //clientSettings.startOldClient(ui->loginEdit->text(), ui->passwordEdit->text());
     clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), true);
     const Client* client = clientSettings.getClient();
     registrationConnects(client);
@@ -98,7 +97,6 @@ void ClientRegWindow::on_registrationButton_clicked() {
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     if (ui->passwordEdit->text() == ui->repeatEdit->text()) {
         clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text());
-        //clientSettings.startNewClient(ui->loginEdit->text(), ui->passwordEdit->text());
         const Client* client = clientSettings.getClient();
         registrationConnects(client);
     } else {

@@ -77,7 +77,7 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
     int dx = req[1].toInt();
     int dy = req[2].toInt();
     player->move(dx, dy);
-    doCellAction(player);
+    doCellAction(player, socket);
 }
 
 Maze* ServerSettings::getMaze() {
@@ -133,7 +133,7 @@ Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
     return nullptr;
 }
 
-void ServerSettings::doCellAction(Player *player) {
+void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     player->action();
 
     std::pair<size_t, size_t> pos = player->getPosition();
@@ -147,6 +147,9 @@ void ServerSettings::doCellAction(Player *player) {
         if (player->isExtraLight()) {
             player->setExtraVision(10); // TODO set dif time
         }
+    } else if (type == "pecti_arrow") {
+        player->takePectiArrow();
+        server->sendToClient(socket, "HUD add pecti_arrow 1;");
     }
 
 }

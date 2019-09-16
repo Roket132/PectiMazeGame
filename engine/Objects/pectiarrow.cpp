@@ -5,6 +5,8 @@ PectiArrow::PectiArrow(size_t size) : StateObject (QPixmap(), nullptr) {
     AppSettings &settings = AppSettings::getAppSettings();
     QString stylePrefix = settings.getStyle();
 
+    possibleStandOnObj = true;
+
     if(size <= 40) {
         texture = QPixmap(QStringLiteral(":/%1/src/texture_40/%1/pecti40.png").arg(stylePrefix));
     } else {

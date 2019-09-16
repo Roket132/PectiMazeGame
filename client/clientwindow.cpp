@@ -30,11 +30,19 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
     ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
 
+    for (int i = 0; i < 3; i++) {
+        QLabel *cell = new QLabel(this);
+        invScenes.push_back(cell);
+        cell->setFixedSize(80, 80);
+        ui->inventoryLayout->addWidget(cell);
+    }
+/*
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     clientSetting.createEmptyMaze();
+   */
 
     thread = new QThread(this);
-    eng = new Engine(scenes);
+    eng = new Engine(scenes, invScenes);
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
     thread->start();

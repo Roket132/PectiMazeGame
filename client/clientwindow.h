@@ -27,6 +27,7 @@ private:
     Ui::ClientWindow *ui;
     //QLabel* scenes[30*30];
     std::vector<QLabel*> scenes;
+    std::vector<QLabel*> invScenes;
 
     Engine* eng;
     QThread* thread;

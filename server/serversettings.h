@@ -45,7 +45,7 @@ public:
      *
      */
 
-    void doCellAction(Player* player); // check are there any actions on cell which player stay and do it;
+    void doCellAction(Player* player, QTcpSocket *socket); // check are there any actions on cell which player stay and do it;
 
 private:
     ServerSettings();

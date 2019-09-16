@@ -2,7 +2,8 @@
 
 #include "iostream"
 
-Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) : DynamicObject (texture_, frames_), extraVision(false), extraVisionTimer(0) {}
+Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) :
+    DynamicObject (texture_, frames_), extraVisionTimer(0), extraVision(false), cntPectiArrow(0) {}
 
 QString Player::getTypeObject() {
     return TYPE;
@@ -29,6 +30,23 @@ void Player::setExtraVision(int time) {
 
 void Player::setExtraLight(bool set) {
     extraLight = set;
+}
+
+void Player::takePectiArrow() {
+    cntPectiArrow++;
+}
+
+bool Player::usePectiArrow() {
+    if (!cntPectiArrow) {
+        return false;
+    } else {
+        cntPectiArrow--;
+        return true;
+    }
+}
+
+int Player::getCntPectiArrow() {
+    return cntPectiArrow;
 }
 
 void Player::update() {

@@ -8,6 +8,7 @@
 #include "clientinfo.h"
 #include "client.h"
 #include "maze.h"
+#include "hud.h"
 
 /*
  * class for save all client settings on client
@@ -24,9 +25,11 @@ public:
     void closeClient();
 
     Client* getClient();
+    Maze* getMaze();
+    HUD* getHUD();
 
     void createEmptyMaze();
-    Maze* getMaze();
+
 
 private:
     ClientSettings();
@@ -35,11 +38,12 @@ private:
     ClientSettings(const ClientSettings&) = delete;
     void clientConnects();
 
-    std::mutex *mutex_;
+    std::mutex *maze_mutex;
+    std::mutex *hud_mutex;
 
 private slots:
     void slotSetMap(QString);
-
+    void slotHUDUpdate(QString);
 
 private:
     Client* client;
@@ -48,6 +52,7 @@ private:
     QString password;
 
     Maze* clientMaze;
+    HUD* clientHUD;
 };
 
 #endif // CLIENTSETTINGS_H

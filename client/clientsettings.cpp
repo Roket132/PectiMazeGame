@@ -8,8 +8,7 @@ ClientSettings &ClientSettings::getClientSettings() {
     return instance;
 }
 
-ClientSettings::ClientSettings() {
-    mutex_ = new std::mutex;
+ClientSettings::ClientSettings() : maze_mutex(new std::mutex), hud_mutex(new std::mutex) {
 }
 
 ClientSettings::~ClientSettings() {
@@ -18,11 +17,12 @@ ClientSettings::~ClientSettings() {
 }
 
 void ClientSettings::startClient(QString login_, QString password_, bool old) {
-    mutex_ = new std::mutex;
-
     // save input settings
     login = login_;
     password = password_;
+
+    createEmptyMaze();
+    clientHUD = new HUD();
 
     // start client;
 
@@ -48,16 +48,27 @@ void ClientSettings::createEmptyMaze() {
 }
 
 Maze *ClientSettings::getMaze() {
-    std::lock_guard<std::mutex> lg(*mutex_);
+    std::lock_guard<std::mutex> lg(*maze_mutex);
     return clientMaze;
+}
+
+HUD *ClientSettings::getHUD() {
+    std::lock_guard<std::mutex> lg(*hud_mutex);
+    return clientHUD;
 }
 
 void ClientSettings::clientConnects() {
     connect(client, SIGNAL(signalSetMap(QString)), this, SLOT(slotSetMap(QString)));
+    connect(client, SIGNAL(signalHUDUpdate(QString)), this, SLOT(slotHUDUpdate(QString)));
 }
 
 void ClientSettings::slotSetMap(QString map) {
-    std::lock_guard<std::mutex> lg(*mutex_);
+    std::lock_guard<std::mutex> lg(*maze_mutex);
     if (clientMaze) delete clientMaze;
     clientMaze = new Maze(map);
+}
+
+void ClientSettings::slotHUDUpdate(QString req) {
+    std::lock_guard<std::mutex> lg(*hud_mutex);
+    clientHUD->parseRequest(req);
 }

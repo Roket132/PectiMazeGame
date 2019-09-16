@@ -1,5 +1,14 @@
 #include "parsingtools.h"
 
+#include "engine/Objects/player.h"
+#include "engine/Objects/floor.h"
+#include "engine/Objects/wall.h"
+#include "engine/Objects/lamp.h"
+#include "engine/Objects/fog.h"
+#include "engine/Objects/lightsource.h"
+#include "engine/Objects/pectiarrow.h"
+#include "engine/Objects/pectipatch.h"
+
 std::vector<QString> pars::parseRequest(QString req) {
         std::vector<QString> ans;
         QString now = "";
@@ -28,4 +37,12 @@ std::vector<QString> pars::splitRequests(QString reqs_)
         }
     }
     return ans;
+}
+
+MazeObject *pars::createObjectByType(QString type, size_t size_) {
+    if (type == "floor") return new Floor(size_);
+    if (type == "pecti_arrow") return new PectiArrow(size_);
+    if (type == "pecti_patch") return new PectiPatch(size_);
+    if (type == "wall") return new Wall(size_);
+    return nullptr;
 }

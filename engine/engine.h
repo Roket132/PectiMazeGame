@@ -13,11 +13,13 @@ class Engine : public QObject {
 Q_OBJECT
 public:
     explicit Engine(std::vector<QLabel*> scenes_);
+    explicit Engine(std::vector<QLabel*> scenes_, std::vector<QLabel*> invScenes_);
 
     void stopEngine();
 
 private:
     std::vector<QLabel*> scenes;
+    std::vector<QLabel*> invScenes;
 
     bool _STOP_ = false;
 

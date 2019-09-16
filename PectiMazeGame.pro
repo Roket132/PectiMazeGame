@@ -30,12 +30,14 @@ SOURCES += \
         client/clientinfo.cpp \
         client/clientsettings.cpp \
         client/clientwindow.cpp \
+        client/hud.cpp \
         clientregwindow.cpp \
         engine/Objects/floor.cpp \
         engine/Objects/fog.cpp \
         engine/Objects/lamp.cpp \
         engine/Objects/lightsource.cpp \
         engine/Objects/pectiarrow.cpp \
+        engine/Objects/pectipatch.cpp \
         engine/Objects/player.cpp \
         engine/Objects/wall.cpp \
         engine/dynamicobject.cpp \
@@ -58,12 +60,14 @@ HEADERS += \
         client/clientinfo.h \
         client/clientsettings.h \
         client/clientwindow.h \
+        client/hud.h \
         clientregwindow.h \
         engine/Objects/floor.h \
         engine/Objects/fog.h \
         engine/Objects/lamp.h \
         engine/Objects/lightsource.h \
         engine/Objects/pectiarrow.h \
+        engine/Objects/pectipatch.h \
         engine/Objects/player.h \
         engine/Objects/wall.h \
         engine/dynamicobject.h \

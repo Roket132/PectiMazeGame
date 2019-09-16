@@ -7,6 +7,7 @@
 #include "engine/Objects/fog.h"
 #include "engine/Objects/lightsource.h"
 #include "engine/Objects/pectiarrow.h"
+#include "engine/Objects/pectipatch.h"
 
 #include "parsing/parsingtools.h"
 #include "appsettings.h"
@@ -123,6 +124,8 @@ Maze::Maze(QString map) {
                 maze[i][j] = new Fog(QPixmap(":/res/image/image_80/fog.png"));
             } else if (req[pos] == "pecti_arrow") {
                 maze[i][j] = new PectiArrow(80);
+            } else if (req[pos] == "pecti_patch") {
+                maze[i][j] = new PectiPatch(80);
             } else {
                 maze[i][j] = new Wall(80);
             }
@@ -155,9 +158,7 @@ int Maze::height() {
 
 bool Maze::isPossibleToGoTo(size_t x, size_t y) {
     std::lock_guard<std::mutex> lg(*mutex_);
-    return (maze[x][y]->getTypeObject() == "floor" ||
-            maze[x][y]->getTypeObject() == "lamp" ||
-            maze[x][y]->getTypeObject() == "light_source");
+    return maze[x][y]->possibleToGo();
 }
 
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {

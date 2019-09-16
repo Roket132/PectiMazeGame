@@ -30,6 +30,7 @@ signals:
     void signalSignInFaild();
     void signalSignInSuccess();
     void signalSetMap(QString);
+    void signalHUDUpdate(QString);
 };
 
 #endif // CLIENT_H
