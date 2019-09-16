@@ -6,6 +6,7 @@
 #include "engine/Objects/lamp.h"
 #include "engine/Objects/fog.h"
 #include "engine/Objects/lightsource.h"
+#include "engine/Objects/pectiarrow.h"
 
 #include "parsing/parsingtools.h"
 #include "appsettings.h"
@@ -76,6 +77,8 @@ Maze::Maze(fs::path path) {
                 maze[i][j] = new Lamp(QPixmap(":/res/image/image_40/torch_off.png"));
             } else if (ch == 'B') {
                 maze[i][j] = new LightSource(QPixmap(":/res/image/image_40/bonfire.png"));
+            } else if (ch == 'P') {
+                maze[i][j] = new PectiArrow(40);
             }
         }
     }
@@ -118,6 +121,8 @@ Maze::Maze(QString map) {
                 maze[i][j] = new Lamp(QPixmap(":/res/image/image_80/torch_off.png"));
             } else if (req[pos] == "fog") {
                 maze[i][j] = new Fog(QPixmap(":/res/image/image_80/fog.png"));
+            } else if (req[pos] == "pecti_arrow") {
+                maze[i][j] = new PectiArrow(80);
             } else {
                 maze[i][j] = new Wall(80);
             }
@@ -177,6 +182,7 @@ std::pair<int, int> Maze::getFreeStartPlace() {
 }
 
 void Maze::ShapeWalls() {
+    std::cerr << "Shape " << maze.size() << std::endl;
     for (size_t i = 0; i < maze.size(); i++) {
         for (size_t j = 0; j < maze[i].size(); j++) {
             if (maze[i][j]->getTypeObject() == "wall") {

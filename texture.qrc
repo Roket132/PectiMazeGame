@@ -18,5 +18,11 @@
     <qresource prefix="/default">
         <file>src/texture_80/default/floor.jpg</file>
         <file>src/texture_80/default/wall.jpg</file>
+        <file>src/texture_40/default/floor.jpg</file>
+        <file>src/texture_40/default/wall.jpg</file>
+        <file>src/texture_80/default/Pecti80.png</file>
+        <file>src/texture_80/default/PectiPatch80.png</file>
+        <file>src/texture_40/default/pecti40.png</file>
+        <file>src/texture_40/default/PectPatch40.png</file>
     </qresource>
 </RCC>

@@ -35,6 +35,7 @@ SOURCES += \
         engine/Objects/fog.cpp \
         engine/Objects/lamp.cpp \
         engine/Objects/lightsource.cpp \
+        engine/Objects/pectiarrow.cpp \
         engine/Objects/player.cpp \
         engine/Objects/wall.cpp \
         engine/dynamicobject.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
         engine/Objects/fog.h \
         engine/Objects/lamp.h \
         engine/Objects/lightsource.h \
+        engine/Objects/pectiarrow.h \
         engine/Objects/player.h \
         engine/Objects/wall.h \
         engine/dynamicobject.h \

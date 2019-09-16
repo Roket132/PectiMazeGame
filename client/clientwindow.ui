@@ -15,7 +15,67 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
-    <layout class="QGridLayout" name="mapLayout"/>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <layout class="QGridLayout" name="mapLayout"/>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <widget class="QLabel" name="inventLabel1">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="inventLabel2">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="inventLabel3">
+         <property name="maximumSize">
+          <size>
+           <width>80</width>
+           <height>80</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>TextLabel</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">

@@ -35,7 +35,8 @@ void Wall::setShape(MazeObject *up, MazeObject *right, MazeObject *down, MazeObj
     QString stylePrefix = settings.getStyle();
 
     if (!cntWalls) {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_%2/%1/wall4.jpg.jpg").arg(stylePrefix).arg(size_));
+
+        texture = QPixmap(QStringLiteral(":/%1/src/texture_%2/%1/wall4.jpg").arg(stylePrefix).arg(size_));
         return;
     }
 
@@ -45,13 +46,13 @@ void Wall::setShape(MazeObject *up, MazeObject *right, MazeObject *down, MazeObj
     mt270.rotate(270);
 
     if (cntWalls == 1) {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_%2/%1/wall3.jpg.jpg").arg(stylePrefix).arg(size_));
-        if (left->getTypeObject() != "wall" &&
-                left->getTypeObject() != "fog") texture = texture.transformed(mt90);
-        if (up->getTypeObject() != "wall" &&
-                up->getTypeObject() != "fog") texture = texture.transformed(mt180);
-        if (right->getTypeObject() != "wall" &&
-                right->getTypeObject() != "fog") texture = texture.transformed(mt270);
+        texture = QPixmap(QStringLiteral(":/%1/src/texture_%2/%1/wall3.jpg").arg(stylePrefix).arg(size_));
+        if (right->getTypeObject() == "wall" ||
+                left->getTypeObject() == "fog") texture = texture.transformed(mt90);
+        if (down->getTypeObject() == "wall" ||
+                up->getTypeObject() == "fog") texture = texture.transformed(mt180);
+        if (left->getTypeObject() == "wall" ||
+                right->getTypeObject() == "fog") texture = texture.transformed(mt270);
         return;
     }
 
