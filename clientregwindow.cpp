@@ -104,6 +104,7 @@ void ClientRegWindow::on_registrationButton_clicked() {
         ui->messageLabel->show();
         return;
     }
+    on_backEnterButton_clicked();
 }
 
 void ClientRegWindow::slotSignInSuccess() {
