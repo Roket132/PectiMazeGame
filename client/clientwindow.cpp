@@ -108,16 +108,13 @@ bool ClientWindow::eventFilter(QObject *obj, QEvent *event) {
         if (obj->objectName() == "ClientWindowWindow") {
             QKeyEvent* e = static_cast<QKeyEvent*>(event);
             switch(e->key()) {
-            case Qt::Key_Up: ui->upButton->setFocus(); ui->upButton->setFocus(); on_upButton_clicked(); break;
-            case Qt::Key_Down: ui->downButton->setFocus(); ui->downButton->setFocus(); on_downButton_clicked(); break;
-            case Qt::Key_Left: ui->leftButton->setFocus(); ui->leftButton->setFocus(); on_leftButton_clicked(); break;
-            case Qt::Key_Right: ui->rightButton->setFocus(); ui->rightButton->setFocus(); on_rightButton_clicked(); break;
+            case Qt::Key_Up: ui->rightButton->setFocus(); on_upButton_clicked(); break;
+            case Qt::Key_Down: ui->rightButton->setFocus(); on_downButton_clicked(); break;
+            case Qt::Key_Left: ui->upButton->setFocus(); on_leftButton_clicked(); break;
+            case Qt::Key_Right: ui->upButton->setFocus(); on_rightButton_clicked(); break;
             }
         }
     }
-
+    return QObject::eventFilter(obj, event);
 }
 
-bool ClientWindow::focusNextPrevChild(bool next) {
-    return false;
-}

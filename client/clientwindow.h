@@ -47,7 +47,6 @@ private slots:
 
 protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
-    bool focusNextPrevChild(bool next) override;
 };
 
 #endif // CLIENTWINDOW_H

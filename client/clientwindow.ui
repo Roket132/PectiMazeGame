@@ -43,6 +43,9 @@
       <layout class="QGridLayout" name="gridLayout">
        <item row="1" column="3">
         <widget class="QPushButton" name="upButton">
+         <property name="styleSheet">
+          <string notr="true"/>
+         </property>
          <property name="text">
           <string>Up</string>
          </property>
@@ -57,6 +60,30 @@
        </item>
        <item row="2" column="3">
         <widget class="QPushButton" name="downButton">
+         <property name="whatsThis">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:20px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:150%; font-family:'Courier New'; background-color:#f5f2f0;&quot;&gt;&lt;br/&gt;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">body {background: #A4DADA;}
+a {
+  text-decoration: none;
+  outline: none;
+  display: inline-block;
+  padding: 15px 30px;
+  margin: 10px 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 40px 40px #F137A6 inset, 0 0 0 0 #F137A6;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: white;
+  transition: .15s ease-in-out;
+}
+a:hover {
+  box-shadow: 0 0 10px 0 #F137A6 inset, 0 0 10px 4px #F137A6;
+  color: #F137A6;
+}</string>
+         </property>
          <property name="text">
           <string>Down</string>
          </property>
@@ -64,6 +91,41 @@
        </item>
        <item row="2" column="0">
         <widget class="QPushButton" name="leftButton">
+         <property name="styleSheet">
+          <string notr="true">body {background: #ffbfbe;}
+a {
+  text-decoration: none;
+  outline: none;
+  display: inline-block;
+  padding: 10px 30px;
+  margin: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  border: 2px solid #fe6637;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif; 
+  color: #fe6637;
+  transition: .2s ease-in-out;
+}
+a:before {
+  content: &quot;&quot;;
+  background: linear-gradient(90deg, rgba(255,255,255,.1), rgba(255,255,255,.5));
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  top: -8px;
+  left: -75px;
+  transform: skewX(-45deg);
+}
+a:hover {
+  background: #fe6637;
+  color: #fff;
+}
+a:hover:before {
+  left: 150px;
+  transition: .5s ease-in-out;
+}</string>
+         </property>
          <property name="text">
           <string>Left</string>
          </property>

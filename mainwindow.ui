@@ -38,6 +38,9 @@
           <height>60</height>
          </size>
         </property>
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
         <property name="text">
          <string>Начать игру</string>
         </property>
@@ -50,6 +53,9 @@
           <width>240</width>
           <height>60</height>
          </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true"/>
         </property>
         <property name="text">
          <string>Настройки</string>
