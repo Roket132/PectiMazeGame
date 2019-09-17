@@ -35,6 +35,7 @@ private:
     std::vector<std::pair<std::pair<int, int>, bool>> enableStartPlaces;
 
     void ShapeWalls();
+    void ShapeFog();
 
     std::mutex* mutex_;
 };

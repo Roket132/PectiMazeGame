@@ -6,14 +6,17 @@
 class Fog : public StateObject
 {
 public:
-    Fog();
-    Fog(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    Fog(size_t size_);
 
     const QString TYPE = "fog";
     QString getTypeObject() override;
 
+    void makeShape(QString type, int number);
+
 private:
     void update() override;
+
+    size_t size_;
 };
 
 #endif // FOG_H

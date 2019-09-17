@@ -14,6 +14,14 @@
         <file>src/texture_80/dark/wall3.jpg</file>
         <file>src/texture_80/dark/wall4.jpg</file>
         <file>src/texture_80/dark/wall5.jpg</file>
+        <file>src/texture_40/dark/fog_up_v1.jpg</file>
+        <file>src/texture_40/dark/fog_up_v2.jpg</file>
+        <file>src/texture_40/dark/fog_up_v3.jpg</file>
+        <file>src/texture_80/dark/fog_up_v1.jpg</file>
+        <file>src/texture_80/dark/fog_up_v2.jpg</file>
+        <file>src/texture_80/dark/fog_up_v3.jpg</file>
+        <file>src/texture_40/dark/fog_up_v0.jpg</file>
+        <file>src/texture_80/dark/fog_up_v0.jpg</file>
     </qresource>
     <qresource prefix="/default">
         <file>src/texture_80/default/floor.jpg</file>

@@ -121,7 +121,7 @@ Maze::Maze(QString map) {
             } else if(req[pos] == "lamp") {
                 maze[i][j] = new Lamp(QPixmap(":/res/image/image_80/torch_off.png"));
             } else if (req[pos] == "fog") {
-                maze[i][j] = new Fog(QPixmap(":/res/image/image_80/fog.png"));
+                maze[i][j] = new Fog(80);
             } else if (req[pos] == "pecti_arrow") {
                 maze[i][j] = new PectiArrow(80);
             } else if (req[pos] == "pecti_patch") {
@@ -133,6 +133,7 @@ Maze::Maze(QString map) {
         }
     }
     ShapeWalls();
+    ShapeFog();
 }
 
 Maze::~Maze() {
@@ -196,4 +197,45 @@ void Maze::ShapeWalls() {
             }
         }
     }
+}
+
+void Maze::ShapeFog() {
+    size_t i = 0, j = 0;
+    int type = 3;
+    while (j < maze[i].size()) {
+        if (maze[i][j]->getTypeObject() == "fog") {
+            Fog *fg = dynamic_cast<Fog*>(maze[i][j++]);
+            fg->makeShape("down", type);
+            if (!--type) type = 3;
+        } else return; // because fog only on border
+    }
+
+    type = 3; j--;
+    while (i < maze.size()) {
+        Fog *fg = dynamic_cast<Fog*>(maze[i++][j]);
+        fg->makeShape("left", type);
+        if (!--type) type = 3;
+    }
+    type = 3; i--;
+    while (true) {
+        Fog *fg = dynamic_cast<Fog*>(maze[i][j]);
+        fg->makeShape("up", type);
+        if (!--type) type = 3;
+        if (j == 0) break; else j--;
+    }
+    type = 3;
+    while (true) {
+        Fog *fg = dynamic_cast<Fog*>(maze[i][j]);
+        fg->makeShape("right", type);
+        if (!--type) type = 3;
+        if (i == 0) break; else i--;
+    }
+    size_t he = static_cast<size_t>(h - 1);
+    size_t wi = static_cast<size_t>(w - 1);
+    Fog *fgd = dynamic_cast<Fog*>(maze[0][0]);
+    Fog *fgu = dynamic_cast<Fog*>(maze[he][wi]);
+    Fog *fgr = dynamic_cast<Fog*>(maze[he][0]);
+    Fog *fgl = dynamic_cast<Fog*>(maze[0][wi]);
+    fgd->makeShape("down", 0); fgu->makeShape("up", 0);
+    fgl->makeShape("left", 0); fgr->makeShape("right", 0);
 }
