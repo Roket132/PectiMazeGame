@@ -7,8 +7,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ClientWindow)
 {
+    QCoreApplication::instance()->installEventFilter(this);
     ui->setupUi(this);
-    qApp->installEventFilter(this);
+
 
     int dimensions = 5;
     //int cnt = 0;
@@ -54,10 +55,12 @@ ClientWindow::~ClientWindow() {
 }
 
 void ClientWindow::closeEvent(QCloseEvent *event) {
-    eng->stopEngine();
-    thread->quit();
+    QCoreApplication::instance()->removeEventFilter(this);
+
     ClientSettings &cl = ClientSettings::getClientSettings();
     cl.closeClient();
+    eng->stopEngine();
+    thread->quit();
 
     emit showClientRegWindow();
     event->accept();

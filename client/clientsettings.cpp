@@ -33,7 +33,8 @@ void ClientSettings::startClient(QString login_, QString password_, bool old) {
 }
 
 void ClientSettings::closeClient() {
-    if (client != nullptr) delete client;
+    client->close();
+    client->~Client();
 }
 
 Client *ClientSettings::getClient() {

@@ -46,8 +46,7 @@ void ServerSettings::slotRegNewClient(QString str, QTcpSocket* socket) {
     server->sendToClient(socket, "success;");
 }
 
-void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket)
-{
+void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
     std::vector<QString> req = pars::parseRequest(str);
     bool countL = false;
     bool countP = false;

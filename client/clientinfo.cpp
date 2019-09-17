@@ -24,8 +24,7 @@ QString ClientInfo::getPassword()
     return password;
 }
 
-void ClientInfo::setSocket(QTcpSocket *socket)
-{
+void ClientInfo::setSocket(QTcpSocket *socket) {
     pTcpSocket = socket;
 }
 
