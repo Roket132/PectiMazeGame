@@ -3,8 +3,17 @@
 #include "appsettings.h"
 
 Fog::Fog(size_t size): size_(size) {
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     possibleStandOnObj = true;
     makeShape("up", 1);
+
+    if(size_ <= 40) {
+        def_texture = QPixmap(QStringLiteral(":/%1/src/texture_40/%1/fog_up_v1.jpg").arg(stylePrefix));
+    } else {
+        def_texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/fog_up_v1.jpg").arg(stylePrefix));
+    }
 }
 
 QString Fog::getTypeObject() {
@@ -16,9 +25,9 @@ void Fog::makeShape(QString type, int number) {
     QString stylePrefix = settings.getStyle();
 
     if(size_ <= 40) {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_40/%1/fog_up_v%3.jpg").arg(stylePrefix).arg(number));
+        texture = QPixmap(QStringLiteral(":/%1/src/texture_40/%1/fog_up_v%2.jpg").arg(stylePrefix).arg(number));
     } else {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/fog_up_v%3.jpg").arg(stylePrefix).arg(number));
+        texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/fog_up_v%2.jpg").arg(stylePrefix).arg(number));
     }
 
     QMatrix mt90, mt180, mt270;

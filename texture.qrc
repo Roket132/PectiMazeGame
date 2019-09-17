@@ -32,5 +32,7 @@
         <file>src/texture_80/default/PectiPatch80.png</file>
         <file>src/texture_40/default/pecti40.png</file>
         <file>src/texture_40/default/PectPatch40.png</file>
+        <file>src/texture_40/default/fog_up_v1.jpg</file>
+        <file>src/texture_80/default/fog_up_v1.jpg</file>
     </qresource>
 </RCC>
