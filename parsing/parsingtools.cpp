@@ -43,6 +43,9 @@ MazeObject *pars::createObjectByType(QString type, size_t size_) {
     if (type == "floor") return new Floor(size_);
     if (type == "pecti_arrow") return new PectiArrow(size_);
     if (type == "pecti_patch") return new PectiPatch(size_);
+    if (type == "lamp") return new Lamp(size_);
+    if (type == "light_source") return new LightSource(size_);
     if (type == "wall") return new Wall(size_);
+    if (type == "fog") return new Fog(size_);
     return nullptr;
 }

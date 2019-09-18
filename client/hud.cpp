@@ -27,7 +27,12 @@ void HUD::addInventoryObject(MazeObject *obj, int cnt) {
     }
 
     if (!added) {
-        inventory.push_back({obj, cnt});
+        if (obj->getTypeObject() == "lamp") {
+            inventory.insert(inventory.begin(), {obj, cnt});
+        }
+        else {
+            inventory.push_back({obj, cnt});
+        }
     } else {
         delete obj;
     }

@@ -157,6 +157,17 @@ int Maze::height() {
     return h;
 }
 
+void Maze::removeObjectFromCell(size_t x, size_t y) {
+    if (x >= static_cast<size_t>(h) || y >= static_cast<size_t>(w)) {
+        return;
+    } else {
+        if (maze[x][y]->getTypeObject() != "wall") {
+            delete maze[x][y];
+            maze[x][y] = new Floor(80);
+        }
+    }
+}
+
 bool Maze::isPossibleToGoTo(size_t x, size_t y) {
     std::lock_guard<std::mutex> lg(*mutex_);
     return maze[x][y]->possibleToGo();

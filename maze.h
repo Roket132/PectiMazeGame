@@ -23,6 +23,7 @@ public:
 
     int width();
     int height();
+    void removeObjectFromCell(size_t x, size_t y);
     bool isPossibleToGoTo(size_t x, size_t y);
 
     MazeObject* getMazeObject(size_t x, size_t y);
