@@ -19,7 +19,7 @@ void HUD::addInventoryObject(MazeObject *obj, int cnt) {
     if (obj == nullptr) return;
 
     bool added = false;
-    for (auto it : inventory) {
+    for (auto &it : inventory) {
         if (it.first->getTypeObject() == obj->getTypeObject()) {
             it.second += cnt;
             added = true;

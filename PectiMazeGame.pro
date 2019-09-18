@@ -32,6 +32,7 @@ SOURCES += \
         client/clientwindow.cpp \
         client/hud.cpp \
         clientregwindow.cpp \
+        engine/Objects/exit.cpp \
         engine/Objects/floor.cpp \
         engine/Objects/fog.cpp \
         engine/Objects/lamp.cpp \
@@ -62,6 +63,7 @@ HEADERS += \
         client/clientwindow.h \
         client/hud.h \
         clientregwindow.h \
+        engine/Objects/exit.h \
         engine/Objects/floor.h \
         engine/Objects/fog.h \
         engine/Objects/lamp.h \

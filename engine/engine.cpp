@@ -5,9 +5,9 @@
 
 Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {}
 
-Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QLabel *> invScenes_) : scenes(scenes_), invScenes(invScenes_) {}
+Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_) : scenes(scenes_), invScenes(invScenes_) {}
 
-Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QLabel *> invScenes_, std::vector<QLabel *> infoInvScenes_) :
+Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_, std::vector<QLabel *> infoInvScenes_) :
     scenes(scenes_), invScenes(invScenes_), infoInvScenes(infoInvScenes_) {}
 
 void Engine::stopEngine() {
@@ -24,7 +24,8 @@ void Engine::drawClientMap() {
 
         size_t used = 0;
         for (auto it : hud->inventory) {
-            invScenes[used]->setPixmap(it.first->getTexture());
+            invScenes[used]->setIcon(it.first->getTexture());
+            invScenes[used]->setObjectName(it.first->getTypeObject());
             infoInvScenes[used]->setText("");
             if (it.first->getTypeObject() != "lamp") {
                 infoInvScenes[used]->setText(QStringLiteral("    Осталcя: %1\n").arg(it.second));

@@ -55,7 +55,7 @@ void Server::slotReadClient()
         QString str;
         in >> time >> str;
 
-        //std::cerr << "prishlo " << str.toStdString() << std::endl;
+        std::cerr << "prishlo " << str.toStdString() << std::endl;
 
         std::vector<QString> requests = pars::splitRequests(str);
         for (auto it : requests) {
@@ -66,6 +66,9 @@ void Server::slotReadClient()
                 emit signalEnterClient(it, pClientSocket);
             } else if (req[0] == "move") {
                 emit signalMovePlayer(it, pClientSocket);
+            } else if (req[0] == "inventory") {
+                std::cerr << "hehe" << std::endl;
+                emit signalUseInventory(it, pClientSocket);
             }
         }
 

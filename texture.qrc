@@ -29,6 +29,7 @@
         <file>src/texture_80/dark/bonfire.png</file>
         <file>src/texture_80/dark/Pecti.png</file>
         <file>src/texture_80/dark/PectiPatch.png</file>
+        <file>src/texture_80/dark/exit.jpg</file>
     </qresource>
     <qresource prefix="/default">
         <file>src/texture_80/default/floor.jpg</file>
@@ -42,8 +43,8 @@
         <file>src/texture_40/default/torch_off.png</file>
         <file>src/texture_40/default/torch_on.png</file>
         <file>src/texture_80/default/bonfire.png</file>
-        <file>src/texture_40/default/bonfire.png</file>
         <file>src/texture_80/default/Pecti.png</file>
         <file>src/texture_80/default/PectiPatch.png</file>
+        <file>src/texture_80/default/exit.jpg</file>
     </qresource>
 </RCC>

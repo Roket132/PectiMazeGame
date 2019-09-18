@@ -1,5 +1,8 @@
 #include "maze.h"
 
+#include <fstream>
+#include <queue>
+
 #include "engine/Objects/player.h"
 #include "engine/Objects/floor.h"
 #include "engine/Objects/wall.h"
@@ -8,31 +11,12 @@
 #include "engine/Objects/lightsource.h"
 #include "engine/Objects/pectiarrow.h"
 #include "engine/Objects/pectipatch.h"
+#include "engine/Objects/exit.h"
 
 #include "parsing/parsingtools.h"
 #include "appsettings.h"
 
-#include <fstream>
 
-/*
- * 0 - Free (0)
- * 1 - Wall (1)
- * 2 - Start (2)
- * 3 - Light/Touch (3)
- * 4 - Fog (4)
- * 5 - PectiArrowOpen (5)
- * L - Lion (6)
- * D - Dragon (7)
- * P - PectiArrowClose (8)
- * 9 - Exit (9)
- * B - Fire (10)
- * 66 - Death lion
- * 77 - Death dragon
- * $ - chest (11)
- * 12 - chest_off(12)
- * P - player
- *
- * */
 
 Maze::Maze() {
 
@@ -80,12 +64,15 @@ Maze::Maze(fs::path path) {
                 maze[i][j] = new LightSource(40);
             } else if (ch == 'P') {
                 maze[i][j] = new PectiArrow(40);
+            } else if (ch == 'E') {
+                maze[i][j] = new Exit(40);
             }
         }
     }
     in.close();
 
     ShapeWalls();
+    bfs(maze, maze_bfs);
 }
 
 Maze::Maze(std::string map) {
@@ -126,6 +113,8 @@ Maze::Maze(QString map) {
                 maze[i][j] = new PectiArrow(80);
             } else if (req[pos] == "pecti_patch") {
                 maze[i][j] = new PectiPatch(80);
+            } else if (req[pos] == "exit") {
+                maze[i][j] = new Exit(80);
             } else {
                 maze[i][j] = new Wall(80);
             }
@@ -163,7 +152,7 @@ void Maze::removeObjectFromCell(size_t x, size_t y) {
     } else {
         if (maze[x][y]->getTypeObject() != "wall") {
             delete maze[x][y];
-            maze[x][y] = new Floor(80);
+            maze[x][y] = new Floor(40);
         }
     }
 }
@@ -171,6 +160,50 @@ void Maze::removeObjectFromCell(size_t x, size_t y) {
 bool Maze::isPossibleToGoTo(size_t x, size_t y) {
     std::lock_guard<std::mutex> lg(*mutex_);
     return maze[x][y]->possibleToGo();
+}
+
+void Maze::bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vector<int> > &maze_bfs) {
+    int D[4][2] = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+    std::queue<std::pair<size_t, size_t>> q;
+
+    maze_bfs.resize(maze.size(), std::vector<int>(maze[0].size()));
+
+    for (size_t i = 0; i < maze.size(); i++) {
+        for (size_t j = 0; j < maze[i].size(); j++) {
+            maze_bfs[i][j] = -1;
+            if (maze[i][j]->getTypeObject() == "exit") {
+                std::cerr << "EXIT ON " << i << " " << j << std::endl;
+                maze_bfs[i][j] = 0;
+                q.push(std::make_pair(i, j));
+            }
+        }
+    }
+
+    while (!q.empty()) {
+        std::pair<size_t, size_t> p = q.front();
+        q.pop();
+        for (size_t k = 0; k < 4; k++) {
+            if (maze[p.first + D[k][0]][p.second + D[k][1]]->getTypeObject() != "wall"
+                    && maze_bfs[p.first + D[k][0]][p.second + D[k][1]] == -1)
+            {
+                q.push(std::make_pair(p.first + D[k][0], p.second + D[k][1]));
+                maze_bfs[p.first + D[k][0]][p.second + D[k][1]] = maze_bfs[p.first][p.second] + 1;
+            }
+        }
+    }
+}
+
+void Maze::setPectiArrow(size_t x, size_t y, int steps) {
+    while (steps--) {
+        if (maze[x][y]->getTypeObject() == "floor") {
+            delete maze[x][y];
+            maze[x][y] = new PectiPatch(40);
+        }
+        if (maze_bfs[x - 1][y] != -1 && maze_bfs[x - 1][y] < maze_bfs[x][y]) x--;
+        else if (maze_bfs[x + 1][y] != -1 && maze_bfs[x + 1][y] < maze_bfs[x][y]) x++;
+        else if (maze_bfs[x][y + 1] != -1 && maze_bfs[x][y + 1] < maze_bfs[x][y]) y++;
+        else if (maze_bfs[x][y - 1] != -1 && maze_bfs[x][y - 1] < maze_bfs[x][y]) y--;
+    }
 }
 
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {

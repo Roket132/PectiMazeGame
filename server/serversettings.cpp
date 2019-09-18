@@ -23,7 +23,8 @@ void ServerSettings::startServer(fs::path path) {
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
-    Q_ASSERT(c1);
+    c2 = connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
+    Q_ASSERT(c1); Q_ASSERT(c2);
 }
 
 void ServerSettings::closeServer() {
@@ -77,6 +78,16 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
     int dy = req[2].toInt();
     player->move(dx, dy);
     doCellAction(player, socket);
+}
+
+void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
+    std::cerr << "hehe classic" << std::endl;
+    Player* player = getPlayerBySocket(socket);
+    std::vector<QString> req = pars::parseRequest(str);
+    if (req[1] == "pecti_arrow") {
+        maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
+        std::cerr << "set arrow " << std::endl;
+    }
 }
 
 Maze* ServerSettings::getMaze() {

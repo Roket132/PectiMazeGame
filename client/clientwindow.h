@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QCloseEvent>
+#include <QPushButton>
 #include <QLabel>
 #include <QThread>
 #include <vector>
@@ -27,7 +28,7 @@ private:
     Ui::ClientWindow *ui;
     //QLabel* scenes[30*30];
     std::vector<QLabel*> scenes;
-    std::vector<QLabel*> invScenes;
+    std::vector<QPushButton*> invScenes;
     std::vector<QLabel*> infoInvScenes;
 
     Engine* eng;

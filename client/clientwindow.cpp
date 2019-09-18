@@ -33,15 +33,22 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     for (int i = 0; i < 3; i++) {        
         QVBoxLayout *vbl = new QVBoxLayout(this);
-        QLabel *cell = new QLabel(this);
+        QPushButton *cell = new QPushButton(this);
         QLabel *infoCell = new QLabel(this);
+        cell->setFlat(true);
         cell->setFixedSize(80, 80);
+        cell->setIconSize(cell->size());
         infoCell->setFixedSize(80, 20);
         invScenes.push_back(cell);
         infoInvScenes.push_back(infoCell);
         vbl->addWidget(cell);
         vbl->addWidget(infoCell);
         ui->inventoryLayout->addLayout(vbl);
+
+        connect(cell, &QPushButton::pressed, [cell]() {
+            ClientSettings &cl = ClientSettings::getClientSettings();
+            cl.getClient()->sendToServer(QStringLiteral("inventory %1;").arg(cell->objectName()));
+        });
     }
 
     thread = new QThread(this);

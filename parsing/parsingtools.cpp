@@ -8,6 +8,7 @@
 #include "engine/Objects/lightsource.h"
 #include "engine/Objects/pectiarrow.h"
 #include "engine/Objects/pectipatch.h"
+#include "engine/Objects/exit.h"
 
 std::vector<QString> pars::parseRequest(QString req) {
         std::vector<QString> ans;
@@ -47,5 +48,6 @@ MazeObject *pars::createObjectByType(QString type, size_t size_) {
     if (type == "light_source") return new LightSource(size_);
     if (type == "wall") return new Wall(size_);
     if (type == "fog") return new Fog(size_);
+    if (type == "exit") return new Exit(size_);
     return nullptr;
 }

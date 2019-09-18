@@ -24,6 +24,7 @@ signals:
     void signalRegNewClient(QString str, QTcpSocket* socket);
     void signalEnterClient(QString str, QTcpSocket* socket);
     void signalMovePlayer(QString str, QTcpSocket* socket);
+    void signalUseInventory(QString str, QTcpSocket* socket);
 
 
 public slots:

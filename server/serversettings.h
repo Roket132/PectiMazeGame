@@ -62,6 +62,7 @@ private slots:
     void slotRegNewClient(QString str, QTcpSocket* socket);
     void slotEnterClient(QString str, QTcpSocket* socket);
     void slotMovePlayer(QString str, QTcpSocket* socket);
+    void slotUseInventory(QString str, QTcpSocket* socket);
 };
 
 #endif // SERVERSETTINGS_H

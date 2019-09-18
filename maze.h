@@ -21,18 +21,22 @@ public:
 
     ~Maze();
 
+    MazeObject* getMazeObject(size_t x, size_t y);
+    QString getTypeObject(size_t x, size_t y); // Return Type of object in SmallFormat
+    std::pair<int, int> getFreeStartPlace();
+
     int width();
     int height();
     void removeObjectFromCell(size_t x, size_t y);
     bool isPossibleToGoTo(size_t x, size_t y);
 
-    MazeObject* getMazeObject(size_t x, size_t y);
-    QString getTypeObject(size_t x, size_t y); // Return Type of object in SmallFormat
-    std::pair<int, int> getFreeStartPlace();
+    void bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vector<int>> &maze_bfs);
+    void setPectiArrow(size_t x, size_t y, int steps = 10);
 
 private:
     int h, w;
     std::vector<std::vector<MazeObject*>> maze;
+    std::vector<std::vector<int>> maze_bfs;
     std::vector<std::pair<std::pair<int, int>, bool>> enableStartPlaces;
 
     void ShapeWalls();
