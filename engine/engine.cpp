@@ -7,6 +7,9 @@ Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {}
 
 Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QLabel *> invScenes_) : scenes(scenes_), invScenes(invScenes_) {}
 
+Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QLabel *> invScenes_, std::vector<QLabel *> infoInvScenes_) :
+    scenes(scenes_), invScenes(invScenes_), infoInvScenes(infoInvScenes_) {}
+
 void Engine::stopEngine() {
     _STOP_ = true;
 }
@@ -21,7 +24,12 @@ void Engine::drawClientMap() {
 
         size_t used = 0;
         for (auto it : hud->inventory) {
-            invScenes[used++]->setPixmap(it.first->getTexture());
+            invScenes[used]->setPixmap(it.first->getTexture());
+            infoInvScenes[used]->setText("");
+            if (it.first->getTypeObject() != "lamp") {
+                infoInvScenes[used]->setText(QStringLiteral("    Осталcя: %1\n").arg(it.second));
+            }
+            used++;
             if (used == 3) break;
         }
 

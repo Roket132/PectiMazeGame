@@ -28,6 +28,7 @@ private:
     //QLabel* scenes[30*30];
     std::vector<QLabel*> scenes;
     std::vector<QLabel*> invScenes;
+    std::vector<QLabel*> infoInvScenes;
 
     Engine* eng;
     QThread* thread;

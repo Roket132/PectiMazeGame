@@ -14,12 +14,14 @@ Q_OBJECT
 public:
     explicit Engine(std::vector<QLabel*> scenes_);
     explicit Engine(std::vector<QLabel*> scenes_, std::vector<QLabel*> invScenes_);
+    explicit Engine(std::vector<QLabel*> scenes_, std::vector<QLabel*> invScenes_, std::vector<QLabel*> infoInvScenes_);
 
     void stopEngine();
 
 private:
     std::vector<QLabel*> scenes;
     std::vector<QLabel*> invScenes;
+    std::vector<QLabel*> infoInvScenes;
 
     bool _STOP_ = false;
 
