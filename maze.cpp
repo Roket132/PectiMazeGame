@@ -75,9 +75,9 @@ Maze::Maze(fs::path path) {
                 enableStartPlaces.push_back({{i, j}, true});
                 maze[i][j] = new Floor(40);
             } else if (ch == 'T') {
-                maze[i][j] = new Lamp(QPixmap(":/res/image/image_40/torch_off.png"));
+                maze[i][j] = new Lamp(40);
             } else if (ch == 'B') {
-                maze[i][j] = new LightSource(QPixmap(":/res/image/image_40/bonfire.png"));
+                maze[i][j] = new LightSource(40);
             } else if (ch == 'P') {
                 maze[i][j] = new PectiArrow(40);
             }
@@ -117,9 +117,9 @@ Maze::Maze(QString map) {
 
                 maze[i][j] = new Player(QPixmap(":/res/image/image_80/man_1.jpg"));
             } else if (req[pos] == "light_source") {
-                maze[i][j] = new LightSource(QPixmap(":/res/image/image_80/bonfire.png"));
+                maze[i][j] = new LightSource(80);
             } else if(req[pos] == "lamp") {
-                maze[i][j] = new Lamp(QPixmap(":/res/image/image_80/torch_off.png"));
+                maze[i][j] = new Lamp(80);
             } else if (req[pos] == "fog") {
                 maze[i][j] = new Fog(80);
             } else if (req[pos] == "pecti_arrow") {

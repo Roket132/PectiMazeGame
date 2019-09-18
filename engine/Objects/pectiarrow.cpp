@@ -8,9 +8,9 @@ PectiArrow::PectiArrow(size_t size) : StateObject (QPixmap(), nullptr) {
     possibleStandOnObj = true;
 
     if(size <= 40) {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_40/%1/pecti40.png").arg(stylePrefix));
+        def_texture = texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/Pecti.png").arg(stylePrefix)).scaled(40, 40);
     } else {
-        texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/Pecti80.png").arg(stylePrefix));
+        def_texture = texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/Pecti.png").arg(stylePrefix));
     }
 }
 

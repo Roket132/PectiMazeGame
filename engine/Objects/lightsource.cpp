@@ -1,12 +1,20 @@
 #include "lightsource.h"
 
-LightSource::LightSource() {
+#include "appsettings.h"
+
+LightSource::LightSource(size_t size_) {
+    AppSettings &settings = AppSettings::getAppSettings();
+    QString stylePrefix = settings.getStyle();
+
     possibleStandOnObj = true;
+
+    if(size_ <= 40) {
+        def_texture = texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/bonfire.png").arg(stylePrefix)).scaled(40, 40);
+    } else {
+        def_texture = texture = QPixmap(QStringLiteral(":/%1/src/texture_80/%1/bonfire.png").arg(stylePrefix));
+    }
 }
 
-LightSource::LightSource(QPixmap texture_, std::vector<QPixmap> *frames_) : StateObject (texture_, frames_) {
-    possibleStandOnObj = true;
-}
 
 QString LightSource::getTypeObject() {
     return TYPE;

@@ -22,17 +22,28 @@
         <file>src/texture_80/dark/fog_up_v3.jpg</file>
         <file>src/texture_40/dark/fog_up_v0.jpg</file>
         <file>src/texture_80/dark/fog_up_v0.jpg</file>
+        <file>src/texture_80/dark/torch_off.png</file>
+        <file>src/texture_80/dark/torch_on.png</file>
+        <file>src/texture_40/dark/torch_off.png</file>
+        <file>src/texture_40/dark/torch_on.png</file>
+        <file>src/texture_80/dark/bonfire.png</file>
+        <file>src/texture_80/dark/Pecti.png</file>
+        <file>src/texture_80/dark/PectiPatch.png</file>
     </qresource>
     <qresource prefix="/default">
         <file>src/texture_80/default/floor.jpg</file>
         <file>src/texture_80/default/wall.jpg</file>
         <file>src/texture_40/default/floor.jpg</file>
         <file>src/texture_40/default/wall.jpg</file>
-        <file>src/texture_80/default/Pecti80.png</file>
-        <file>src/texture_80/default/PectiPatch80.png</file>
-        <file>src/texture_40/default/pecti40.png</file>
-        <file>src/texture_40/default/PectPatch40.png</file>
         <file>src/texture_40/default/fog_up_v1.jpg</file>
         <file>src/texture_80/default/fog_up_v1.jpg</file>
+        <file>src/texture_80/default/torch_off.png</file>
+        <file>src/texture_80/default/torch_on.png</file>
+        <file>src/texture_40/default/torch_off.png</file>
+        <file>src/texture_40/default/torch_on.png</file>
+        <file>src/texture_80/default/bonfire.png</file>
+        <file>src/texture_40/default/bonfire.png</file>
+        <file>src/texture_80/default/Pecti.png</file>
+        <file>src/texture_80/default/PectiPatch.png</file>
     </qresource>
 </RCC>

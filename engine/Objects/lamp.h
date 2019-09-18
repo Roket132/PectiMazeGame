@@ -6,8 +6,7 @@
 class Lamp : public StateObject
 {
 public:
-    Lamp();
-    Lamp(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    Lamp(size_t size);
 
     const QString TYPE = "lamp";
     QString getTypeObject() override;

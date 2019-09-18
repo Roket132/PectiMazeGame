@@ -6,8 +6,7 @@
 class LightSource : public StateObject
 {
 public:
-    LightSource();
-    LightSource(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
+    LightSource(size_t size_);
 
     const QString TYPE = "light_source";
     QString getTypeObject() override;
