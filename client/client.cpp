@@ -81,10 +81,12 @@ void Client::slotError(QAbstractSocket::SocketError err)
 
 void Client::slotSendToServer(const QString &str)
 {
+    QString send_str = (str.back() == ';' ? str : str + ";");
+
     QByteArray  arrBlock;
     QDataStream out(&arrBlock, QIODevice::WriteOnly);
     out.setVersion(QDataStream::Qt_4_2);
-    out << quint16(0) << QTime::currentTime() << str;
+    out << quint16(0) << QTime::currentTime() << send_str;
 
     out.device()->seek(0);
     out << quint16(arrBlock.size() - sizeof(quint16));

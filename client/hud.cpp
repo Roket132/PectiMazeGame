@@ -41,9 +41,8 @@ void HUD::addInventoryObject(MazeObject *obj, int cnt) {
 void HUD::removeInventoryObject(MazeObject *obj, int cnt) {
     std::lock_guard<std::mutex> lg(*mutex_);
     if (obj == nullptr) return;
-
     int pos = 0;
-    for (auto it : inventory) {
+    for (auto &it : inventory) {
         if (it.first->getTypeObject() == obj->getTypeObject()) {
             it.second = std::max(0, it.second - cnt);
             if (it.second == 0) {
@@ -60,5 +59,8 @@ void HUD::parseRequest(QString req_) {
     if (req[1] == "add") {
         MazeObject* obj = pars::createObjectByType(req[2], 80);
         addInventoryObject(obj, req[3].toInt());
+    } else if (req[1] == "del") {
+        MazeObject* obj = pars::createObjectByType(req[2], 80);
+        removeInventoryObject(obj, req[3].toInt());
     }
 }

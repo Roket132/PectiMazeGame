@@ -81,12 +81,11 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
 }
 
 void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
-    std::cerr << "hehe classic" << std::endl;
     Player* player = getPlayerBySocket(socket);
     std::vector<QString> req = pars::parseRequest(str);
     if (req[1] == "pecti_arrow") {
         maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
-        std::cerr << "set arrow " << std::endl;
+        server->sendToClient(socket, "HUD del pecti_arrow 1");
     }
 }
 
@@ -125,23 +124,6 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
     return ans;
 }
 
-Player* ServerSettings::isPlayer(int x, int y) {
-    for (auto it : clients) {
-        if (it->isPlayerPlace(x, y)) {
-            return it->getPlayer();
-        }
-    }
-    return nullptr;
-}
-
-Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
-    for (auto it : clients) {
-        if (it->getTcpSocket() == socket) {
-            return it->getPlayer();
-        }
-    }
-    return nullptr;
-}
 
 void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     player->action();
@@ -165,4 +147,22 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
         server->sendToClient(socket, "HUD add pecti_arrow 1;");
     }
 
+}
+
+Player* ServerSettings::isPlayer(int x, int y) {
+    for (auto it : clients) {
+        if (it->isPlayerPlace(x, y)) {
+            return it->getPlayer();
+        }
+    }
+    return nullptr;
+}
+
+Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
+    for (auto it : clients) {
+        if (it->getTcpSocket() == socket) {
+            return it->getPlayer();
+        }
+    }
+    return nullptr;
 }

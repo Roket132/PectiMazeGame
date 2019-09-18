@@ -22,6 +22,12 @@ void Engine::drawClientMap() {
 
         HUD *hud = client.getHUD();
 
+
+        for (size_t i = 0; i < 3; i++) {
+            invScenes[i]->setIcon(QIcon());
+            infoInvScenes[i]->setText("");
+        }
+
         size_t used = 0;
         for (auto it : hud->inventory) {
             invScenes[used]->setIcon(it.first->getTexture());
