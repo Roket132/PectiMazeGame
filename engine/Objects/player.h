@@ -5,6 +5,7 @@
 
 class Player : public DynamicObject {
 public:
+    Player(size_t size, QPixmap avatar = QPixmap(":/default/src/avatars/default/avatar_1.jpg"));
     Player(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~Player() override = default;
 
@@ -28,6 +29,8 @@ private:
     bool extraVision; // if true then player can see more
     bool extraLight; // if true then player has extra light source
     int cntPectiArrow;
+
+    QPixmap avatar;
 
     void update() override;
 };

@@ -1,6 +1,16 @@
 #include "player.h"
 
 #include "iostream"
+#include "appsettings.h"
+
+Player::Player(size_t size_, QPixmap avatar_) : avatar(avatar_){
+    if (size_ <= 40) {
+        texture = def_texture = avatar.scaled(40, 40);
+    }
+    else {
+        texture = def_texture = avatar;
+    }
+}
 
 Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) :
     DynamicObject (texture_, frames_), extraVisionTimer(0), extraVision(false), cntPectiArrow(0) {}

@@ -4,6 +4,8 @@
 #include <QCloseEvent>
 #include <QRegExpValidator>
 
+#include "appsettings.h"
+
 ClientRegWindow::ClientRegWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ClientRegWindow)
@@ -18,7 +20,6 @@ ClientRegWindow::ClientRegWindow(QWidget *parent) :
     ui->backEnterButton->hide();
 
     ui->changeAvatarButton->setText("Изменить\nаватар");
-    ui->avatarLabel->setPixmap(QPixmap(":/res/image/image_80/man_1.jpg"));
 
     ui->passwordEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
     ui->loginEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
@@ -31,6 +32,12 @@ ClientRegWindow::~ClientRegWindow() {
 }
 
 void ClientRegWindow::closeEvent(QCloseEvent *event) {
+    event->accept();
+}
+
+void ClientRegWindow::showEvent(QShowEvent *event) {
+    AppSettings &settings = AppSettings::getAppSettings();
+    ui->avatarLabel->setPixmap(QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(settings.getAvatar())));
     event->accept();
 }
 
@@ -150,3 +157,10 @@ void ClientRegWindow::on_backEnterButton_clicked() {
 }
 
 
+
+void ClientRegWindow::on_changeAvatarButton_clicked() {
+    avatarSelectionWindow = new AvatarSelection();
+    connect(avatarSelectionWindow, &AvatarSelection::showRegClientWindow, this, &ClientRegWindow::show);
+    avatarSelectionWindow->show();
+    this->hide();
+}

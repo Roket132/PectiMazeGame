@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/dark">
+        <file>src/avatars/dark/avatar_0.jpg</file>
+        <file>src/avatars/dark/avatar_1.jpg</file>
+        <file>src/avatars/dark/avatar_2.jpg</file>
+        <file>src/avatars/dark/avatar_3.jpg</file>
+    </qresource>
+    <qresource prefix="/default">
+        <file>src/avatars/default/avatar_1.jpg</file>
+        <file>src/avatars/default/avatar_2.jpg</file>
+        <file>src/avatars/default/avatar_3.jpg</file>
+        <file>src/avatars/default/avatar_0.jpg</file>
+    </qresource>
+</RCC>

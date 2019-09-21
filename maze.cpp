@@ -23,6 +23,7 @@ Maze::Maze() {
 }
 
 Maze::Maze(fs::path path) {
+    // for Server
     std::fstream in;
     try {
         in.open(path.string());
@@ -80,6 +81,7 @@ Maze::Maze(std::string map) {
 }
 
 Maze::Maze(QString map) {
+    // for Client
     mutex_ = new std::mutex;
     std::lock_guard<std::mutex> lg(*mutex_);
 
@@ -99,10 +101,9 @@ Maze::Maze(QString map) {
             } else if (req[pos] == "wall") {
                 maze[i][j] = new Wall(80);
             } else if (req[pos][0] == 'P') {
-
-                // TODO add different players ??
-
-                maze[i][j] = new Player(QPixmap(":/res/image/image_80/man_1.jpg"));
+                QString style = settings.getStyle();
+                size_t typeP = settings.getAvatar();
+                maze[i][j] = new Player(80, QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(style).arg(typeP)));
             } else if (req[pos] == "light_source") {
                 maze[i][j] = new LightSource(80);
             } else if(req[pos] == "lamp") {
