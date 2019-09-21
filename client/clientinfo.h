@@ -33,6 +33,7 @@ public:
 
 private:
     int id;
+    size_t avatarType;
     QString login;
     QString password;
 

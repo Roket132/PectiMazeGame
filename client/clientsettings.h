@@ -21,7 +21,7 @@ Q_OBJECT
 public:
     static ClientSettings &getClientSettings();
 
-    void startClient(QString login_, QString password_, bool old = false); // (old == true) if it first start for this client
+    void startClient(QString login_, QString password_, size_t avatarType, bool old = false); // (old == true) if it first start for this client
     void closeClient();
 
     Client* getClient();

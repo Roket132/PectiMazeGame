@@ -24,7 +24,6 @@ ClientRegWindow::ClientRegWindow(QWidget *parent) :
     ui->passwordEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
     ui->loginEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
     ui->repeatEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
-
 }
 
 ClientRegWindow::~ClientRegWindow() {
@@ -83,10 +82,9 @@ void ClientRegWindow::on_startClientButton_clicked() {
         return;
     }
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
-    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), true);
+    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), 0, true);
     const Client* client = clientSettings.getClient();
     registrationConnects(client);
-
 }
 
 void ClientRegWindow::on_registrationButton_clicked() {
@@ -103,7 +101,8 @@ void ClientRegWindow::on_registrationButton_clicked() {
 
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     if (ui->passwordEdit->text() == ui->repeatEdit->text()) {
-        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text());
+        AppSettings &settings = AppSettings::getAppSettings();
+        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), settings.getAvatar());
         const Client* client = clientSettings.getClient();
         registrationConnects(client);
     } else {
@@ -120,6 +119,8 @@ void ClientRegWindow::slotSignInSuccess() {
     connect(clientWindow, &ClientWindow::showClientRegWindow, this, &ClientRegWindow::show);
     clientWindow->show();
     this->hide();
+    ClientSettings &clientSettings = ClientSettings::getClientSettings();
+    clientSettings.getClient()->sendToServer("get map");
 }
 
 void ClientRegWindow::slotSignInFaild() {
