@@ -16,7 +16,7 @@ ClientSettings::~ClientSettings() {
     delete client;
 }
 
-void ClientSettings::startClient(QString login_, QString password_, bool old) {
+void ClientSettings::startClient(QString login_, QString password_, size_t avatarType, bool old) {
     // save input settings
     login = login_;
     password = password_;
@@ -27,7 +27,7 @@ void ClientSettings::startClient(QString login_, QString password_, bool old) {
     // start client;
 
     client = new Client("localhost", 1337);
-    client->sendToServer(QStringLiteral("%1 %2 %3;").arg(old ? "enter" : "reg").arg(login_).arg(password_));
+    client->sendToServer(QStringLiteral("%1 %2 %3 %4;").arg(old ? "enter" : "reg").arg(login_).arg(password_).arg(avatarType));
     std::cerr << "otpravil old??" << " " << (old ? "enter" : "reg") << std::endl;
     clientConnects();
 }

@@ -4,6 +4,8 @@
 #include <QCloseEvent>
 #include <QRegExpValidator>
 
+#include "appsettings.h"
+
 ClientRegWindow::ClientRegWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ClientRegWindow)
@@ -18,12 +20,10 @@ ClientRegWindow::ClientRegWindow(QWidget *parent) :
     ui->backEnterButton->hide();
 
     ui->changeAvatarButton->setText("Изменить\nаватар");
-    ui->avatarLabel->setPixmap(QPixmap(":/res/image/image_80/man_1.jpg"));
 
     ui->passwordEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
     ui->loginEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
     ui->repeatEdit->setValidator(new QRegExpValidator(QRegExp("^([a-zA-Z0-9!,.@#$%^&*()]+)$")));
-
 }
 
 ClientRegWindow::~ClientRegWindow() {
@@ -31,6 +31,12 @@ ClientRegWindow::~ClientRegWindow() {
 }
 
 void ClientRegWindow::closeEvent(QCloseEvent *event) {
+    event->accept();
+}
+
+void ClientRegWindow::showEvent(QShowEvent *event) {
+    AppSettings &settings = AppSettings::getAppSettings();
+    ui->avatarLabel->setPixmap(QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(settings.getAvatar())));
     event->accept();
 }
 
@@ -76,10 +82,9 @@ void ClientRegWindow::on_startClientButton_clicked() {
         return;
     }
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
-    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), true);
+    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), 0, true);
     const Client* client = clientSettings.getClient();
     registrationConnects(client);
-
 }
 
 void ClientRegWindow::on_registrationButton_clicked() {
@@ -96,7 +101,8 @@ void ClientRegWindow::on_registrationButton_clicked() {
 
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     if (ui->passwordEdit->text() == ui->repeatEdit->text()) {
-        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text());
+        AppSettings &settings = AppSettings::getAppSettings();
+        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), settings.getAvatar());
         const Client* client = clientSettings.getClient();
         registrationConnects(client);
     } else {
@@ -113,6 +119,8 @@ void ClientRegWindow::slotSignInSuccess() {
     connect(clientWindow, &ClientWindow::showClientRegWindow, this, &ClientRegWindow::show);
     clientWindow->show();
     this->hide();
+    ClientSettings &clientSettings = ClientSettings::getClientSettings();
+    clientSettings.getClient()->sendToServer("get map");
 }
 
 void ClientRegWindow::slotSignInFaild() {
@@ -150,3 +158,10 @@ void ClientRegWindow::on_backEnterButton_clicked() {
 }
 
 
+
+void ClientRegWindow::on_changeAvatarButton_clicked() {
+    avatarSelectionWindow = new AvatarSelection();
+    connect(avatarSelectionWindow, &AvatarSelection::showRegClientWindow, this, &ClientRegWindow::show);
+    avatarSelectionWindow->show();
+    this->hide();
+}

@@ -39,6 +39,8 @@ void Server::slotReadClient()
     QTcpSocket* pClientSocket = (QTcpSocket*)sender();
     QDataStream in(pClientSocket);
     in.setVersion(QDataStream::Qt_4_2);
+
+    std::vector<QString> req;
     for (;;) {
         if (!m_nNextBlockSize) {
             if (pClientSocket->bytesAvailable() < sizeof(quint16)) {
@@ -59,7 +61,7 @@ void Server::slotReadClient()
 
         std::vector<QString> requests = pars::splitRequests(str);
         for (auto it : requests) {
-            std::vector<QString> req = pars::parseRequest(it);
+            req = pars::parseRequest(it);
             if (req[0] == "reg") {
                 emit signalRegNewClient(it, pClientSocket);
             } else if (req[0] == "enter") {
@@ -74,8 +76,10 @@ void Server::slotReadClient()
         m_nNextBlockSize = 0;
     }
 
-    ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
-    sendToClient(pClientSocket, serverSettings.getMapPlayerBySocket(pClientSocket) + ";");
+    if (req.size() > 0 && (req[0] != "reg" && req[0] != "enter")) {
+        ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
+        sendToClient(pClientSocket, serverSettings.getMapPlayerBySocket(pClientSocket) + ";");
+    }
 
 }
 

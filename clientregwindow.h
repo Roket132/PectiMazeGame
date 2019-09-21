@@ -3,6 +3,7 @@
 
 #include "client/clientsettings.h"
 #include "client/clientwindow.h"
+#include "windows/avatarselection.h"
 
 #include <iostream>
 #include <QWidget>
@@ -17,16 +18,20 @@ class ClientRegWindow : public QWidget
 
 public:
     explicit ClientRegWindow(QWidget *parent = nullptr);
-    ~ClientRegWindow();
+    ~ClientRegWindow() override;
 
 private:
     Ui::ClientRegWindow *ui;
     ClientWindow* clientWindow;
 
     void closeEvent(QCloseEvent *event) override;
+    void showEvent(QShowEvent *event) override;
+
+    AvatarSelection *avatarSelectionWindow;
 
 signals:
     void showMainWindow();
+
 private slots:
     void on_regClientButton_clicked();
     void on_startClientButton_clicked();
@@ -38,6 +43,7 @@ private slots:
     void on_backEnterButton_clicked();
 
     void registrationConnects(const Client* client);
+    void on_changeAvatarButton_clicked();
 };
 
 #endif // CLIENTREGWINDOW_H

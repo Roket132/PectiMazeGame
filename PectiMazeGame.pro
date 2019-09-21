@@ -53,7 +53,8 @@ SOURCES += \
         server/serversettings.cpp \
         server/serverwindow.cpp \
         serverregwindow.cpp \
-        settingswindow.cpp
+        settingswindow.cpp \
+        windows/avatarselection.cpp
 
 HEADERS += \
         appsettings.h \
@@ -83,7 +84,8 @@ HEADERS += \
         server/serversettings.h \
         server/serverwindow.h \
         serverregwindow.h \
-        settingswindow.h
+        settingswindow.h \
+        windows/avatarselection.h
 
 FORMS += \
         client/clientwindow.ui \
@@ -91,7 +93,8 @@ FORMS += \
         mainwindow.ui \
         server/serverwindow.ui \
         serverregwindow.ui \
-        settingswindow.ui
+        settingswindow.ui \
+        windows/avatarselection.ui
 
 QT += \
     network \
@@ -105,5 +108,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    avatars.qrc \
     image.qrc \
     texture.qrc

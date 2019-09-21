@@ -1,11 +1,15 @@
 #include "clientinfo.h"
 
+#include "appsettings.h"
+
 ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_) {
-    std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 2(3) parametrs "type login password"
+    std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 3(4) parametrs "type login password avatarType"
     login = info[1];
     password = info[2];
     pTcpSocket = socket;
-    player = new Player(QPixmap(":/res/image/image_40/man_1.jpg"));
+    avatarType = info[3].toUInt();
+    AppSettings &settings = AppSettings::getAppSettings();
+    player = new Player(QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(avatarType)).scaled(40, 40));
     player->moveTo(start_x, start_y);
 }
 

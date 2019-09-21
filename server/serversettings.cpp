@@ -60,6 +60,10 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
                 client = it;
             }
         }
+        if (countL && countP)
+            break;
+        else
+            countL = countP = false;
     }
 
     if (countL && countP) {

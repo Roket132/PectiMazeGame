@@ -1,6 +1,7 @@
 #ifndef APPSETTINGS_H
 #define APPSETTINGS_H
 
+#include <vector>
 #include <QString>
 
 class AppSettings
@@ -11,6 +12,10 @@ public:
     void setStyle(QString style);
     QString getStyle();
 
+    size_t getAmoutnAvatarVariants();
+    size_t getAvatar();
+    void setAvatar(size_t type);
+
 private:
     AppSettings();
     ~AppSettings();
@@ -18,6 +23,8 @@ private:
     AppSettings(const AppSettings&) = delete;
 
     QString stylePrefix;
+    size_t selectedAvatar;
+    size_t amountAvatarVariants;
 };
 
 #endif // APPSETTINGS_H
