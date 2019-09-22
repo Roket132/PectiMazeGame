@@ -55,7 +55,6 @@ void Engine::drawClientMap() {
 
 }
 
-
 void Engine::drawServerMap() {
     ServerSettings &server = ServerSettings::getServerSettings();
     while (true) {

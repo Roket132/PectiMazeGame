@@ -13,6 +13,8 @@ namespace pars {
 
     MazeObject* createObjectByType(QString type, size_t size_);
 
+    MazeObject* createEnemyByType(size_t difficulty, size_t size_, bool dead_ = false);
+
     QString getLargeMazeObjectType(char ch);
 
 }

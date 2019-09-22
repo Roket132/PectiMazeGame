@@ -16,8 +16,6 @@
 #include "parsing/parsingtools.h"
 #include "appsettings.h"
 
-
-
 Maze::Maze() {
 
 }
@@ -49,13 +47,15 @@ Maze::Maze(fs::path path) {
         for (size_t j = 0; j < w; j++) {
             static char ch;
             in >> ch;
-
-            //set MazeObject
             if (ch == 'S') {
                 enableStartPlaces.push_back({{i, j}, true});
                 ch = '.';
             }
-            maze[i][j] = pars::createObjectByType(pars::getLargeMazeObjectType(ch), 40);
+            if (ch > '0' && ch <= '9') {
+                maze[i][j] = pars::createEnemyByType(static_cast<size_t>(ch - 48), 40);
+            } else {
+                maze[i][j] = pars::createObjectByType(pars::getLargeMazeObjectType(ch), 40);
+            }
         }
     }
     in.close();
@@ -88,6 +88,9 @@ Maze::Maze(QString map) {
                 QString style = settings.getStyle();
                 size_t typeP = settings.getAvatar();
                 maze[i][j] = new Player(80, QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(style).arg(typeP)));
+            } else if (req[pos][0] > '0' && req[pos][0] <= '9') {
+                bool dead = (req[pos][1] == 'd' ? true : false);
+                maze[i][j] = pars::createEnemyByType(static_cast<size_t>(req[pos][0].digitValue()), 80, dead);
             } else {
                 maze[i][j] = pars::createObjectByType(req[pos], 80);
             }
@@ -145,7 +148,6 @@ void Maze::bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vec
         for (size_t j = 0; j < maze[i].size(); j++) {
             maze_bfs[i][j] = -1;
             if (maze[i][j]->getTypeObject() == "exit") {
-                std::cerr << "EXIT ON " << i << " " << j << std::endl;
                 maze_bfs[i][j] = 0;
                 q.push(std::make_pair(i, j));
             }
@@ -210,10 +212,7 @@ void Maze::ShapeWalls() {
                 MazeObject *right = (j < maze[i].size() - 1 ? maze[i][j + 1] : maze[i][j]);
                 MazeObject *down = (i < maze.size() - 1 ? maze[i + 1][j] : maze[i][j]);
                 MazeObject *left = (j > 0 ? maze[i][j - 1] : maze[i][j]);
-                std::cerr << up->getTypeObject().toStdString() << " " << right->getTypeObject().toStdString() << " "
-                          << down->getTypeObject().toStdString() << " " << left->getTypeObject().toStdString() << std::endl;
                 wl->setShape(up, right, down, left);
-                std::cerr << "ok " << i << " " << j << std::endl;
             }
         }
     }

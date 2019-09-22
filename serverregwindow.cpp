@@ -6,8 +6,6 @@
 #include <QCloseEvent>
 #include <QFileDialog>
 
-
-
 ServerRegWindow::ServerRegWindow(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ServerRegWindow)
@@ -25,7 +23,6 @@ void ServerRegWindow::closeEvent(QCloseEvent *event)
 {
     event->accept();
 }
-
 
 void ServerRegWindow::on_choiseMazeButton_clicked()
 {

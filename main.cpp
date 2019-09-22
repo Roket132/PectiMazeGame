@@ -7,8 +7,6 @@ Q_DECLARE_METATYPE (QTcpSocket*);
 Q_DECLARE_METATYPE (Player*);
 Q_DECLARE_METATYPE (ClientInfo*);
 
-
-
 int main(int argc, char *argv[])
 {
     qRegisterMetaType<fs::path>("fs::path");

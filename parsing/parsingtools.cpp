@@ -9,6 +9,7 @@
 #include "engine/Objects/pectiarrow.h"
 #include "engine/Objects/pectipatch.h"
 #include "engine/Objects/exit.h"
+#include "engine/Objects/enemy.h"
 
 std::vector<QString> pars::parseRequest(QString req) {
         std::vector<QString> ans;
@@ -60,4 +61,9 @@ QString pars::getLargeMazeObjectType(char ch) {
     if (ch == 'E') return "exit";
     if (ch == 'P') return "pecti_arrow";
     return "-1";
+}
+
+MazeObject *pars::createEnemyByType(size_t difficulty, size_t size_, bool dead_) {
+    return new Enemy(size_, difficulty, dead_);
+
 }

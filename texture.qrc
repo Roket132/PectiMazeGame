@@ -30,6 +30,10 @@
         <file>src/texture_80/dark/Pecti.png</file>
         <file>src/texture_80/dark/PectiPatch.png</file>
         <file>src/texture_80/dark/exit.jpg</file>
+        <file>src/texture_80/dark/Enemys/enemy_1_alive.jpg</file>
+        <file>src/texture_80/dark/Enemys/enemy_1_dead.png</file>
+        <file>src/texture_80/dark/Enemys/enemy_2_alive.png</file>
+        <file>src/texture_80/dark/Enemys/enemy_2_dead.png</file>
     </qresource>
     <qresource prefix="/default">
         <file>src/texture_80/default/floor.jpg</file>
@@ -46,5 +50,9 @@
         <file>src/texture_80/default/Pecti.png</file>
         <file>src/texture_80/default/PectiPatch.png</file>
         <file>src/texture_80/default/exit.jpg</file>
+        <file>src/texture_80/default/Enemys/enemy_1_alive.jpg</file>
+        <file>src/texture_80/default/Enemys/enemy_1_dead.png</file>
+        <file>src/texture_80/default/Enemys/enemy_2_alive.png</file>
+        <file>src/texture_80/default/Enemys/enemy_2_dead.png</file>
     </qresource>
 </RCC>
