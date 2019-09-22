@@ -25,6 +25,7 @@ public:
 
     int getCntPectiArrow();
     int getExtraVisTimer();
+    QPixmap getAvatar();
 
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off

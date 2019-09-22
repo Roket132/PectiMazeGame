@@ -9,7 +9,7 @@ ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y
     pTcpSocket = socket;
     avatarType = info[3].toUInt();
     AppSettings &settings = AppSettings::getAppSettings();
-    player = new Player(QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(avatarType)).scaled(40, 40));
+    player = new Player(40, QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(avatarType)));
     player->moveTo(start_x, start_y);
 }
 

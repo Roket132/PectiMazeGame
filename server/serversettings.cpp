@@ -32,7 +32,7 @@ void ServerSettings::startServer(fs::path path) {
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
-    c2 = connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
     Q_ASSERT(c1); Q_ASSERT(c2);
 }
 
@@ -54,6 +54,7 @@ void ServerSettings::slotRegNewClient(QString str, QTcpSocket* socket) {
     ClientInfo* newClient = new ClientInfo(str, socket, stPlace.first, stPlace.second, static_cast<int>(clients.size()));
     clients.push_back(newClient);
     server->sendToClient(socket, "success;");
+    emit signalPlayerConnected(newClient);
 }
 
 void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
@@ -79,6 +80,7 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
         client->setSocket(socket);
         server->sendToClient(socket, "success;");
         sendSettingsToClient(socket);
+        emit signalPlayerConnected(client);
     } else {
         server->sendToClient(socket, "faild;");
     }

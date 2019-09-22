@@ -31,6 +31,11 @@ private:
 
      void closeEvent(QCloseEvent *event) override;
 
+     void setFocusOnPlayer(Player* player);
+
+private slots:
+     void slotPlayerConnected(ClientInfo *clInfo);
+
 signals:
     void showServerRegWindow();
 

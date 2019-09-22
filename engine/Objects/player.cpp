@@ -3,7 +3,7 @@
 #include "iostream"
 #include "appsettings.h"
 
-Player::Player(size_t size_, QPixmap avatar_) : avatar(avatar_){
+Player::Player(size_t size_, QPixmap avatar_) : avatar(avatar_) {
     if (size_ <= 40) {
         texture = def_texture = avatar.scaled(40, 40);
     }
@@ -61,6 +61,10 @@ int Player::getCntPectiArrow() {
 
 int Player::getExtraVisTimer() {
     return extraVisionTimer;
+}
+
+QPixmap Player::getAvatar() {
+    return avatar;
 }
 
 void Player::update() {
