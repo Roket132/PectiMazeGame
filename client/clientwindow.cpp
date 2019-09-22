@@ -63,10 +63,11 @@ ClientWindow::~ClientWindow() {
     delete ui;
 }
 
-void ClientWindow::closeEvent(QCloseEvent *event) {
+void ClientWindow::closeEvent(QCloseEvent *event) { 
     QCoreApplication::instance()->removeEventFilter(this);
 
     ClientSettings &cl = ClientSettings::getClientSettings();
+    cl.getClient()->sendToServer("Exit");
     cl.closeClient();
     eng->stopEngine();
     thread->quit();

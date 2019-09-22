@@ -40,6 +40,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
 
     ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
     connect(&serverSettings, SIGNAL(signalPlayerConnected(ClientInfo*)), this, SLOT(slotPlayerConnected(ClientInfo*)));
+    connect(&serverSettings, SIGNAL(signalPlayerDisconnected(ClientInfo*)), this, SLOT(slotPlayerDisconnected(ClientInfo*)));
 }
 
 ServerWindow::~ServerWindow() {
@@ -92,5 +93,23 @@ void ServerWindow::slotPlayerConnected(ClientInfo *clInfo) {
     lay->addWidget(login, 1, 2);
     lay->addWidget(info, 2, 1);
     lay->addWidget(points, 2, 2);
+    lay->setObjectName(clInfo->getLogin());
     ui->playerCellsLayout->addLayout(lay);
+    playerLayouts.push_back(lay);
+}
+
+void ServerWindow::slotPlayerDisconnected(ClientInfo *clInfo) {
+    int pos = 0;
+    for (auto it : playerLayouts) {
+        if (it->objectName() == clInfo->getLogin()) {
+            while (auto *item = it->layout()->takeAt(0)) {
+                delete item->widget();
+                delete item;
+            }
+            delete it;
+            playerLayouts.erase(playerLayouts.begin() + pos);
+            return;
+        }
+        pos++;
+    }
 }

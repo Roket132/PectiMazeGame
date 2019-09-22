@@ -66,9 +66,11 @@ private slots:
     void slotEnterClient(QString str, QTcpSocket* socket);
     void slotMovePlayer(QString str, QTcpSocket* socket);
     void slotUseInventory(QString str, QTcpSocket* socket);
+    void slotClientExit(QString str, QTcpSocket* socket);
 
 signals:
     void signalPlayerConnected(ClientInfo *clInfo);
+    void signalPlayerDisconnected(ClientInfo *clInfo);
 };
 
 #endif // SERVERSETTINGS_H

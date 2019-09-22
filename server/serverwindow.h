@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QCloseEvent>
+#include <QGridLayout>
 #include <vector>
 
 #include "engine/engine.h"
@@ -28,6 +29,7 @@ private:
 
     Engine* eng;
     QThread* thread;
+    std::vector<QGridLayout*> playerLayouts;
 
      void closeEvent(QCloseEvent *event) override;
 
@@ -35,6 +37,7 @@ private:
 
 private slots:
      void slotPlayerConnected(ClientInfo *clInfo);
+     void slotPlayerDisconnected(ClientInfo *clInfo);
 
 signals:
     void showServerRegWindow();

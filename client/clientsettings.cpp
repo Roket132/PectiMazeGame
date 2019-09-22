@@ -34,8 +34,7 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 }
 
 void ClientSettings::closeClient() {
-    client->close();
-    if (client) delete client;
+    client->disconnect();
 }
 
 Client *ClientSettings::getClient() {

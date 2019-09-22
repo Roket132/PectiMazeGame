@@ -71,6 +71,8 @@ void Server::slotReadClient()
                 emit signalMovePlayer(it, pClientSocket);
             } else if (req[0] == "inventory") {
                 emit signalUseInventory(it, pClientSocket);
+            } else if (req[0] == "Exit") {
+                emit signalClientExit(it, pClientSocket);
             }
         }
 

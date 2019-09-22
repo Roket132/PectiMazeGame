@@ -33,6 +33,7 @@ void ServerSettings::startServer(fs::path path) {
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalClientExit(QString, QTcpSocket*)), this, SLOT(slotClientExit(QString, QTcpSocket*)));
     Q_ASSERT(c1); Q_ASSERT(c2);
 }
 
@@ -105,6 +106,10 @@ void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
         }
         server->sendToClient(socket, "HUD del pecti_arrow 1");
     }
+}
+
+void ServerSettings::slotClientExit(QString str, QTcpSocket *socket) {
+    emit signalPlayerDisconnected(getClientInfoBySocket(socket));
 }
 
 Maze* ServerSettings::getMaze() {
