@@ -1,6 +1,7 @@
 #include "clientsettings.h"
 
 #include <iostream>
+
 #include "settingswindow.h"
 
 ClientSettings &ClientSettings::getClientSettings() {
@@ -34,7 +35,7 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 
 void ClientSettings::closeClient() {
     client->close();
-    client->~Client();
+    if (client) delete client;
 }
 
 Client *ClientSettings::getClient() {
@@ -61,6 +62,7 @@ HUD *ClientSettings::getHUD() {
 void ClientSettings::clientConnects() {
     connect(client, SIGNAL(signalSetMap(QString)), this, SLOT(slotSetMap(QString)));
     connect(client, SIGNAL(signalHUDUpdate(QString)), this, SLOT(slotHUDUpdate(QString)));
+    connect(client, SIGNAL(signalSetSettings(QString)), this, SLOT(slotSetSettings(QString)));
 }
 
 void ClientSettings::slotSetMap(QString map) {
@@ -72,4 +74,8 @@ void ClientSettings::slotSetMap(QString map) {
 void ClientSettings::slotHUDUpdate(QString req) {
     std::lock_guard<std::mutex> lg(*hud_mutex);
     clientHUD->parseRequest(req);
+}
+
+void ClientSettings::slotSetSettings(QString req) {
+    clientHUD->restoreInventory(req);
 }

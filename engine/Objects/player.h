@@ -22,7 +22,9 @@ public:
 
     void takePectiArrow();
     bool usePectiArrow(); // return true if pectiArrow use
+
     int getCntPectiArrow();
+    int getExtraVisTimer();
 
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off

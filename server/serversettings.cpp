@@ -11,6 +11,15 @@ ServerSettings::ServerSettings() : server(nullptr) {
 ServerSettings::~ServerSettings() {
 }
 
+void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
+    ClientInfo *info = getClientInfoBySocket(socket);
+    Player *player = info->getPlayer();
+    QString settings = QStringLiteral("settings %1 %2 %3").arg(info->getAvatarType())
+            .arg(player->isExtraLight()).arg(player->getCntPectiArrow());
+    server->sendToClient(socket, settings);
+
+}
+
 ServerSettings &ServerSettings::getServerSettings() {
     static ServerSettings instance;
     return instance;
@@ -69,6 +78,7 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
     if (countL && countP) {
         client->setSocket(socket);
         server->sendToClient(socket, "success;");
+        sendSettingsToClient(socket);
     } else {
         server->sendToClient(socket, "faild;");
     }
@@ -88,7 +98,9 @@ void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
     Player* player = getPlayerBySocket(socket);
     std::vector<QString> req = pars::parseRequest(str);
     if (req[1] == "pecti_arrow") {
-        maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
+        if (getPlayerBySocket(socket)->usePectiArrow()) {
+            maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
+        }
         server->sendToClient(socket, "HUD del pecti_arrow 1");
     }
 }
@@ -169,4 +181,12 @@ Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
         }
     }
     return nullptr;
+}
+
+ClientInfo *ServerSettings::getClientInfoBySocket(QTcpSocket *socket) {
+    for (auto it : clients) {
+        if (it->getTcpSocket() == socket) {
+            return it;
+        }
+    }
 }

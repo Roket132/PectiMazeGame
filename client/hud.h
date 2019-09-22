@@ -15,6 +15,7 @@ public:
     void removeInventoryObject(MazeObject *obj, int cnt = 1); // *obj will be deleted
 
     void parseRequest(QString req);
+    void restoreInventory(QString req);
 
 public:
     std::vector<std::pair<MazeObject*, int>> inventory;

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QtNetwork>
 #include <QMessageBox>
+#include <QTime>
 
 Server::Server(int nPort, QWidget* pwgt /*=0*/) : QWidget(pwgt), m_nNextBlockSize(0) {
     m_ptcpServer = new QTcpServer(this);

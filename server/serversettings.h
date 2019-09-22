@@ -37,6 +37,7 @@ public:
 
     Player* isPlayer(int x, int y);
     Player* getPlayerBySocket(QTcpSocket* socket);
+    ClientInfo* getClientInfoBySocket(QTcpSocket* socket);
 
     /*
      *
@@ -52,6 +53,8 @@ private:
     ~ServerSettings();
     ServerSettings& operator=(ServerSettings&) = delete;
     ServerSettings(const ServerSettings&) = delete;
+
+    void sendSettingsToClient(QTcpSocket *socket);
 
 private:
     Server *server;

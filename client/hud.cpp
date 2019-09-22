@@ -2,7 +2,11 @@
 
 #include <iostream>
 #include <algorithm>
+
 #include "parsing/parsingtools.h"
+#include "engine/Objects/lamp.h"
+#include "engine/Objects/pectiarrow.h"
+#include "appsettings.h"
 
 HUD::HUD() : mutex_(new std::mutex) {
 }
@@ -62,5 +66,15 @@ void HUD::parseRequest(QString req_) {
     } else if (req[1] == "del") {
         MazeObject* obj = pars::createObjectByType(req[2], 80);
         removeInventoryObject(obj, req[3].toInt());
+    }
+}
+
+void HUD::restoreInventory(QString req_) {
+    AppSettings &settings = AppSettings::getAppSettings();
+    std::vector<QString> req = pars::parseRequest(req_);
+    settings.setAvatar(req[1].toUInt());
+    if (req[2].toInt()) addInventoryObject(new Lamp(80));
+    for (int i = 0; i < req[3].toInt(); i++) {
+        addInventoryObject(new PectiArrow(80));
     }
 }

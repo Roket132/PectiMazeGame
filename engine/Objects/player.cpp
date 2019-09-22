@@ -59,6 +59,10 @@ int Player::getCntPectiArrow() {
     return cntPectiArrow;
 }
 
+int Player::getExtraVisTimer() {
+    return extraVisionTimer;
+}
+
 void Player::update() {
 
 }

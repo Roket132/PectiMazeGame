@@ -31,6 +31,7 @@ signals:
     void signalSignInSuccess();
     void signalSetMap(QString);
     void signalHUDUpdate(QString);
+    void signalSetSettings(QString);
 };
 
 #endif // CLIENT_H

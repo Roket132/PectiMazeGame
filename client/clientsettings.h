@@ -44,6 +44,7 @@ private:
 private slots:
     void slotSetMap(QString);
     void slotHUDUpdate(QString);
+    void slotSetSettings(QString);
 
 private:
     Client* client;

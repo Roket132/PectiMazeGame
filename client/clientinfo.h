@@ -29,6 +29,7 @@ public:
     bool isPlayerPlace(int x, int y);
 
     Player* getPlayer();
+    size_t getAvatarType();
     const QTcpSocket* getTcpSocket();
 
 private:

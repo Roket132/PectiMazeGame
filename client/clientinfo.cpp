@@ -41,6 +41,10 @@ Player* ClientInfo::getPlayer() {
     return player;
 }
 
+size_t ClientInfo::getAvatarType() {
+    return avatarType;
+}
+
 const QTcpSocket *ClientInfo::getTcpSocket()
 {
     return pTcpSocket;
