@@ -49,5 +49,15 @@ MazeObject *pars::createObjectByType(QString type, size_t size_) {
     if (type == "wall") return new Wall(size_);
     if (type == "fog") return new Fog(size_);
     if (type == "exit") return new Exit(size_);
-    return nullptr;
+    return new Wall(size_);
+}
+
+QString pars::getLargeMazeObjectType(char ch) {
+    if (ch == '#') return "wall";
+    if (ch == '.') return "floor";
+    if (ch == 'T') return "lamp";
+    if (ch == 'B') return "light_source";
+    if (ch == 'E') return "exit";
+    if (ch == 'P') return "pecti_arrow";
+    return "-1";
 }

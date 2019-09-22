@@ -12,6 +12,9 @@ namespace pars {
     std::vector<QString> parseRequest(QString req);
 
     MazeObject* createObjectByType(QString type, size_t size_);
+
+    QString getLargeMazeObjectType(char ch);
+
 }
 
 

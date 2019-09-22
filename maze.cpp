@@ -51,23 +51,11 @@ Maze::Maze(fs::path path) {
             in >> ch;
 
             //set MazeObject
-
-            if (ch == '#') {
-                maze[i][j] = new Wall(40);
-            } else if (ch == '.') {
-                maze[i][j] = new Floor(40);
-            } else if (ch == 'S') {
+            if (ch == 'S') {
                 enableStartPlaces.push_back({{i, j}, true});
-                maze[i][j] = new Floor(40);
-            } else if (ch == 'T') {
-                maze[i][j] = new Lamp(40);
-            } else if (ch == 'B') {
-                maze[i][j] = new LightSource(40);
-            } else if (ch == 'P') {
-                maze[i][j] = new PectiArrow(40);
-            } else if (ch == 'E') {
-                maze[i][j] = new Exit(40);
+                ch = '.';
             }
+            maze[i][j] = pars::createObjectByType(pars::getLargeMazeObjectType(ch), 40);
         }
     }
     in.close();
@@ -96,28 +84,12 @@ Maze::Maze(QString map) {
     size_t pos = 3; // first pos_map from [3]
     for (size_t i = 0; i < h; i++) {
         for (size_t j = 0; j < w; j++) {
-            if (req[pos] == "floor") {
-               maze[i][j] = new Floor(80);
-            } else if (req[pos] == "wall") {
-                maze[i][j] = new Wall(80);
-            } else if (req[pos][0] == 'P') {
+            if (req[pos][0] == 'P') {
                 QString style = settings.getStyle();
                 size_t typeP = settings.getAvatar();
                 maze[i][j] = new Player(80, QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(style).arg(typeP)));
-            } else if (req[pos] == "light_source") {
-                maze[i][j] = new LightSource(80);
-            } else if(req[pos] == "lamp") {
-                maze[i][j] = new Lamp(80);
-            } else if (req[pos] == "fog") {
-                maze[i][j] = new Fog(80);
-            } else if (req[pos] == "pecti_arrow") {
-                maze[i][j] = new PectiArrow(80);
-            } else if (req[pos] == "pecti_patch") {
-                maze[i][j] = new PectiPatch(80);
-            } else if (req[pos] == "exit") {
-                maze[i][j] = new Exit(80);
             } else {
-                maze[i][j] = new Wall(80);
+                maze[i][j] = pars::createObjectByType(req[pos], 80);
             }
             pos++;
         }
@@ -229,7 +201,7 @@ std::pair<int, int> Maze::getFreeStartPlace() {
 }
 
 void Maze::ShapeWalls() {
-    std::cerr << "Shape " << maze.size() << std::endl;
+    std::cerr << "Shape " << maze.size() << " " << maze[0].size() << std::endl;
     for (size_t i = 0; i < maze.size(); i++) {
         for (size_t j = 0; j < maze[i].size(); j++) {
             if (maze[i][j]->getTypeObject() == "wall") {
@@ -238,7 +210,10 @@ void Maze::ShapeWalls() {
                 MazeObject *right = (j < maze[i].size() - 1 ? maze[i][j + 1] : maze[i][j]);
                 MazeObject *down = (i < maze.size() - 1 ? maze[i + 1][j] : maze[i][j]);
                 MazeObject *left = (j > 0 ? maze[i][j - 1] : maze[i][j]);
+                std::cerr << up->getTypeObject().toStdString() << " " << right->getTypeObject().toStdString() << " "
+                          << down->getTypeObject().toStdString() << " " << left->getTypeObject().toStdString() << std::endl;
                 wl->setShape(up, right, down, left);
+                std::cerr << "ok " << i << " " << j << std::endl;
             }
         }
     }

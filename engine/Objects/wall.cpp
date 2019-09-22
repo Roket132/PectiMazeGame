@@ -48,11 +48,11 @@ void Wall::setShape(MazeObject *up, MazeObject *right, MazeObject *down, MazeObj
     if (cntWalls == 1) {
         texture = QPixmap(QStringLiteral(":/%1/src/texture_%2/%1/wall3.jpg").arg(stylePrefix).arg(size_));
         if (right->getTypeObject() == "wall" ||
-                left->getTypeObject() == "fog") texture = texture.transformed(mt90);
+                right->getTypeObject() == "fog") texture = texture.transformed(mt90);
         if (down->getTypeObject() == "wall" ||
-                up->getTypeObject() == "fog") texture = texture.transformed(mt180);
+                down->getTypeObject() == "fog") texture = texture.transformed(mt180);
         if (left->getTypeObject() == "wall" ||
-                right->getTypeObject() == "fog") texture = texture.transformed(mt270);
+                left->getTypeObject() == "fog") texture = texture.transformed(mt270);
         return;
     }
 
