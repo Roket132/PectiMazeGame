@@ -4,11 +4,13 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QPushButton>
+#include <functional>
 #include <QLabel>
 #include <QThread>
 #include <vector>
 
 #include "client/clientsettings.h"
+#include "windows/eventwindow.h"
 #include "engine/engine.h"
 #include "client.h"
 
@@ -38,7 +40,10 @@ private:
 
     void draw();
     void blockMoving();
-    void setEventLayout(QPixmap px);
+    void addEventLayout(QPixmap px, QString descriprion, std::function<void()> f_btn);
+    void updateEventSettings();
+
+    EventWindow *eventWindow;
 
 signals:
     void showClientRegWindow();

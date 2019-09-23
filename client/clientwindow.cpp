@@ -2,6 +2,7 @@
 #include "ui_clientwindow.h"
 
 #include <QThread>
+#include <QMessageBox>
 
 ClientWindow::ClientWindow(QWidget *parent) :
     QWidget(parent),
@@ -10,6 +11,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     QCoreApplication::instance()->installEventFilter(this);
     ui->setupUi(this);
 
+    eventWindow = nullptr;
 
     int dimensions = 5;
     //int cnt = 0;
@@ -75,6 +77,8 @@ void ClientWindow::closeEvent(QCloseEvent *event) {
     eng->stopEngine();
     thread->quit();
 
+    if (eventWindow) eventWindow->close();
+
     emit showClientRegWindow();
     event->accept();
 }
@@ -86,18 +90,60 @@ void ClientWindow::blockMoving() {
    ui->leftButton->setEnabled(false);
 }
 
-void ClientWindow::setEventLayout(QPixmap px) {
+void ClientWindow::addEventLayout(QPixmap px, QString description, std::function<void()> f_btn) {
+    if (ui->eventsLayout->count() == 0) {
+        QLabel *lb = new QLabel("Для выбора события нажмите на иконку:", this);
+        lb->setStyleSheet(QString("font-size: %1px").arg(16));
+        ui->eventsLayout->addWidget(lb);
+        ui->eventsLayout->addSpacerItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    }
+
+    QGridLayout *gl = new QGridLayout(this);
     QPushButton *btn = new QPushButton(this);
     btn->setFixedSize(80, 80);
     btn->setIcon(px);
     btn->setIconSize(btn->size() - QSize(5, 5));
-    //btn->setFlat(true);
-    ui->eventLayout->addWidget(btn, 2, 2);
+    gl->addWidget(btn, 2, 2);
+
+    connect(btn, &QPushButton::clicked, [=] {
+        if (eventWindow) {
+            int n = QMessageBox::warning(nullptr,
+                                         "Открыть событие",
+                                         "Вы хотите отркыть новое событие?\n"
+                                         "Старое будет закрыто автоматически!",
+                                         "ОК",
+                                         "Отмена",
+                                         QString(),
+                                         0,
+                                         1
+                                        );
+            if (n) {
+                return;
+            }
+        }
+        f_btn();
+    });
+
+    QLabel *infoLabel = new QLabel(this);
+    infoLabel->setText(description);
+    gl->addWidget(infoLabel, 2, 3);
+
+    ui->eventsLayout->addLayout(gl);
 }
 
 void ClientWindow::slotAttack(int lvl) {
     blockMoving();
-    setEventLayout(QPixmap(":/res/image/image_80/swords.png"));
+    addEventLayout(QPixmap(":/res/image/image_80/swords.png"),
+                "Чтобы продолжить путешествие\n"
+                "надо победить врага!",
+                [this] {
+                     if (eventWindow) eventWindow->close();
+                     eventWindow = new EventWindow();
+                     eventWindow->show();
+                     connect(eventWindow, &EventWindow::closed, [this] {
+                         eventWindow = nullptr;
+                     });
+                });
 
 }
 
