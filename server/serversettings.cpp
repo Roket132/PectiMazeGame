@@ -90,6 +90,7 @@ void ServerSettings::slotEnterClient(QString str, QTcpSocket* socket) {
 
 void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
     Player* player = getPlayerBySocket(socket);
+    if (!player->canMove()) return;
     std::vector<QString> req = pars::parseRequest(str);
     int dx = req[1].toInt();
     int dy = req[2].toInt();

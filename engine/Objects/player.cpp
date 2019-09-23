@@ -76,6 +76,10 @@ size_t Player::getEnemyDifficulty() {
     return enemyDifficulty;
 }
 
+bool Player::canMove() {
+    return !fight;
+}
+
 QPixmap Player::getAvatar() {
     return avatar;
 }
