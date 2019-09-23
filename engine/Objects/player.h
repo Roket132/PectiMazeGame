@@ -15,16 +15,20 @@ public:
     void action();
 
     bool isExtraVis();
+    bool isFight();
     bool isExtraLight();
 
     void setExtraVision(int time); // set extra vis for @time@ moves
     void setExtraLight(bool set);
+    void setFight(bool set, size_t enemyDifficulty);
 
     void takePectiArrow();
     bool usePectiArrow(); // return true if pectiArrow use
 
     int getCntPectiArrow();
     int getExtraVisTimer();
+    size_t getEnemyDifficulty();
+
     QPixmap getAvatar();
 
 private:
@@ -32,6 +36,9 @@ private:
     bool extraVision; // if true then player can see more
     bool extraLight; // if true then player has extra light source
     int cntPectiArrow;
+
+    bool fight;
+    size_t enemyDifficulty;
 
     QPixmap avatar;
 

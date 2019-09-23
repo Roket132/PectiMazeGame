@@ -55,7 +55,8 @@ SOURCES += \
         server/serverwindow.cpp \
         serverregwindow.cpp \
         settingswindow.cpp \
-        windows/avatarselection.cpp
+        windows/avatarselection.cpp \
+        windows/eventwindow.cpp
 
 HEADERS += \
         appsettings.h \
@@ -87,7 +88,8 @@ HEADERS += \
         server/serverwindow.h \
         serverregwindow.h \
         settingswindow.h \
-        windows/avatarselection.h
+        windows/avatarselection.h \
+        windows/eventwindow.h
 
 FORMS += \
         client/clientwindow.ui \
@@ -96,7 +98,8 @@ FORMS += \
         server/serverwindow.ui \
         serverregwindow.ui \
         settingswindow.ui \
-        windows/avatarselection.ui
+        windows/avatarselection.ui \
+        windows/eventwindow.ui
 
 QT += \
     network \

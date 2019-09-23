@@ -60,6 +60,8 @@ void Client::slotReadyRead()
                 emit signalHUDUpdate(it);
             } else if (req[0] == "settings") {
                 emit signalSetSettings(it);
+            } else if (req[0] == "Action") {
+                emit signalAction(it);
             }
         }
 

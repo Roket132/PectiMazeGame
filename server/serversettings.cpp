@@ -156,18 +156,23 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
 
     QString type = obj->getTypeObject();
 
+
+
     if (type == "lamp") {
         player->setExtraLight(true);
         maze->removeObjectFromCell(pos.first, pos.second);
         server->sendToClient(socket, "HUD add lamp 1;");
     } else if (type == "light_source") {
         if (player->isExtraLight()) {
-            player->setExtraVision(10); // TODO set dif time
+            player->setExtraVision(10);
         }
     } else if (type == "pecti_arrow") {
         player->takePectiArrow();
         maze->removeObjectFromCell(pos.first, pos.second);
         server->sendToClient(socket, "HUD add pecti_arrow 1;");
+    } else if (int enemyDif = maze->enemyAttack(pos.first, pos.second)) {
+        player->setFight(true, enemyDif);
+        server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemyDif));
     }
 
 }

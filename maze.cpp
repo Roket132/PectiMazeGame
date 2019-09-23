@@ -12,6 +12,7 @@
 #include "engine/Objects/pectiarrow.h"
 #include "engine/Objects/pectipatch.h"
 #include "engine/Objects/exit.h"
+#include "engine/Objects/enemy.h"
 
 #include "parsing/parsingtools.h"
 #include "appsettings.h"
@@ -179,6 +180,27 @@ void Maze::setPectiArrow(size_t x, size_t y, int steps) {
         else if (maze_bfs[x][y + 1] != -1 && maze_bfs[x][y + 1] < maze_bfs[x][y]) y++;
         else if (maze_bfs[x][y - 1] != -1 && maze_bfs[x][y - 1] < maze_bfs[x][y]) y--;
     }
+}
+
+int Maze::enemyAttack(size_t x_, size_t y_) {
+    int x = static_cast<int>(x_);
+    int y = static_cast<int>(y_);
+    for (int i = x - 1; i <= x + 1; i++) {
+        for (int j = y - 1; j <= y + 1; j++) {
+            if (i  < 0 || j < 0 || i > h || j > w) continue;
+            if (maze[i][j]->getTypeObject()[0] > '0' && maze[i][j]->getTypeObject()[0] <= '9') { // if char > 0 and <=9 then it's enemy because its enemy type, wee documentation
+                if (i == x - 1 && j == y - 1) {
+                    if (maze[x - 1][y]->getTypeObject() == "wall" && maze[x][y - 1]->getTypeObject() == "wall") continue;
+                }
+                if (i == x - 1 && j == y + 1 && maze[x - 1][y]->getTypeObject() == "wall" && maze[x][y + 1]->getTypeObject() == "wall") continue;
+                if (i == x + 1 && j == y + 1 && maze[x + 1][y]->getTypeObject() == "wall" && maze[x][y + 1]->getTypeObject() == "wall") continue;
+                if (i == x + 1 && j == y - 1 && maze[x + 1][y]->getTypeObject() == "wall" && maze[x][y - 1]->getTypeObject() == "wall") continue;
+                Enemy *en = dynamic_cast<Enemy*>(maze[i][j]);
+                return en->getDifficulty();
+            }
+        }
+    }
+    return 0;
 }
 
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {

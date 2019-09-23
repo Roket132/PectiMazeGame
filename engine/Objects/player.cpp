@@ -3,7 +3,7 @@
 #include "iostream"
 #include "appsettings.h"
 
-Player::Player(size_t size_, QPixmap avatar_) : avatar(avatar_) {
+Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTimer(0), extraVision(false), cntPectiArrow(0), fight(false), avatar(avatar_) {
     if (size_ <= 40) {
         texture = def_texture = avatar.scaled(40, 40);
     }
@@ -29,6 +29,10 @@ bool Player::isExtraVis() {
     return extraVision;
 }
 
+bool Player::isFight() {
+    return fight;
+}
+
 bool Player::isExtraLight() {
     return extraLight;
 }
@@ -40,6 +44,11 @@ void Player::setExtraVision(int time) {
 
 void Player::setExtraLight(bool set) {
     extraLight = set;
+}
+
+void Player::setFight(bool set, size_t enemyDifficulty_) {
+    fight = set;
+    enemyDifficulty = enemyDifficulty_;
 }
 
 void Player::takePectiArrow() {
@@ -61,6 +70,10 @@ int Player::getCntPectiArrow() {
 
 int Player::getExtraVisTimer() {
     return extraVisionTimer;
+}
+
+size_t Player::getEnemyDifficulty() {
+    return enemyDifficulty;
 }
 
 QPixmap Player::getAvatar() {

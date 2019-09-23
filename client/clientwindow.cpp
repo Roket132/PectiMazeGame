@@ -56,6 +56,9 @@ ClientWindow::ClientWindow(QWidget *parent) :
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
     thread->start();
+
+    ClientSettings &clientSettings = ClientSettings::getClientSettings();
+    connect(&clientSettings, &ClientSettings::signalAttack, this, &ClientWindow::slotAttack);
 }
 
 ClientWindow::~ClientWindow() {
@@ -76,6 +79,28 @@ void ClientWindow::closeEvent(QCloseEvent *event) {
     event->accept();
 }
 
+void ClientWindow::blockMoving() {
+   ui->upButton->setEnabled(false);
+   ui->rightButton->setEnabled(false);
+   ui->downButton->setEnabled(false);
+   ui->leftButton->setEnabled(false);
+}
+
+void ClientWindow::setEventLayout(QPixmap px) {
+    QPushButton *btn = new QPushButton(this);
+    btn->setFixedSize(80, 80);
+    btn->setIcon(px);
+    btn->setIconSize(btn->size() - QSize(5, 5));
+    //btn->setFlat(true);
+    ui->eventLayout->addWidget(btn, 2, 2);
+}
+
+void ClientWindow::slotAttack(int lvl) {
+    blockMoving();
+    setEventLayout(QPixmap(":/res/image/image_80/swords.png"));
+
+}
+
 /*
  * clientMap size == 5,5
  *
@@ -89,6 +114,8 @@ void ClientWindow::closeEvent(QCloseEvent *event) {
  */
 
 void ClientWindow::on_upButton_clicked() {
+    if (!ui->upButton->isEnabled()) return;
+
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     if (clientSetting.getMaze()->isPossibleToGoTo(1, 2)) {
         clientSetting.getClient()->sendToServer("move 1 0;");
@@ -96,6 +123,8 @@ void ClientWindow::on_upButton_clicked() {
 }
 
 void ClientWindow::on_rightButton_clicked() {
+    if (!ui->rightButton->isEnabled()) return;
+
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     if (clientSetting.getMaze()->isPossibleToGoTo(2, 3)) {
         clientSetting.getClient()->sendToServer("move 0 1;");
@@ -103,6 +132,8 @@ void ClientWindow::on_rightButton_clicked() {
 }
 
 void ClientWindow::on_downButton_clicked() {
+    if (!ui->downButton->isEnabled()) return;
+
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     if (clientSetting.getMaze()->isPossibleToGoTo(3, 2)) {
         clientSetting.getClient()->sendToServer("move -1 0;");
@@ -110,6 +141,8 @@ void ClientWindow::on_downButton_clicked() {
 }
 
 void ClientWindow::on_leftButton_clicked() {
+    if (!ui->leftButton->isEnabled()) return;
+
     ClientSettings &clientSetting = ClientSettings::getClientSettings();
     if (clientSetting.getMaze()->isPossibleToGoTo(2, 1)) {
         clientSetting.getClient()->sendToServer("move 0 -1;");

@@ -45,6 +45,10 @@ private slots:
     void slotSetMap(QString);
     void slotHUDUpdate(QString);
     void slotSetSettings(QString);
+    void slotAction(QString);
+
+signals:
+    void signalAttack(int);
 
 private:
     Client* client;

@@ -62,6 +62,7 @@ void ClientSettings::clientConnects() {
     connect(client, SIGNAL(signalSetMap(QString)), this, SLOT(slotSetMap(QString)));
     connect(client, SIGNAL(signalHUDUpdate(QString)), this, SLOT(slotHUDUpdate(QString)));
     connect(client, SIGNAL(signalSetSettings(QString)), this, SLOT(slotSetSettings(QString)));
+    connect(client, SIGNAL(signalAction(QString)), this, SLOT(slotAction(QString)));
 }
 
 void ClientSettings::slotSetMap(QString map) {
@@ -77,4 +78,12 @@ void ClientSettings::slotHUDUpdate(QString req) {
 
 void ClientSettings::slotSetSettings(QString req) {
     clientHUD->restoreInventory(req);
+}
+
+void ClientSettings::slotAction(QString req_) {
+    std::vector<QString> req = pars::parseRequest(req_);
+    if (req[1] == "attack") {
+        std::cerr << "slotAction" << std::endl;
+        emit signalAttack(req[1].toInt());
+    }
 }
