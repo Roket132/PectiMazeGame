@@ -5,6 +5,7 @@
 #include <QString>
 #include <mutex>
 
+#include "parsing/taskarchive.h"
 #include "clientinfo.h"
 #include "client.h"
 #include "maze.h"
@@ -30,6 +31,7 @@ public:
 
     void createEmptyMaze();
 
+    std::shared_ptr<Task> getNextTask();
 
 private:
     ClientSettings();
@@ -46,6 +48,7 @@ private slots:
     void slotHUDUpdate(QString);
     void slotSetSettings(QString);
     void slotAction(QString);
+    void slotAddTask(QString);
 
 signals:
     void signalAttack(int);
@@ -55,6 +58,8 @@ private:
 
     QString login;
     QString password;
+
+    TaskArchive archive;
 
     Maze* clientMaze;
     HUD* clientHUD;

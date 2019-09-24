@@ -1,9 +1,5 @@
 #include "serversettings.h"
-
-/*
- * TODO
- * 1. getMapPlayer By Place, need add demension
- */
+#include "appsettings.h"
 
 ServerSettings::ServerSettings() : server(nullptr) {
 }
@@ -19,6 +15,13 @@ void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
     server->sendToClient(socket, settings);
 }
 
+void ServerSettings::createTasksArchive() {
+    AppSettings &settings = AppSettings::getAppSettings();
+    for (auto path : *settings.getPathForTasks()) {
+        archive.readFile(path.toStdString());
+    }
+}
+
 ServerSettings &ServerSettings::getServerSettings() {
     static ServerSettings instance;
     return instance;
@@ -27,6 +30,8 @@ ServerSettings &ServerSettings::getServerSettings() {
 void ServerSettings::startServer(fs::path path) {
     server = new Server(1337);
     maze = new Maze(path);
+
+    createTasksArchive();
 
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
@@ -148,6 +153,11 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
     return ans;
 }
 
+std::shared_ptr<Task> ServerSettings::getNextTask(QTcpSocket *socket) {
+    ClientInfo *cl = getClientInfoBySocket(socket);
+    return archive.getTask(cl->getCurrentTask());
+}
+
 
 void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     player->action();
@@ -156,8 +166,6 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     MazeObject* obj = maze->getMazeObject(pos.first, pos.second);
 
     QString type = obj->getTypeObject();
-
-
 
     if (type == "lamp") {
         player->setExtraLight(true);
@@ -172,7 +180,9 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
         maze->removeObjectFromCell(pos.first, pos.second);
         server->sendToClient(socket, "HUD add pecti_arrow 1;");
     } else if (int enemyDif = maze->enemyAttack(pos.first, pos.second)) {
-        player->setFight(true, enemyDif);
+        player->setFight(true, static_cast<size_t>(enemyDif));
+        auto task = getNextTask(socket);
+        server->sendToClient(socket, QStringLiteral("Task %1").arg(pars::prepareTaskForSend(task)));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemyDif));
     }
 
@@ -202,4 +212,5 @@ ClientInfo *ServerSettings::getClientInfoBySocket(QTcpSocket *socket) {
             return it;
         }
     }
+    return nullptr;
 }

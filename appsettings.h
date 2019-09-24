@@ -16,6 +16,8 @@ public:
     size_t getAvatar();
     void setAvatar(size_t type);
 
+    std::vector<QString>* getPathForTasks();
+
 private:
     AppSettings();
     ~AppSettings();
@@ -25,6 +27,8 @@ private:
     QString stylePrefix;
     size_t selectedAvatar;
     size_t amountAvatarVariants;
+
+    std::vector<QString> pathForTasks = {"C:/Users/Dmitry/Desktop/QtProjects/tasks.txt"};
 };
 
 #endif // APPSETTINGS_H

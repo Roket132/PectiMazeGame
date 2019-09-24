@@ -1,13 +1,15 @@
 #ifndef SERVERSETTINGS_H
 #define SERVERSETTINGS_H
 
+#include <QWidget>
+#include <iostream>
+
 #include "maze.h"
 #include "server.h"
 #include "client/clientinfo.h"
 #include "parsing/parsingtools.h"
+#include "parsing/taskarchive.h"
 
-#include <QWidget>
-#include <iostream>
 #include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
@@ -35,6 +37,8 @@ public:
     QString getMapPlayerBySocket(QTcpSocket* socket);
     QString getMapPlayerByPlace(int x, int y, bool extra);
 
+    std::shared_ptr<Task> getNextTask(QTcpSocket* socket);
+
     Player* isPlayer(int x, int y);
     Player* getPlayerBySocket(QTcpSocket* socket);
     ClientInfo* getClientInfoBySocket(QTcpSocket* socket);
@@ -56,10 +60,13 @@ private:
 
     void sendSettingsToClient(QTcpSocket *socket);
 
+    void createTasksArchive();
+
 private:
     Server *server;
     Maze   *maze;
     std::vector<ClientInfo*> clients;
+    TaskArchive archive;
 
 private slots:
     void slotRegNewClient(QString str, QTcpSocket* socket);

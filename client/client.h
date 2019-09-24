@@ -33,6 +33,7 @@ signals:
     void signalHUDUpdate(QString);
     void signalSetSettings(QString);
     void signalAction(QString);
+    void signalAddTask(QString);
 };
 
 #endif // CLIENT_H

@@ -140,6 +140,11 @@ void ClientWindow::slotAttack(int lvl) {
                      if (eventWindow) eventWindow->close();
                      eventWindow = new EventWindow();
                      eventWindow->show();
+
+                     ClientSettings &cl = ClientSettings::getClientSettings();
+                     auto t = cl.getNextTask();
+                     std::cerr << t->getName() << " " << t->getText() << std::endl;
+
                      connect(eventWindow, &EventWindow::closed, [this] {
                          eventWindow = nullptr;
                      });

@@ -67,3 +67,12 @@ MazeObject *pars::createEnemyByType(size_t difficulty, size_t size_, bool dead_)
     return new Enemy(size_, difficulty, dead_);
 
 }
+
+QString pars::prepareTaskForSend(std::shared_ptr<Task> task) {
+    std::string res = task->getName() + " ";
+    for (auto it : task->getText()) {
+        if (it == ' ') res += "_";
+        else res += it;
+    }
+    return QString::fromStdString(res);
+}

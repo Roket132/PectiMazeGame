@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 #include <QString>
+
 #include "engine/mazeobject.h"
+#include "taskarchive.h"
 
 namespace pars {
     std::vector<QString> splitRequests(QString reqs_);
@@ -16,6 +18,8 @@ namespace pars {
     MazeObject* createEnemyByType(size_t difficulty, size_t size_, bool dead_ = false);
 
     QString getLargeMazeObjectType(char ch);
+
+    QString prepareTaskForSend(std::shared_ptr<Task> task);
 
 }
 

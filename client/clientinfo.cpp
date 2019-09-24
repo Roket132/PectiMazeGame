@@ -2,7 +2,7 @@
 
 #include "appsettings.h"
 
-ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_) {
+ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_), currentTask(0) {
     std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 3(4) parametrs "type login password avatarType"
     login = info[1];
     password = info[2];
@@ -26,6 +26,10 @@ QString ClientInfo::getLogin()
 QString ClientInfo::getPassword()
 {
     return password;
+}
+
+size_t ClientInfo::getCurrentTask() {
+    return currentTask;
 }
 
 void ClientInfo::setSocket(QTcpSocket *socket) {

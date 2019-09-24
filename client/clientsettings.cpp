@@ -48,6 +48,10 @@ void ClientSettings::createEmptyMaze() {
 
 }
 
+std::shared_ptr<Task> ClientSettings::getNextTask() {
+    return archive.getNextTask();
+}
+
 Maze *ClientSettings::getMaze() {
     std::lock_guard<std::mutex> lg(*maze_mutex);
     return clientMaze;
@@ -63,6 +67,7 @@ void ClientSettings::clientConnects() {
     connect(client, SIGNAL(signalHUDUpdate(QString)), this, SLOT(slotHUDUpdate(QString)));
     connect(client, SIGNAL(signalSetSettings(QString)), this, SLOT(slotSetSettings(QString)));
     connect(client, SIGNAL(signalAction(QString)), this, SLOT(slotAction(QString)));
+    connect(client, SIGNAL(signalAddTask(QString)), this, SLOT(slotAddTask(QString)));
 }
 
 void ClientSettings::slotSetMap(QString map) {
@@ -86,4 +91,10 @@ void ClientSettings::slotAction(QString req_) {
         std::cerr << "slotAction" << std::endl;
         emit signalAttack(req[1].toInt());
     }
+}
+
+void ClientSettings::slotAddTask(QString req_) {
+    std::vector<QString> req = pars::parseRequest(req_);
+    std::cerr << "haha classic" << std::endl;
+    archive.addTask(std::make_shared<Task>(Task(req[1].toStdString(), req[2].toStdString())));
 }

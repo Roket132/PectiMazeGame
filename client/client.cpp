@@ -62,6 +62,8 @@ void Client::slotReadyRead()
                 emit signalSetSettings(it);
             } else if (req[0] == "Action") {
                 emit signalAction(it);
+            } else if (req[0] == "Task") {
+                emit signalAddTask(it);
             }
         }
 

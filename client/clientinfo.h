@@ -23,6 +23,7 @@ public:
 
     QString getLogin();
     QString getPassword();
+    size_t getCurrentTask();
 
     void setSocket(QTcpSocket* socket);
 
@@ -37,6 +38,8 @@ private:
     size_t avatarType;
     QString login;
     QString password;
+
+    size_t currentTask;
 
     QTcpSocket* pTcpSocket;
 

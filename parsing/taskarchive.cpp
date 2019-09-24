@@ -6,7 +6,7 @@
 using std::unique_ptr;
 
 TaskArchive::TaskArchive() : currentTask(0) {
-
+    mutex_ = new std::mutex;
 }
 
 TaskArchive::TaskArchive(std::experimental::filesystem::__cxx11::path path) :currentTask()  {
@@ -24,6 +24,8 @@ namespace {
 }
 
 bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
+    std::lock_guard<std::mutex> lg(*mutex_);
+
     std::fstream file;
     try {
         file.open(path.string());
@@ -59,7 +61,7 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
                 mode = 0;
             } else if (buffer.get()[i] == ']') {
                 mode = 0;
-                tasks.push_back(std::make_shared<Task>(Task(name, task, answers)));
+                tasks.emplace_back(std::make_shared<Task>(Task(name, task, answers)));
                 name = task = answer = "";
                 answers.clear();
             } else if (buffer.get()[i] == ',') {
@@ -76,7 +78,19 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
     }
 }
 
+void TaskArchive::addTask(std::shared_ptr<Task> task) {
+    std::lock_guard<std::mutex> lg(*mutex_);
+    tasks.emplace_back(task);
+}
+
 std::shared_ptr<Task> TaskArchive::getNextTask() {
+    std::lock_guard<std::mutex> lg(*mutex_);
     if (currentTask >= tasks.size()) return nullptr;
     return tasks[currentTask++];
+}
+
+std::shared_ptr<Task> TaskArchive::getTask(size_t pos) {
+    std::lock_guard<std::mutex> lg(*mutex_);
+    if (pos >= tasks.size()) return nullptr;
+    return tasks[pos];
 }

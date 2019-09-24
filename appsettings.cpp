@@ -28,3 +28,7 @@ size_t AppSettings::getAvatar() {
 void AppSettings::setAvatar(size_t type) {
     selectedAvatar = type;
 }
+
+std::vector<QString> *AppSettings::getPathForTasks() {
+    return &pathForTasks;
+}
