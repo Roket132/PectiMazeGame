@@ -93,8 +93,39 @@ void ClientSettings::slotAction(QString req_) {
     }
 }
 
+namespace  {
+    std::pair<QString, QString> splitTask(QString str) {
+        QString name = "";
+        bool next = false;
+        bool enter = false;
+        QString text = "";
+        for (auto &it : str) {
+            if (enter) {
+                enter = false;
+                if (it == 'n') {
+                   it = '\n';
+                } else {
+                    next = true;
+                }
+            }
+
+            if (it == '\\') {
+                enter = true;
+            } else {
+                if (!next) name += it;
+                else {
+                    text += it;
+                }
+            }
+        }
+        return {name, text};
+    }
+
+}
+
 void ClientSettings::slotAddTask(QString req_) {
-    std::vector<QString> req = pars::parseRequest(req_);
-    std::cerr << "haha classic" << std::endl;
-    archive.addTask(std::make_shared<Task>(Task(req[1].toStdString(), req[2].toStdString())));
+    std::vector<QString> req = pars::parseRequest(req_, 2);
+    //archive.addTask(std::make_shared<Task>(Task(req[1].toStdString(), req[2].toStdString())));
+    auto split = splitTask(req[1]);
+    archive.addTask(std::make_shared<Task>(Task(split.first.toStdString(), split.second.toStdString())));
 }

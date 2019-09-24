@@ -26,6 +26,22 @@ std::vector<QString> pars::parseRequest(QString req) {
         return ans;
 }
 
+std::vector<QString> pars::parseRequest(QString req, int cnt) {
+    std::vector<QString> ans;
+    QString now = "";
+    for (int i = 0; i < req.size(); i++) {
+        if (req[i] == ' ' && cnt > 1) {
+            ans.push_back(now);
+            now = "";
+            cnt--;
+        } else {
+            now += req[i];
+        }
+    }
+    ans.push_back(now);
+    return ans;
+}
+
 std::vector<QString> pars::splitRequests(QString reqs_)
 {
     std::vector<QString> ans;
@@ -69,9 +85,9 @@ MazeObject *pars::createEnemyByType(size_t difficulty, size_t size_, bool dead_)
 }
 
 QString pars::prepareTaskForSend(std::shared_ptr<Task> task) {
-    std::string res = task->getName() + " ";
+    std::string res = task->getName() + '\\';
     for (auto it : task->getText()) {
-        if (it == ' ') res += "_";
+        if (it == ' ') res += " ";
         else res += it;
     }
     return QString::fromStdString(res);

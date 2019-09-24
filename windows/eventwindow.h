@@ -14,7 +14,8 @@ class EventWindow : public QWidget
 
 public:
     explicit EventWindow(QWidget *parent = nullptr);
-    ~EventWindow();
+    explicit EventWindow(QString name, QString task, QWidget *parent = nullptr);
+    ~EventWindow() override;
 
     void closeEvent(QCloseEvent *event) override;
 

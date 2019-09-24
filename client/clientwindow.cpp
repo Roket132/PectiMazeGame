@@ -133,17 +133,17 @@ void ClientWindow::addEventLayout(QPixmap px, QString description, std::function
 
 void ClientWindow::slotAttack(int lvl) {
     blockMoving();
+
+    ClientSettings &cl = ClientSettings::getClientSettings();
+    auto task = cl.getNextTask();
+
     addEventLayout(QPixmap(":/res/image/image_80/swords.png"),
                 "Чтобы продолжить путешествие\n"
                 "надо победить врага!",
-                [this] {
+                [this, task] {
                      if (eventWindow) eventWindow->close();
-                     eventWindow = new EventWindow();
+                     eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()));
                      eventWindow->show();
-
-                     ClientSettings &cl = ClientSettings::getClientSettings();
-                     auto t = cl.getNextTask();
-                     std::cerr << t->getName() << " " << t->getText() << std::endl;
 
                      connect(eventWindow, &EventWindow::closed, [this] {
                          eventWindow = nullptr;
