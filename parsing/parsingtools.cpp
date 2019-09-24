@@ -92,3 +92,30 @@ QString pars::prepareTaskForSend(std::shared_ptr<Task> task) {
     }
     return QString::fromStdString(res);
 }
+
+std::pair<QString, QString> pars::splitTask(QString str) {
+    QString name = "";
+    bool next = false;
+    bool enter = false;
+    QString text = "";
+    for (auto &it : str) {
+        if (enter) {
+            enter = false;
+            if (it == 'n') {
+               it = '\n';
+            } else {
+                next = true;
+            }
+        }
+
+        if (it == '\\') {
+            enter = true;
+        } else {
+            if (!next) name += it;
+            else {
+                text += it;
+            }
+        }
+    }
+    return {name, text};
+}

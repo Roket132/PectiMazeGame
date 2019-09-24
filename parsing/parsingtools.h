@@ -23,6 +23,7 @@ namespace pars {
 
     QString prepareTaskForSend(std::shared_ptr<Task> task);
 
+    std::pair<QString, QString> splitTask(QString str);
 }
 
 
