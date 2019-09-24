@@ -6,8 +6,8 @@
 #include <mutex>
 #include <vector>
 #include <iostream>
-#include <experimental/filesystem>
 #include <QWidget>
+#include <experimental/filesystem>
 
 namespace fs = std::experimental::filesystem;
 

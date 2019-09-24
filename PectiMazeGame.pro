@@ -50,6 +50,8 @@ SOURCES += \
         mainwindow.cpp \
         maze.cpp \
         parsing/parsingtools.cpp \
+        parsing/task.cpp \
+        parsing/taskarchive.cpp \
         server/server.cpp \
         server/serversettings.cpp \
         server/serverwindow.cpp \
@@ -83,6 +85,8 @@ HEADERS += \
         mainwindow.h \
         maze.h \
         parsing/parsingtools.h \
+        parsing/task.h \
+        parsing/taskarchive.h \
         server/server.h \
         server/serversettings.h \
         server/serverwindow.h \

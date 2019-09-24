@@ -29,6 +29,8 @@ public:
     int getExtraVisTimer();
     size_t getEnemyDifficulty();
 
+    bool canMove();
+
     QPixmap getAvatar();
 
 private:
