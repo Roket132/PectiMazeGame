@@ -14,13 +14,15 @@ public:
     QString getTypeWitchDifficult();
     size_t getDifficulty();
 
+    void kill();
+    bool isDead();
+
 private:
     size_t difficulty;
     size_t size;
     bool dead;
 
     bool setAllTexture(size_t size_, size_t difficulty_, bool dead_, QString imgType = "jpg");
-    void kill();
 
     void update() override;
 };

@@ -86,13 +86,20 @@ void ClientWindow::closeEvent(QCloseEvent *event) {
 }
 
 void ClientWindow::blockMoving() {
-   ui->upButton->setEnabled(false);
-   ui->rightButton->setEnabled(false);
-   ui->downButton->setEnabled(false);
-   ui->leftButton->setEnabled(false);
+    ui->upButton->setEnabled(false);
+    ui->rightButton->setEnabled(false);
+    ui->downButton->setEnabled(false);
+    ui->leftButton->setEnabled(false);
 }
 
-void ClientWindow::addEventLayout(QPixmap px, QString description, std::function<void()> f_btn) {
+void ClientWindow::unlockMoving() {
+    ui->upButton->setEnabled(true);
+    ui->rightButton->setEnabled(true);
+    ui->downButton->setEnabled(true);
+    ui->leftButton->setEnabled(true);
+}
+
+void ClientWindow::addEventLayout(QPixmap px, std::shared_ptr<Task> task, QString description, std::function<void()> f_btn) {
     if (ui->eventsLayout->count() == 0) {
         QLabel *lb = new QLabel("Для выбора события нажмите на иконку:", this);
         lb->setStyleSheet(QString("font-size: %1px").arg(16));
@@ -130,6 +137,9 @@ void ClientWindow::addEventLayout(QPixmap px, QString description, std::function
     infoLabel->setText(description);
     gl->addWidget(infoLabel, 2, 3);
 
+    gl->setObjectName(QString::fromStdString(task->getName()));
+
+    eventLayouts.emplace_back(gl);
     ui->eventsLayout->addLayout(gl);
 }
 
@@ -140,6 +150,7 @@ void ClientWindow::slotAttack(int lvl) {
     auto task = cl.getNextTask();
 
     addEventLayout(QPixmap(":/res/image/image_80/swords.png"),
+                   task,
                 "Чтобы продолжить путешествие\n"
                 "надо победить врага!",
                 [this, task] {
@@ -154,12 +165,25 @@ void ClientWindow::slotAttack(int lvl) {
 
 }
 
-void ClientWindow::slotAnswerSuccessful() {
-    QMessageBox::information(0, "Information", "Operation Complete");
+void ClientWindow::slotAnswerSuccessful(QString taskName) {
+    eventWindow->close();
+    int pos = 0;
+    for (auto it : eventLayouts) {
+        if (it->objectName() == taskName) {
+            while (auto *item = it->layout()->takeAt(0)) {
+                delete item->widget();
+                delete item;
+            }
+            delete it;
+            eventLayouts.erase(eventLayouts.begin() + pos);
+        }
+        pos++;
+    }
+    unlockMoving();
 }
 
 void ClientWindow::slotAnswerIncorrect() {
-    QMessageBox::information(0, "Information", "Ответ неверный  ");
+    QMessageBox::information(nullptr, "Information", "Ответ неверный!");
 }
 
 /*

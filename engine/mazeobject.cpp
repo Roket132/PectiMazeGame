@@ -2,7 +2,8 @@
 
 MazeObject::MazeObject() :
     def_texture(QPixmap(":/res/image/image_80/red.jpg")),
-    possibleStandOnObj(false) {}
+    possibleStandOnObj(false),
+    isEnemy_(false) {}
 
 MazeObject::MazeObject(QPixmap texture_, std::vector<QPixmap> *frames_) : MazeObject() {
     texture = def_texture = texture_;
@@ -20,5 +21,9 @@ QPixmap MazeObject::getTexture() {
 
 bool MazeObject::possibleToGo() {
     return possibleStandOnObj;
+}
+
+bool MazeObject::isEnemy() {
+    return isEnemy_;
 }
 

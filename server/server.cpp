@@ -90,6 +90,8 @@ void Server::slotReadClient()
 
 void Server::sendToClient(QTcpSocket* pSocket, const QString& str)
 {
+    std::cerr << "Server sended: " << str.toStdString() << std::endl;
+
     QString send_str = (str.back() == ';' ? str : str + ";");
 
     QByteArray  arrBlock;

@@ -28,8 +28,10 @@ QString ClientInfo::getPassword()
     return password;
 }
 
-size_t ClientInfo::getCurrentTask() {
-    return currentTask;
+size_t ClientInfo::getCurrentTask(bool inc) {
+    if (inc) return currentTask++;
+    else
+        return currentTask;
 }
 
 void ClientInfo::setSocket(QTcpSocket *socket) {

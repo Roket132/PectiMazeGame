@@ -3,7 +3,7 @@
 #include "iostream"
 #include "appsettings.h"
 
-Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTimer(0), extraVision(false), cntPectiArrow(0), fight(false), avatar(avatar_) {
+Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTimer(0), extraVision(false), cntPectiArrow(0), fight(false), curEnemyPos({0,0}), avatar(avatar_) {
     if (size_ <= 40) {
         texture = def_texture = avatar.scaled(40, 40);
     }
@@ -82,6 +82,14 @@ bool Player::canMove() {
 
 QPixmap Player::getAvatar() {
     return avatar;
+}
+
+std::pair<size_t, size_t> Player::getCurEnemyPos() const {
+    return curEnemyPos;
+}
+
+void Player::setCurEnemyPos(const std::pair<size_t, size_t> &value) {
+    curEnemyPos = value;
 }
 
 void Player::update() {

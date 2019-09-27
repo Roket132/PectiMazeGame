@@ -87,6 +87,8 @@ void Client::slotError(QAbstractSocket::SocketError err)
 
 void Client::slotSendToServer(const QString &str)
 {
+    std::cerr << "Client sended: " << str.toStdString() << std::endl;
+
     QString send_str = (str.back() == ';' ? str : str + ";");
 
     QByteArray  arrBlock;

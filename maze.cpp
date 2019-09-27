@@ -171,6 +171,7 @@ void Maze::bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vec
 }
 
 void Maze::setPectiArrow(size_t x, size_t y, int steps) {
+    std::lock_guard<std::mutex> lg(*mutex_);
     while (steps--) {
         if (maze[x][y]->getTypeObject() == "floor") {
             delete maze[x][y];
@@ -183,13 +184,16 @@ void Maze::setPectiArrow(size_t x, size_t y, int steps) {
     }
 }
 
-int Maze::enemyAttack(size_t x_, size_t y_) {
+std::pair<int, std::pair<int, int> > Maze::enemyAttack(size_t x_, size_t y_) {
+    std::lock_guard<std::mutex> lg(*mutex_);
     int x = static_cast<int>(x_);
     int y = static_cast<int>(y_);
     for (int i = x - 1; i <= x + 1; i++) {
         for (int j = y - 1; j <= y + 1; j++) {
             if (i  < 0 || j < 0 || i > h || j > w) continue;
-            if (maze[i][j]->getTypeObject()[0] > '0' && maze[i][j]->getTypeObject()[0] <= '9') { // if char > 0 and <=9 then it's enemy because its enemy type, wee documentation
+            if (maze[i][j]->isEnemy()) { // if char > 0 and <=9 then it's enemy because its enemy type, wee documentation
+                auto *enemy = dynamic_cast<Enemy*>(maze[i][j]);
+                if (enemy->isDead()) continue;
                 if (i == x - 1 && j == y - 1) {
                     if (maze[x - 1][y]->getTypeObject() == "wall" && maze[x][y - 1]->getTypeObject() == "wall") continue;
                 }
@@ -197,11 +201,19 @@ int Maze::enemyAttack(size_t x_, size_t y_) {
                 if (i == x + 1 && j == y + 1 && maze[x + 1][y]->getTypeObject() == "wall" && maze[x][y + 1]->getTypeObject() == "wall") continue;
                 if (i == x + 1 && j == y - 1 && maze[x + 1][y]->getTypeObject() == "wall" && maze[x][y - 1]->getTypeObject() == "wall") continue;
                 Enemy *en = dynamic_cast<Enemy*>(maze[i][j]);
-                return en->getDifficulty();
+                return {en->getDifficulty(), {i, j}};
             }
         }
     }
-    return 0;
+    return {0, {0, 0}};
+}
+
+void Maze::killEnemy(size_t x, size_t y) {
+    std::lock_guard<std::mutex> lg(*mutex_);
+    if (maze[x][y]->isEnemy()) {
+        Enemy *enemy = dynamic_cast<Enemy*>(maze[x][y]);
+        enemy->kill();
+    }
 }
 
 MazeObject *Maze::getMazeObject(size_t x, size_t y) {
@@ -226,7 +238,6 @@ std::pair<int, int> Maze::getFreeStartPlace() {
 }
 
 void Maze::ShapeWalls() {
-    std::cerr << "Shape " << maze.size() << " " << maze[0].size() << std::endl;
     for (size_t i = 0; i < maze.size(); i++) {
         for (size_t j = 0; j < maze[i].size(); j++) {
             if (maze[i][j]->getTypeObject() == "wall") {
@@ -239,7 +250,6 @@ void Maze::ShapeWalls() {
             }
         }
     }
-    std::cerr << "Shape end" << std::endl;
 }
 
 void Maze::ShapeFog() {

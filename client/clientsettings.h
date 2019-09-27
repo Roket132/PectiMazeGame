@@ -52,7 +52,7 @@ private slots:
 
 signals:
     void signalAttack(int);
-    void signalAnswerSuccessful();
+    void signalAnswerSuccessful(QString);
     void signalAnswerIncorrect();
 
 private:

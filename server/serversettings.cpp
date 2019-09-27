@@ -124,9 +124,12 @@ void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
     std::vector<QString> req = pars::parseRequest(str, 2);
     auto split = pars::splitTask(req[1]);
     if (archive.checkAnswer(split.second.toStdString(), split.first.toStdString())) {
-        server->sendToClient(socket, "Action answer success");
+        server->sendToClient(socket, QString("Action answer success %1").arg(split.first));
         Player* player = getPlayerBySocket(socket);
         player->setFight(false, 0);
+        auto enemyPos = player->getCurEnemyPos();
+        maze->killEnemy(enemyPos.first, enemyPos.second);
+        doCellAction(player, socket);
     } else {
         server->sendToClient(socket, "Action answer faild");
     }
@@ -169,7 +172,7 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
 
 std::shared_ptr<Task> ServerSettings::getNextTask(QTcpSocket *socket) {
     ClientInfo *cl = getClientInfoBySocket(socket);
-    return archive.getTask(cl->getCurrentTask());
+    return archive.getTask(cl->getCurrentTask(true));
 }
 
 
@@ -193,11 +196,13 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
         player->takePectiArrow();
         maze->removeObjectFromCell(pos.first, pos.second);
         server->sendToClient(socket, "HUD add pecti_arrow 1;");
-    } else if (int enemyDif = maze->enemyAttack(pos.first, pos.second)) {
-        player->setFight(true, static_cast<size_t>(enemyDif));
+    } else if (maze->enemyAttack(pos.first, pos.second).first) {
+        auto enemy = maze->enemyAttack(pos.first, pos.second);
+        player->setFight(true, static_cast<size_t>(enemy.first));
+        player->setCurEnemyPos({enemy.second.first, enemy.second.second});
         auto task = getNextTask(socket);
         server->sendToClient(socket, QStringLiteral("Task %1").arg(pars::prepareTaskForSend(task)));
-        server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemyDif));
+        server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemy.first));
     }
 
 }

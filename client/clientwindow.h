@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QPushButton>
+#include <QGridLayout>
 #include <functional>
 #include <QLabel>
 #include <QThread>
@@ -33,14 +34,16 @@ private:
     std::vector<QPushButton*> invScenes;
     std::vector<QLabel*> infoInvScenes;
 
+    std::vector<QGridLayout*> eventLayouts;
+
     Engine* eng;
     QThread* thread;
 
     void closeEvent(QCloseEvent *event) override;
 
-    void draw();
     void blockMoving();
-    void addEventLayout(QPixmap px, QString descriprion, std::function<void()> f_btn);
+    void unlockMoving();
+    void addEventLayout(QPixmap px, std::shared_ptr<Task> task, QString descriprion, std::function<void()> f_btn);
     void updateEventSettings();
 
     EventWindow *eventWindow;
@@ -50,7 +53,7 @@ signals:
 
 private slots:
     void slotAttack(int);
-    void slotAnswerSuccessful();
+    void slotAnswerSuccessful(QString);
     void slotAnswerIncorrect();
 
     void on_upButton_clicked();

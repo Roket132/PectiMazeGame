@@ -33,7 +33,8 @@ public:
     void bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vector<int>> &maze_bfs);
     void setPectiArrow(size_t x, size_t y, int steps = 10);
 
-    int enemyAttack(size_t x, size_t y);
+    std::pair<int, std::pair<int, int>> enemyAttack(size_t x, size_t y);
+    void killEnemy(size_t x, size_t y);
 
 private:
     int h, w;

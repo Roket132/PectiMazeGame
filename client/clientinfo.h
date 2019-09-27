@@ -23,7 +23,7 @@ public:
 
     QString getLogin();
     QString getPassword();
-    size_t getCurrentTask();
+    size_t getCurrentTask(bool increment);
 
     void setSocket(QTcpSocket* socket);
 

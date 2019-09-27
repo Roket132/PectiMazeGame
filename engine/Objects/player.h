@@ -33,6 +33,9 @@ public:
 
     QPixmap getAvatar();
 
+    std::pair<size_t, size_t> getCurEnemyPos() const;
+    void setCurEnemyPos(const std::pair<size_t, size_t> &value);
+
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off
     bool extraVision; // if true then player can see more
@@ -41,6 +44,7 @@ private:
 
     bool fight;
     size_t enemyDifficulty;
+    std::pair<size_t, size_t> curEnemyPos;
 
     QPixmap avatar;
 
