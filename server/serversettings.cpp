@@ -38,7 +38,9 @@ void ServerSettings::startServer(fs::path path) {
     connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
     connect(server, SIGNAL(signalClientExit(QString, QTcpSocket*)), this, SLOT(slotClientExit(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalCheckAnswer(QString, QTcpSocket*)), this, SLOT(slotCheckAnswer(QString, QTcpSocket*)));
     Q_ASSERT(c1); Q_ASSERT(c2);
+
 }
 
 void ServerSettings::closeServer() {
@@ -116,6 +118,18 @@ void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
 
 void ServerSettings::slotClientExit(QString str, QTcpSocket *socket) {
     emit signalPlayerDisconnected(getClientInfoBySocket(socket));
+}
+
+void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
+    std::vector<QString> req = pars::parseRequest(str, 2);
+    auto split = pars::splitTask(req[1]);
+    if (archive.checkAnswer(split.second.toStdString(), split.first.toStdString())) {
+        server->sendToClient(socket, "Action answer success");
+        Player* player = getPlayerBySocket(socket);
+        player->setFight(false, 0);
+    } else {
+        server->sendToClient(socket, "Action answer faild");
+    }
 }
 
 Maze* ServerSettings::getMaze() {

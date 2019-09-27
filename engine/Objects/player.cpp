@@ -85,5 +85,5 @@ QPixmap Player::getAvatar() {
 }
 
 void Player::update() {
-
+    
 }

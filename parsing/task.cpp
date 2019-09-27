@@ -31,3 +31,7 @@ std::string Task::getName() {
 std::string Task::getText() {
     return text_;
 }
+
+std::vector<std::string> *Task::getAnswer() {
+    return &answers_;
+}

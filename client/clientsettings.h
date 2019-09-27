@@ -52,6 +52,8 @@ private slots:
 
 signals:
     void signalAttack(int);
+    void signalAnswerSuccessful();
+    void signalAnswerIncorrect();
 
 private:
     Client* client;

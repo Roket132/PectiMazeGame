@@ -16,6 +16,7 @@ public:
 
     std::string getName();
     std::string getText();
+    std::vector<std::string>* getAnswer();
 
 private:
     std::string name_;

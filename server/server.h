@@ -26,6 +26,7 @@ signals:
     void signalMovePlayer(QString str, QTcpSocket* socket);
     void signalUseInventory(QString str, QTcpSocket* socket);
     void signalClientExit(QString str, QTcpSocket* socket);
+    void signalCheckAnswer(QString str, QTcpSocket* socket);
 
 
 public slots:

@@ -1,15 +1,43 @@
-#include "eventwindow.h"
+ #include "eventwindow.h"
 #include "ui_eventwindow.h"
 
 #include <QMessageBox>
+#include <QPushButton>
+#include <QInputDialog>
 
-EventWindow::EventWindow(QWidget *parent) :
+#include "client/clientsettings.h"
+
+EventWindow::EventWindow(QWidget *parent, QString name) :
     QWidget(parent),
     ui(new Ui::EventWindow)
 {
     ui->setupUi(this);
     ui->textEdit->setReadOnly(true);
     emit opened();
+
+    taskName = name;
+
+    QPushButton *ansBtn = new QPushButton(this);
+    ansBtn->setText("Ответить");
+    ansBtn->setFixedSize(80, 30);
+
+    ui->actionsLayout->addWidget(ansBtn);
+
+    connect(ansBtn, &QPushButton::pressed, [this] {
+        bool bOk;
+        QString str = QInputDialog::getText( nullptr,
+                                             "Ответ",
+                                             "Введите ответ:",
+                                             QLineEdit::Normal,
+                                             "",
+                                             &bOk
+                                            );
+        if (bOk) {
+            ClientSettings &clientSetting = ClientSettings::getClientSettings();
+            clientSetting.getClient()->sendToServer(QString("Answer %1\\%2").arg(taskName).arg(str));
+        }
+
+    });
 }
 
 namespace  {
@@ -35,7 +63,7 @@ QString createHTML(QString name, QString task) {
 }
 }
 
-EventWindow::EventWindow(QString name, QString task, QWidget *parent) : EventWindow(parent) {
+EventWindow::EventWindow(QString name, QString task, QWidget *parent) : EventWindow(parent, name) {
     ui->textEdit->setHtml(createHTML(name, task));
 }
 

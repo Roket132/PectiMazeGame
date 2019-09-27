@@ -90,12 +90,17 @@ void ClientSettings::slotAction(QString req_) {
     if (req[1] == "attack") {
         std::cerr << "slotAction" << std::endl;
         emit signalAttack(req[1].toInt());
+    } else if (req[1] == "answer") {
+        if (req[2] == "success") {
+            emit signalAnswerSuccessful();
+        } else {
+            emit signalAnswerIncorrect();
+        }
     }
 }
 
 void ClientSettings::slotAddTask(QString req_) {
     std::vector<QString> req = pars::parseRequest(req_, 2);
-    //archive.addTask(std::make_shared<Task>(Task(req[1].toStdString(), req[2].toStdString())));
     auto split = pars::splitTask(req[1]);
     archive.addTask(std::make_shared<Task>(Task(split.first.toStdString(), split.second.toStdString())));
 }

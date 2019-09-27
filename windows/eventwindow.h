@@ -13,7 +13,7 @@ class EventWindow : public QWidget
     Q_OBJECT
 
 public:
-    explicit EventWindow(QWidget *parent = nullptr);
+    explicit EventWindow(QWidget *parent = nullptr, QString name = "");
     explicit EventWindow(QString name, QString task, QWidget *parent = nullptr);
     ~EventWindow() override;
 
@@ -25,6 +25,8 @@ signals:
 
 private:
     Ui::EventWindow *ui;
+
+    QString taskName;
 };
 
 #endif // EVENTWINDOW_H

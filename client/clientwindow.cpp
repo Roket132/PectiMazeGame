@@ -61,6 +61,8 @@ ClientWindow::ClientWindow(QWidget *parent) :
 
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     connect(&clientSettings, &ClientSettings::signalAttack, this, &ClientWindow::slotAttack);
+    connect(&clientSettings, &ClientSettings::signalAnswerSuccessful, this, &ClientWindow::slotAnswerSuccessful);
+    connect(&clientSettings, &ClientSettings::signalAnswerIncorrect, this, &ClientWindow::slotAnswerIncorrect);
 }
 
 ClientWindow::~ClientWindow() {
@@ -150,6 +152,14 @@ void ClientWindow::slotAttack(int lvl) {
                      });
                 });
 
+}
+
+void ClientWindow::slotAnswerSuccessful() {
+    QMessageBox::information(0, "Information", "Operation Complete");
+}
+
+void ClientWindow::slotAnswerIncorrect() {
+    QMessageBox::information(0, "Information", "Ответ неверный  ");
 }
 
 /*

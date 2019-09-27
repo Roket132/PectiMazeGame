@@ -1,5 +1,6 @@
 #include "taskarchive.h"
 
+#include <QString>
 #include <iostream>
 #include <fstream>
 
@@ -7,6 +8,7 @@ using std::unique_ptr;
 
 TaskArchive::TaskArchive() : currentTask(0) {
     mutex_ = new std::mutex;
+    usedNames.clear();
 }
 
 TaskArchive::TaskArchive(std::experimental::filesystem::__cxx11::path path) :currentTask()  {
@@ -21,10 +23,18 @@ namespace {
         std::reverse(str.begin(), str.end());
     }
 
+    std::string lower(const std::string &str) {
+        QString res = "";
+        for (auto it : QString::fromStdString(str)) {
+            res += it.toLower();
+        }
+        return res.toStdString();
+    }
+
 }
 
 bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
-    std::lock_guard<std::mutex> lg(*mutex_);
+    //std::lock_guard<std::mutex> lg(*mutex_);
 
     std::fstream file;
     try {
@@ -61,7 +71,9 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
                 mode = 0;
             } else if (buffer.get()[i] == ']') {
                 mode = 0;
-                tasks.emplace_back(std::make_shared<Task>(Task(name, task, answers)));
+                removeLeadSpaces(answer);
+                answers.emplace_back(answer);
+                addTask(std::make_shared<Task>(Task(name, task, answers)));
                 name = task = answer = "";
                 answers.clear();
             } else if (buffer.get()[i] == ',') {
@@ -80,6 +92,11 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
 
 void TaskArchive::addTask(std::shared_ptr<Task> task) {
     std::lock_guard<std::mutex> lg(*mutex_);
+    for (auto it : tasks) {
+        if (it->getName() == task->getName()) {
+            return;
+        }
+    }
     tasks.emplace_back(task);
 }
 
@@ -93,4 +110,17 @@ std::shared_ptr<Task> TaskArchive::getTask(size_t pos) {
     std::lock_guard<std::mutex> lg(*mutex_);
     if (pos >= tasks.size()) return nullptr;
     return tasks[pos];
+}
+
+bool TaskArchive::checkAnswer(std::string answer, std::string taskName) {
+    std::cerr << "check " << answer << " " << taskName << std::endl;
+    removeLeadSpaces(answer);
+    for (auto it : tasks) {
+        if (it->getName() == taskName) {
+            for (auto ans : *it->getAnswer())
+                if (lower(ans) == lower(answer)) return true;
+            return false;
+        }
+    }
+    return false;
 }

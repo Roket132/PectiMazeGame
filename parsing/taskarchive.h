@@ -1,9 +1,11 @@
 #ifndef TASKARCHIVE_H
 #define TASKARCHIVE_H
 
+//#include <boost/algorithm/string.hpp>
 #include <experimental/filesystem>
 #include <vector>
 #include <mutex>
+#include <set>
 
 #include "task.h"
 
@@ -22,9 +24,13 @@ public:
     std::shared_ptr<Task> getNextTask();
     std::shared_ptr<Task> getTask(size_t pos);
 
+    bool checkAnswer(std::string answer, std::string taskName);
+
 private:
     std::vector<std::shared_ptr<Task>> tasks;
     size_t currentTask;
+
+    std::set<std::string> usedNames;
 
     std::mutex* mutex_;
 };

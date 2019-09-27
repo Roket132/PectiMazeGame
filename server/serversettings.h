@@ -74,6 +74,7 @@ private slots:
     void slotMovePlayer(QString str, QTcpSocket* socket);
     void slotUseInventory(QString str, QTcpSocket* socket);
     void slotClientExit(QString str, QTcpSocket* socket);
+    void slotCheckAnswer(QString str, QTcpSocket* socket);
 
 signals:
     void signalPlayerConnected(ClientInfo *clInfo);

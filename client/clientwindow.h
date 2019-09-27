@@ -50,6 +50,9 @@ signals:
 
 private slots:
     void slotAttack(int);
+    void slotAnswerSuccessful();
+    void slotAnswerIncorrect();
+
     void on_upButton_clicked();
     void on_rightButton_clicked();
     void on_downButton_clicked();
