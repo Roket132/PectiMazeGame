@@ -37,7 +37,7 @@ public:
     QString getMapPlayerBySocket(QTcpSocket* socket);
     QString getMapPlayerByPlace(int x, int y, bool extra);
 
-    std::shared_ptr<Task> getNextTask(QTcpSocket* socket);
+    std::shared_ptr<Task> getNextTask(QTcpSocket* socket, size_t lvl);
 
     Player* isPlayer(int x, int y);
     Player* getPlayerBySocket(QTcpSocket* socket);

@@ -7,7 +7,7 @@
 
 #include "client/clientsettings.h"
 
-EventWindow::EventWindow(QWidget *parent, QString name) :
+EventWindow::EventWindow(QWidget *parent, QString name, size_t lvl) :
     QWidget(parent),
     ui(new Ui::EventWindow)
 {
@@ -16,6 +16,7 @@ EventWindow::EventWindow(QWidget *parent, QString name) :
     emit opened();
 
     taskName = name;
+    taskLvl = lvl;
 
     QPushButton *ansBtn = new QPushButton(this);
     ansBtn->setText("Ответить");
@@ -34,7 +35,7 @@ EventWindow::EventWindow(QWidget *parent, QString name) :
                                             );
         if (bOk) {
             ClientSettings &clientSetting = ClientSettings::getClientSettings();
-            clientSetting.getClient()->sendToServer(QString("Answer %1\\%2").arg(taskName).arg(str));
+            clientSetting.getClient()->sendToServer(QString("Answer %1 %2$%3").arg(taskLvl).arg(taskName).arg(str));
         }
 
     });
@@ -52,6 +53,7 @@ QString createHTML(QString name, QString task) {
     QString newLine = "";
     for (auto it : task) {
         if (it == '\n') {
+            newLine += ' ';
             res += QString("<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:10pt;\">%1</span></p>").arg(newLine);
             newLine = "";
         } else {
@@ -63,7 +65,7 @@ QString createHTML(QString name, QString task) {
 }
 }
 
-EventWindow::EventWindow(QString name, QString task, QWidget *parent) : EventWindow(parent, name) {
+EventWindow::EventWindow(QString name, QString task, size_t lvl, QWidget *parent) : EventWindow(parent, name, lvl) {
     ui->textEdit->setHtml(createHTML(name, task));
 }
 

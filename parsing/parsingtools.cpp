@@ -1,5 +1,7 @@
 #include "parsingtools.h"
 
+#include <iostream>
+
 #include "engine/Objects/player.h"
 #include "engine/Objects/floor.h"
 #include "engine/Objects/wall.h"
@@ -85,7 +87,7 @@ MazeObject *pars::createEnemyByType(size_t difficulty, size_t size_, bool dead_)
 }
 
 QString pars::prepareTaskForSend(std::shared_ptr<Task> task) {
-    std::string res = task->getName() + '\\';
+    std::string res = task->getName() + '$';
     for (auto it : task->getText()) {
         if (it == ' ') res += " ";
         else res += it;
@@ -103,12 +105,13 @@ std::pair<QString, QString> pars::splitTask(QString str) {
             enter = false;
             if (it == 'n') {
                it = '\n';
-            } else {
-                next = true;
             }
         }
-
-        if (it == '\\') {
+        if (it == '$') {
+            next = true;
+            continue;
+        }
+        if (it == '\\' ) {
             enter = true;
         } else {
             if (!next) name += it;

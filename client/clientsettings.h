@@ -31,7 +31,7 @@ public:
 
     void createEmptyMaze();
 
-    std::shared_ptr<Task> getNextTask();
+    std::shared_ptr<Task> getNextTask(size_t lvl = 1);
 
 private:
     ClientSettings();
@@ -61,7 +61,7 @@ private:
     QString login;
     QString password;
 
-    TaskArchive archive;
+    TaskArchive archiveEnemyTasks;
 
     Maze* clientMaze;
     HUD* clientHUD;

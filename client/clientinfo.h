@@ -23,7 +23,8 @@ public:
 
     QString getLogin();
     QString getPassword();
-    size_t getCurrentTask(bool increment);
+    size_t getCurrentTask(size_t lvl, bool increment);
+    size_t getCurrenArrowTask(bool increment);
 
     void setSocket(QTcpSocket* socket);
 
@@ -39,7 +40,8 @@ private:
     QString login;
     QString password;
 
-    size_t currentTask;
+    std::unordered_map<size_t, size_t> currentEnemyTask;
+    size_t currenArrowTask;
 
     QTcpSocket* pTcpSocket;
 

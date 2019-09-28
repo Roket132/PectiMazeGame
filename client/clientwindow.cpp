@@ -147,7 +147,7 @@ void ClientWindow::slotAttack(int lvl) {
     blockMoving();
 
     ClientSettings &cl = ClientSettings::getClientSettings();
-    auto task = cl.getNextTask();
+    auto task = cl.getNextTask(static_cast<size_t>(lvl));
 
     if (task == nullptr) {
         std::cerr << "task == nullptr in slotAttack" << std::endl;
@@ -158,16 +158,15 @@ void ClientWindow::slotAttack(int lvl) {
                    task,
                 "Чтобы продолжить путешествие\n"
                 "надо победить врага!",
-                [this, task] {
+                [this, task, lvl] {
                      if (eventWindow) eventWindow->close();
-                     eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()));
+                     eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()), static_cast<size_t>(lvl));
                      eventWindow->show();
 
                      connect(eventWindow, &EventWindow::closed, [this] {
                          eventWindow = nullptr;
                      });
                 });
-
 }
 
 void ClientWindow::slotAnswerSuccessful(QString taskName) {
@@ -185,6 +184,13 @@ void ClientWindow::slotAnswerSuccessful(QString taskName) {
         pos++;
     }
     unlockMoving();
+
+    if (eventLayouts.empty()) {
+        while (auto *item = ui->eventsLayout->takeAt(0)) {
+            delete item->widget();
+            delete item;
+        }
+    }
 }
 
 void ClientWindow::slotAnswerIncorrect() {

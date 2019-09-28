@@ -6,6 +6,7 @@
 #include <vector>
 #include <mutex>
 #include <set>
+#include <map>
 
 #include "task.h"
 
@@ -21,16 +22,16 @@ public:
 
     void addTask(std::shared_ptr<Task> task);
 
-    std::shared_ptr<Task> getNextTask();
-    std::shared_ptr<Task> getTask(size_t pos);
+    std::shared_ptr<Task> getNextTask(size_t lvl = 1);
+    std::shared_ptr<Task> getTask(size_t pos, size_t lvl = 1);
 
-    bool checkAnswer(std::string answer, std::string taskName);
+    bool checkAnswer(std::string answer, std::string taskName, size_t lvl);
 
     void clear();
 
 private:
-    std::vector<std::shared_ptr<Task>> tasks;
-    size_t currentTask;
+    std::vector<std::vector<std::shared_ptr<Task>>> tasks;
+    std::vector<size_t> currentTask;
 
     std::mutex* mutex_;
 };

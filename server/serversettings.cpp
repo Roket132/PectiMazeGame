@@ -14,7 +14,7 @@ void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
             .arg(player->isExtraLight()).arg(player->getCntPectiArrow());
     server->sendToClient(socket, settings);
     if (player->isFight()) {
-        auto task = archive.getTask(info->getCurrentTask(false) - 1);
+        auto task = archive.getTask(info->getCurrentTask(player->getEnemyDifficulty(),false) - 1);
         server->sendToClient(socket, QString("Task %1").arg(pars::prepareTaskForSend(task)));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(player->getEnemyDifficulty()));
     }
@@ -127,9 +127,9 @@ void ServerSettings::slotClientExit(QString str, QTcpSocket *socket) {
 }
 
 void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
-    std::vector<QString> req = pars::parseRequest(str, 2);
-    auto split = pars::splitTask(req[1]);
-    if (archive.checkAnswer(split.second.toStdString(), split.first.toStdString())) {
+    std::vector<QString> req = pars::parseRequest(str, 3);
+    auto split = pars::splitTask(req[2]);
+    if (archive.checkAnswer(split.second.toStdString(), split.first.toStdString(), req[1].toUInt())) {
         server->sendToClient(socket, QString("Action answer success %1").arg(split.first));
         Player* player = getPlayerBySocket(socket);
         player->setFight(false, 0);
@@ -176,9 +176,9 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
     return ans;
 }
 
-std::shared_ptr<Task> ServerSettings::getNextTask(QTcpSocket *socket) {
+std::shared_ptr<Task> ServerSettings::getNextTask(QTcpSocket *socket, size_t lvl) {
     ClientInfo *cl = getClientInfoBySocket(socket);
-    return archive.getTask(cl->getCurrentTask(true));
+    return archive.getTask(cl->getCurrentTask(lvl, true), lvl);
 }
 
 
@@ -206,8 +206,8 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
         auto enemy = maze->enemyAttack(pos.first, pos.second);
         player->setFight(true, static_cast<size_t>(enemy.first));
         player->setCurEnemyPos({enemy.second.first, enemy.second.second});
-        auto task = getNextTask(socket);
-        server->sendToClient(socket, QStringLiteral("Task %1").arg(pars::prepareTaskForSend(task)));
+        auto task = getNextTask(socket, static_cast<size_t>(enemy.first));
+        server->sendToClient(socket, QStringLiteral("Task %1 %2").arg(enemy.first).arg(pars::prepareTaskForSend(task)));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemy.first));
     }
 
