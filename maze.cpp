@@ -167,7 +167,6 @@ void Maze::bfs(std::vector<std::vector<MazeObject*>> &maze, std::vector<std::vec
             }
         }
     }
-    std::cerr << "bfs end" << std::endl;
 }
 
 void Maze::setPectiArrow(size_t x, size_t y, int steps) {

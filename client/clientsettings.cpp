@@ -29,7 +29,6 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 
     client = new Client("localhost", 1337);
     client->sendToServer(QStringLiteral("%1 %2 %3 %4;").arg(old ? "enter" : "reg").arg(login_).arg(password_).arg(avatarType));
-    std::cerr << "otpravil old??" << " " << (old ? "enter" : "reg") << std::endl;
     clientConnects();
 }
 
@@ -90,7 +89,6 @@ void ClientSettings::slotSetSettings(QString req) {
 void ClientSettings::slotAction(QString req_) {
     std::vector<QString> req = pars::parseRequest(req_, 4);
     if (req[1] == "attack") {
-        std::cerr << "slotAction" << std::endl;
         emit signalAttack(req[1].toInt());
     } else if (req[1] == "answer") {
         if (req[2] == "success") {

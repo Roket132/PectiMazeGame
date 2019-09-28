@@ -13,6 +13,11 @@ void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
     QString settings = QStringLiteral("settings %1 %2 %3").arg(info->getAvatarType())
             .arg(player->isExtraLight()).arg(player->getCntPectiArrow());
     server->sendToClient(socket, settings);
+    if (player->isFight()) {
+        auto task = archive.getTask(info->getCurrentTask(false) - 1);
+        server->sendToClient(socket, QString("Task %1").arg(pars::prepareTaskForSend(task)));
+        server->sendToClient(socket, QStringLiteral("Action attack %1").arg(player->getEnemyDifficulty()));
+    }
 }
 
 void ServerSettings::createTasksArchive() {
