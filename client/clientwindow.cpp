@@ -274,6 +274,7 @@ bool ClientWindow::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
         if (obj->objectName() == "ClientWindowWindow") {
             QKeyEvent* e = static_cast<QKeyEvent*>(event);
+            if (e->isAutoRepeat()) return true;
             switch(e->key()) {
             case Qt::Key_Up: ui->rightButton->setFocus(); on_upButton_clicked(); break;
             case Qt::Key_Down: ui->rightButton->setFocus(); on_downButton_clicked(); break;
