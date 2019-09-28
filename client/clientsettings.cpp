@@ -34,6 +34,7 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 
 void ClientSettings::closeClient() {
     archiveEnemyTasks.clear();
+    archiveArrowTasks.clear();
     this->disconnect();
     client->disconnect();
 }
@@ -49,8 +50,12 @@ void ClientSettings::createEmptyMaze() {
 
 }
 
-std::shared_ptr<Task> ClientSettings::getNextTask(size_t lvl) {
+std::shared_ptr<Task> ClientSettings::getNextEnemyTask(size_t lvl) {
     return archiveEnemyTasks.getNextTask(lvl);
+}
+
+std::shared_ptr<Task> ClientSettings::getNextArrowTask(size_t lvl) {
+    return archiveArrowTasks.getNextTask(lvl);
 }
 
 Maze *ClientSettings::getMaze() {
@@ -87,12 +92,12 @@ void ClientSettings::slotSetSettings(QString req) {
 }
 
 void ClientSettings::slotAction(QString req_) {
-    std::vector<QString> req = pars::parseRequest(req_, 4);
+    std::vector<QString> req = pars::parseRequest(req_, 5);
     if (req[1] == "attack") {
         emit signalAttack(req[2].toInt());
     } else if (req[1] == "answer") {
         if (req[2] == "success") {
-            emit signalAnswerSuccessful(req[3]);
+            emit signalAnswerSuccessful(req[3], req[4]);
         } else {
             emit signalAnswerIncorrect();
         }
@@ -100,8 +105,13 @@ void ClientSettings::slotAction(QString req_) {
 }
 
 void ClientSettings::slotAddTask(QString req_) {
-    std::vector<QString> req = pars::parseRequest(req_, 3);
-    auto split = pars::splitTask(req[2]);
-    auto lvl = req[1].toStdString();
-    archiveEnemyTasks.addTask(std::make_shared<Task>(Task(split.first.toStdString(), split.second.toStdString(), lvl)));
+    std::vector<QString> req = pars::parseRequest(req_, 5);
+    if (req[1] == "add") {
+        auto split = pars::splitTask(req[4]);
+        auto lvl = req[3].toStdString();
+        if (req[2] == "enemy")
+            archiveEnemyTasks.addTask(std::make_shared<Task>(Task(split.first.toStdString(), split.second.toStdString(), lvl)));
+        else if (req[2] == "arrow")
+            archiveArrowTasks.addTask(std::make_shared<Task>(Task(split.first.toStdString(), split.second.toStdString(), lvl)));
+    }
 }

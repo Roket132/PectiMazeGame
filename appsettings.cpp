@@ -29,6 +29,10 @@ void AppSettings::setAvatar(size_t type) {
     selectedAvatar = type;
 }
 
-std::vector<QString> *AppSettings::getPathForTasks() {
-    return &pathForTasks;
+std::vector<QString> *AppSettings::getPathForEnemyTasks() {
+    return &pathForEnemyTasks;
+}
+
+std::vector<QString> *AppSettings::getPathForArrowTasks() {
+    return &pathForArrowTasks;
 }

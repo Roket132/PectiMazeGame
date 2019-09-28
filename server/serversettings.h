@@ -37,7 +37,8 @@ public:
     QString getMapPlayerBySocket(QTcpSocket* socket);
     QString getMapPlayerByPlace(int x, int y, bool extra);
 
-    std::shared_ptr<Task> getNextTask(QTcpSocket* socket, size_t lvl);
+    std::shared_ptr<Task> getNextEnemyTask(QTcpSocket* socket, size_t lvl);
+    std::shared_ptr<Task> getNextArrowTask(QTcpSocket* socket, size_t lvl);
 
     Player* isPlayer(int x, int y);
     Player* getPlayerBySocket(QTcpSocket* socket);
@@ -60,13 +61,18 @@ private:
 
     void sendSettingsToClient(QTcpSocket *socket);
 
-    void createTasksArchive();
+    void createTasksArchives();
+
+    void sendNextArrowTask(QTcpSocket* socket, size_t lvl = 1);
+    void sendNextEnemyTask(QTcpSocket* socket, size_t lvl);
 
 private:
     Server *server;
     Maze   *maze;
     std::vector<ClientInfo*> clients;
-    TaskArchive archive;
+
+    TaskArchive archiveEnemyTasks;
+    TaskArchive archiveArrowTasks;
 
 private slots:
     void slotRegNewClient(QString str, QTcpSocket* socket);

@@ -2,7 +2,7 @@
 
 #include "appsettings.h"
 
-ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_), currentEnemyTask(0), currenArrowTask(0) {
+ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_) {
     std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 3(4) parametrs "type login password avatarType"
     login = info[1];
     password = info[2];
@@ -28,14 +28,6 @@ QString ClientInfo::getPassword()
     return password;
 }
 
-size_t ClientInfo::getCurrentTask(size_t lvl, bool inc) {
-    if (!currentEnemyTask.count(lvl))
-        currentEnemyTask[lvl] = 0;
-    if (inc) return currentEnemyTask[lvl]++;
-    else
-        return currentEnemyTask[lvl];
-}
-
 void ClientInfo::setSocket(QTcpSocket *socket) {
     pTcpSocket = socket;
 }
@@ -58,9 +50,19 @@ const QTcpSocket *ClientInfo::getTcpSocket()
     return pTcpSocket;
 }
 
-size_t ClientInfo::getCurrenArrowTask(bool inc) {
-    if (inc)
-        return currenArrowTask++;
-    else return currenArrowTask;
+size_t ClientInfo::getCurrentEnemyTask(size_t lvl, bool inc) {
+    if (!currentEnemyTask.count(lvl))
+        currentEnemyTask[lvl] = 0;
+    if (inc) return currentEnemyTask[lvl]++;
+    else
+        return currentEnemyTask[lvl];
+}
+
+size_t ClientInfo::getCurrentArrowTask(size_t lvl, bool inc) {
+    if (!currentArrowTask.count(lvl))
+        currentArrowTask[lvl] = 0;
+    if (inc) return currentArrowTask[lvl]++;
+    else
+        return currentArrowTask[lvl];
 }
 

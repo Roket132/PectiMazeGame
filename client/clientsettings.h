@@ -31,7 +31,9 @@ public:
 
     void createEmptyMaze();
 
-    std::shared_ptr<Task> getNextTask(size_t lvl = 1);
+    std::shared_ptr<Task> getNextEnemyTask(size_t lvl);
+
+    std::shared_ptr<Task> getNextArrowTask(size_t lvl);
 
 private:
     ClientSettings();
@@ -52,7 +54,7 @@ private slots:
 
 signals:
     void signalAttack(int);
-    void signalAnswerSuccessful(QString);
+    void signalAnswerSuccessful(QString, QString);
     void signalAnswerIncorrect();
 
 private:
@@ -62,6 +64,7 @@ private:
     QString password;
 
     TaskArchive archiveEnemyTasks;
+    TaskArchive archiveArrowTasks;
 
     Maze* clientMaze;
     HUD* clientHUD;

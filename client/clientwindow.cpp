@@ -47,9 +47,12 @@ ClientWindow::ClientWindow(QWidget *parent) :
         vbl->addWidget(infoCell);
         ui->inventoryLayout->addLayout(vbl);
 
-        connect(cell, &QPushButton::pressed, [cell]() {
-            ClientSettings &cl = ClientSettings::getClientSettings();
-            cl.getClient()->sendToServer(QStringLiteral("inventory %1;").arg(cell->objectName()));
+        setActions();
+
+        connect(cell, &QPushButton::clicked, [this, cell]() {
+            if (actions.count(cell->objectName())) {
+                actions[cell->objectName()]();
+            }
         });
     }
 
@@ -143,11 +146,24 @@ void ClientWindow::addEventLayout(QPixmap px, std::shared_ptr<Task> task, QStrin
     ui->eventsLayout->addLayout(gl);
 }
 
+void ClientWindow::arrowUsed() {
+    ClientSettings &cl = ClientSettings::getClientSettings();
+    size_t lvl = 1;
+    auto task = cl.getNextArrowTask(lvl);
+    if (eventWindow) eventWindow->close();
+    eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()), static_cast<size_t>(lvl), "arrow");
+    eventWindow->show();
+
+    connect(eventWindow, &EventWindow::closed, [this] {
+        eventWindow = nullptr;
+    });
+}
+
 void ClientWindow::slotAttack(int lvl) {
     blockMoving();
 
     ClientSettings &cl = ClientSettings::getClientSettings();
-    auto task = cl.getNextTask(static_cast<size_t>(lvl));
+    auto task = cl.getNextEnemyTask(static_cast<size_t>(lvl));
 
     if (task == nullptr) {
         std::cerr << "task == nullptr in slotAttack" << std::endl;
@@ -160,7 +176,7 @@ void ClientWindow::slotAttack(int lvl) {
                 "надо победить врага!",
                 [this, task, lvl] {
                      if (eventWindow) eventWindow->close();
-                     eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()), static_cast<size_t>(lvl));
+                     eventWindow = new EventWindow(QString::fromStdString(task->getName()), QString::fromStdString(task->getText()), static_cast<size_t>(lvl), "enemy");
                      eventWindow->show();
 
                      connect(eventWindow, &EventWindow::closed, [this] {
@@ -169,8 +185,11 @@ void ClientWindow::slotAttack(int lvl) {
                 });
 }
 
-void ClientWindow::slotAnswerSuccessful(QString taskName) {
+void ClientWindow::slotAnswerSuccessful(QString mode, QString taskName) {
     eventWindow->close();
+
+    if (mode == "arrow") return;
+
     int pos = 0;
     for (auto it : eventLayouts) {
         if (it->objectName() == taskName) {
@@ -243,6 +262,12 @@ void ClientWindow::on_leftButton_clicked() {
     if (clientSetting.getMaze()->isPossibleToGoTo(2, 1)) {
         clientSetting.getClient()->sendToServer("move 0 -1;");
     }
+}
+
+void ClientWindow::setActions() {
+    actions["pecti_arrow"] = [this] {
+        arrowUsed();
+    };
 }
 
 bool ClientWindow::eventFilter(QObject *obj, QEvent *event) {

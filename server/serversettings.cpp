@@ -14,16 +14,19 @@ void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
             .arg(player->isExtraLight()).arg(player->getCntPectiArrow());
     server->sendToClient(socket, settings);
     if (player->isFight()) {
-        auto task = archive.getTask(info->getCurrentTask(player->getEnemyDifficulty(),false) - 1);
+        auto task = archiveEnemyTasks.getTask(info->getCurrentEnemyTask(player->getEnemyDifficulty(),false) - 1);
         server->sendToClient(socket, QString("Task %1").arg(pars::prepareTaskForSend(task)));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(player->getEnemyDifficulty()));
     }
 }
 
-void ServerSettings::createTasksArchive() {
+void ServerSettings::createTasksArchives() {
     AppSettings &settings = AppSettings::getAppSettings();
-    for (auto path : *settings.getPathForTasks()) {
-        archive.readFile(path.toStdString());
+    for (auto path : *settings.getPathForEnemyTasks()) {
+        archiveEnemyTasks.readFile(path.toStdString());
+    }
+    for (auto path : *settings.getPathForArrowTasks()) {
+        archiveArrowTasks.readFile(path.toStdString());
     }
 }
 
@@ -36,7 +39,7 @@ void ServerSettings::startServer(fs::path path) {
     server = new Server(1337);
     maze = new Maze(path);
 
-    createTasksArchive();
+    createTasksArchives();
 
     bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
     bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
@@ -115,8 +118,12 @@ void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
     Player* player = getPlayerBySocket(socket);
     std::vector<QString> req = pars::parseRequest(str);
     if (req[1] == "pecti_arrow") {
-        if (getPlayerBySocket(socket)->usePectiArrow()) {
+        auto player = getPlayerBySocket(socket);
+        if (player->usePectiArrow()) {
             maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
+            if (player->getCntPectiArrow() != 0) {
+                sendNextArrowTask(socket);
+            }
         }
         server->sendToClient(socket, "HUD del pecti_arrow 1");
     }
@@ -126,15 +133,27 @@ void ServerSettings::slotClientExit(QString str, QTcpSocket *socket) {
     emit signalPlayerDisconnected(getClientInfoBySocket(socket));
 }
 
+namespace  {
+void win(Player* player, Maze* maze) {
+    player->setFight(false, 0);
+    auto enemyPos = player->getCurEnemyPos();
+    maze->killEnemy(enemyPos.first, enemyPos.second);
+}
+
+}
+
 void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
-    std::vector<QString> req = pars::parseRequest(str, 3);
-    auto split = pars::splitTask(req[2]);
-    if (archive.checkAnswer(split.second.toStdString(), split.first.toStdString(), req[1].toUInt())) {
-        server->sendToClient(socket, QString("Action answer success %1").arg(split.first));
+    std::vector<QString> req = pars::parseRequest(str, 4);
+    auto split = pars::splitTask(req[3]);
+    auto *archive = (req[1] == "enemy" ? &archiveEnemyTasks : &archiveArrowTasks);
+    if (archive->checkAnswer(split.second.toStdString(), split.first.toStdString(), req[2].toUInt())) {
+        server->sendToClient(socket, QString("Action answer success %1 %2").arg(req[1]).arg(split.first));
         Player* player = getPlayerBySocket(socket);
-        player->setFight(false, 0);
-        auto enemyPos = player->getCurEnemyPos();
-        maze->killEnemy(enemyPos.first, enemyPos.second);
+        if (req[1] == "enemy") {
+            win(player, maze);
+        } else if (req[1] == "arrow") {
+            slotUseInventory("Use pecti_arrow", socket);
+        }
         doCellAction(player, socket);
     } else {
         server->sendToClient(socket, "Action answer faild");
@@ -176,11 +195,15 @@ QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
     return ans;
 }
 
-std::shared_ptr<Task> ServerSettings::getNextTask(QTcpSocket *socket, size_t lvl) {
+std::shared_ptr<Task> ServerSettings::getNextEnemyTask(QTcpSocket *socket, size_t lvl) {
     ClientInfo *cl = getClientInfoBySocket(socket);
-    return archive.getTask(cl->getCurrentTask(lvl, true), lvl);
+    return archiveEnemyTasks.getTask(cl->getCurrentEnemyTask(lvl, true), lvl);
 }
 
+std::shared_ptr<Task> ServerSettings::getNextArrowTask(QTcpSocket *socket, size_t lvl) {
+    ClientInfo *cl = getClientInfoBySocket(socket);
+    return archiveArrowTasks.getTask(cl->getCurrentArrowTask(lvl, true), lvl);
+}
 
 void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     player->action();
@@ -199,6 +222,9 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
             player->setExtraVision(10);
         }
     } else if (type == "pecti_arrow") {
+        if (player->getCntPectiArrow() == 0) {
+            sendNextArrowTask(socket);
+        }
         player->takePectiArrow();
         maze->removeObjectFromCell(pos.first, pos.second);
         server->sendToClient(socket, "HUD add pecti_arrow 1;");
@@ -206,8 +232,7 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
         auto enemy = maze->enemyAttack(pos.first, pos.second);
         player->setFight(true, static_cast<size_t>(enemy.first));
         player->setCurEnemyPos({enemy.second.first, enemy.second.second});
-        auto task = getNextTask(socket, static_cast<size_t>(enemy.first));
-        server->sendToClient(socket, QStringLiteral("Task %1 %2").arg(enemy.first).arg(pars::prepareTaskForSend(task)));
+        sendNextEnemyTask(socket, static_cast<size_t>(enemy.first));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemy.first));
     }
 
@@ -238,4 +263,18 @@ ClientInfo *ServerSettings::getClientInfoBySocket(QTcpSocket *socket) {
         }
     }
     return nullptr;
+}
+
+void ServerSettings::sendNextArrowTask(QTcpSocket* socket, size_t lvl) {
+    /*
+     *  if client didn't has arrow, he need task.
+     *  For next arrow tasks will be send automatically
+     */
+    auto task = getNextArrowTask(socket, lvl);
+    server->sendToClient(socket, QStringLiteral("Task add arrow %1 %2").arg(lvl).arg(pars::prepareTaskForSend(task)));
+}
+
+void ServerSettings::sendNextEnemyTask(QTcpSocket *socket, size_t lvl) {
+    auto task = getNextEnemyTask(socket, static_cast<size_t>(lvl));
+    server->sendToClient(socket, QStringLiteral("Task add enemy %1 %2").arg(lvl).arg(pars::prepareTaskForSend(task)));
 }

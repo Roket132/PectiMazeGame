@@ -46,14 +46,18 @@ private:
     void addEventLayout(QPixmap px, std::shared_ptr<Task> task, QString descriprion, std::function<void()> f_btn);
     void updateEventSettings();
 
-    EventWindow *eventWindow;
+    void arrowUsed();
 
+    void setActions();
+    std::map<QString, std::function<void()>> actions;
+
+    EventWindow *eventWindow;
 signals:
     void showClientRegWindow();
 
 private slots:
     void slotAttack(int);
-    void slotAnswerSuccessful(QString);
+    void slotAnswerSuccessful(QString, QString);
     void slotAnswerIncorrect();
 
     void on_upButton_clicked();
