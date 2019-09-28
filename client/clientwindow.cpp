@@ -146,8 +146,15 @@ void ClientWindow::addEventLayout(QPixmap px, std::shared_ptr<Task> task, QStrin
 void ClientWindow::slotAttack(int lvl) {
     blockMoving();
 
+    std::cerr << "olololololololololololo" << std::endl;
+
     ClientSettings &cl = ClientSettings::getClientSettings();
     auto task = cl.getNextTask();
+
+    if (task == nullptr) {
+        std::cerr << "task == nullptr in slotAttack" << std::endl;
+        return;
+    }
 
     addEventLayout(QPixmap(":/res/image/image_80/swords.png"),
                    task,

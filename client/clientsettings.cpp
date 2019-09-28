@@ -34,6 +34,8 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 }
 
 void ClientSettings::closeClient() {
+    archive.clear();
+    this->disconnect();
     client->disconnect();
 }
 

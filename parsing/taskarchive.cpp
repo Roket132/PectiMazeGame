@@ -8,7 +8,6 @@ using std::unique_ptr;
 
 TaskArchive::TaskArchive() : currentTask(0) {
     mutex_ = new std::mutex;
-    usedNames.clear();
 }
 
 TaskArchive::TaskArchive(std::experimental::filesystem::__cxx11::path path) :currentTask()  {
@@ -102,6 +101,7 @@ void TaskArchive::addTask(std::shared_ptr<Task> task) {
 
 std::shared_ptr<Task> TaskArchive::getNextTask() {
     std::lock_guard<std::mutex> lg(*mutex_);
+    std::cerr << "cur = "  << currentTask << " " << tasks.size() << std::endl;
     if (currentTask >= tasks.size()) return nullptr;
     return tasks[currentTask++];
 }
@@ -113,6 +113,7 @@ std::shared_ptr<Task> TaskArchive::getTask(size_t pos) {
 }
 
 bool TaskArchive::checkAnswer(std::string answer, std::string taskName) {
+    std::lock_guard<std::mutex> lg(*mutex_);
     std::cerr << "check " << answer << " " << taskName << std::endl;
     removeLeadSpaces(answer);
     for (auto it : tasks) {
@@ -123,4 +124,13 @@ bool TaskArchive::checkAnswer(std::string answer, std::string taskName) {
         }
     }
     return false;
+}
+
+void TaskArchive::clear() {
+    std::lock_guard<std::mutex> lg(*mutex_);
+    currentTask = 0;
+    for (auto it : tasks) {
+        it.~shared_ptr();
+    }
+    tasks.clear();
 }

@@ -26,11 +26,11 @@ public:
 
     bool checkAnswer(std::string answer, std::string taskName);
 
+    void clear();
+
 private:
     std::vector<std::shared_ptr<Task>> tasks;
     size_t currentTask;
-
-    std::set<std::string> usedNames;
 
     std::mutex* mutex_;
 };

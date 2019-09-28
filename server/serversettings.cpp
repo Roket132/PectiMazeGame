@@ -46,6 +46,7 @@ void ServerSettings::startServer(fs::path path) {
 void ServerSettings::closeServer() {
     delete server;
     delete maze;
+    this->disconnect();
 }
 
 Maze* ServerSettings::createMaze(std::experimental::filesystem::__cxx11::path path) {

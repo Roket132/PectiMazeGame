@@ -118,9 +118,12 @@ void ClientRegWindow::slotSignInSuccess() {
     clientWindow = new ClientWindow();
     connect(clientWindow, &ClientWindow::showClientRegWindow, this, &ClientRegWindow::show);
     clientWindow->show();
+    ui->loginEdit->clear();
+    ui->passwordEdit->clear();
     this->hide();
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     clientSettings.getClient()->sendToServer("get map");
+
 }
 
 void ClientRegWindow::slotSignInFaild() {

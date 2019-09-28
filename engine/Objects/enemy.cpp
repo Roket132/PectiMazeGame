@@ -5,6 +5,8 @@
 Enemy::Enemy(size_t size_, size_t difficulty_, bool dead_) : StateObject (QPixmap(), nullptr), difficulty(difficulty_), size(size_), dead(dead_) {
     isEnemy_ = true;
 
+    if (dead) kill();
+
     if (!setAllTexture(size, difficulty, dead)) {
         setAllTexture(size, difficulty, dead, "png");
     }
