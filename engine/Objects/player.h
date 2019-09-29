@@ -6,7 +6,6 @@
 class Player : public DynamicObject {
 public:
     Player(size_t size, QPixmap avatar = QPixmap(":/default/src/avatars/default/avatar_1.jpg"));
-    Player(QPixmap texture_, std::vector<QPixmap> *frames = nullptr);
     ~Player() override = default;
 
     const QString TYPE = "player";
@@ -36,6 +35,9 @@ public:
     std::pair<size_t, size_t> getCurEnemyPos() const;
     void setCurEnemyPos(const std::pair<size_t, size_t> &value);
 
+    void addScore(const long long &add);
+    long long getScore();
+
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off
     bool extraVision; // if true then player can see more
@@ -45,6 +47,8 @@ private:
     bool fight;
     size_t enemyDifficulty;
     std::pair<size_t, size_t> curEnemyPos;
+
+    long long score;
 
     QPixmap avatar;
 

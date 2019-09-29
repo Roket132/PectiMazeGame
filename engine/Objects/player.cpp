@@ -3,7 +3,8 @@
 #include "iostream"
 #include "appsettings.h"
 
-Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTimer(0), extraVision(false), cntPectiArrow(0), fight(false), curEnemyPos({0,0}), avatar(avatar_) {
+Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTimer(0), extraVision(false), cntPectiArrow(0),
+    fight(false), curEnemyPos({0,0}), score(0), avatar(avatar_) {
     if (size_ <= 40) {
         texture = def_texture = avatar.scaled(40, 40);
     }
@@ -11,9 +12,6 @@ Player::Player(size_t size_, QPixmap avatar_) : DynamicObject (), extraVisionTim
         texture = def_texture = avatar;
     }
 }
-
-Player::Player(QPixmap texture_, std::vector<QPixmap> *frames_) :
-    DynamicObject (texture_, frames_), extraVisionTimer(0), extraVision(false), cntPectiArrow(0) {}
 
 QString Player::getTypeObject() {
     return TYPE;
@@ -90,6 +88,14 @@ std::pair<size_t, size_t> Player::getCurEnemyPos() const {
 
 void Player::setCurEnemyPos(const std::pair<size_t, size_t> &value) {
     curEnemyPos = value;
+}
+
+void Player::addScore(const long long &add) {
+    score += add;
+}
+
+long long Player::getScore(){
+    return score;
 }
 
 void Player::update() {

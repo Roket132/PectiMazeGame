@@ -1,6 +1,9 @@
 #include "serversettings.h"
 #include "appsettings.h"
 
+#include "actions/mazeactions.h"
+#include "actions/inventoryactions.h"
+
 ServerSettings::ServerSettings() : server(nullptr) {
 }
 
@@ -115,31 +118,23 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
 }
 
 void ServerSettings::slotUseInventory(QString str, QTcpSocket *socket) {
-    Player* player = getPlayerBySocket(socket);
+    auto player = getPlayerBySocket(socket);
     std::vector<QString> req = pars::parseRequest(str);
+
+    InventoryActions invActions(maze, player, socket, server);
     if (req[1] == "pecti_arrow") {
-        auto player = getPlayerBySocket(socket);
-        if (player->usePectiArrow()) {
-            maze->setPectiArrow(player->getPosition().first, player->getPosition().second);
+        invActions.useArrow([this, &player, &socket] {
+            std::cerr << "kek" << std::endl;
             if (player->getCntPectiArrow() != 0) {
                 sendNextArrowTask(socket);
             }
-        }
-        server->sendToClient(socket, "HUD del pecti_arrow 1");
+            server->sendToClient(socket, "HUD del pecti_arrow 1");
+        });
     }
 }
 
 void ServerSettings::slotClientExit(QString str, QTcpSocket *socket) {
     emit signalPlayerDisconnected(getClientInfoBySocket(socket));
-}
-
-namespace  {
-void win(Player* player, Maze* maze) {
-    player->setFight(false, 0);
-    auto enemyPos = player->getCurEnemyPos();
-    maze->killEnemy(enemyPos.first, enemyPos.second);
-}
-
 }
 
 void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
@@ -149,10 +144,13 @@ void ServerSettings::slotCheckAnswer(QString str, QTcpSocket *socket) {
     if (archive->checkAnswer(split.second.toStdString(), split.first.toStdString(), req[2].toUInt())) {
         server->sendToClient(socket, QString("Action answer success %1 %2").arg(req[1]).arg(split.first));
         Player* player = getPlayerBySocket(socket);
+        MazeActions actions(maze, player, socket, server);
+        InventoryActions invActions(maze, player, socket, server);
+
         if (req[1] == "enemy") {
-            win(player, maze);
+            actions.winUponEnemy(req[2].toUInt());
         } else if (req[1] == "arrow") {
-            slotUseInventory("Use pecti_arrow", socket);
+            slotUseInventory("use pecti_arrow", socket);
         }
         doCellAction(player, socket);
     } else {
@@ -173,7 +171,6 @@ QString ServerSettings::getMapPlayerBySocket(QTcpSocket *socket) {
     }
     return "map 0 0";
 }
-
 
 QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
     QString ans = QStringLiteral("map %1 %2").arg(5).arg(5);
@@ -212,28 +209,27 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
     MazeObject* obj = maze->getMazeObject(pos.first, pos.second);
 
     QString type = obj->getTypeObject();
+    MazeActions actions(maze, player, socket, server);
 
     if (type == "lamp") {
-        player->setExtraLight(true);
-        maze->removeObjectFromCell(pos.first, pos.second);
-        server->sendToClient(socket, "HUD add lamp 1;");
+        actions.takeLamp([this, &socket] {
+            server->sendToClient(socket, "HUD add lamp 1;");
+        });
     } else if (type == "light_source") {
-        if (player->isExtraLight()) {
-            player->setExtraVision(10);
-        }
+        actions.turnOnLamp(10);
     } else if (type == "pecti_arrow") {
-        if (player->getCntPectiArrow() == 0) {
-            sendNextArrowTask(socket);
-        }
-        player->takePectiArrow();
-        maze->removeObjectFromCell(pos.first, pos.second);
-        server->sendToClient(socket, "HUD add pecti_arrow 1;");
+        actions.takeArrow([this, &player, &socket] {
+            if (player->getCntPectiArrow() == 1) {
+                sendNextArrowTask(socket);
+            }
+            server->sendToClient(socket, "HUD add pecti_arrow 1;");
+        });
     } else if (maze->enemyAttack(pos.first, pos.second).first) {
-        auto enemy = maze->enemyAttack(pos.first, pos.second);
-        player->setFight(true, static_cast<size_t>(enemy.first));
-        player->setCurEnemyPos({enemy.second.first, enemy.second.second});
-        sendNextEnemyTask(socket, static_cast<size_t>(enemy.first));
-        server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemy.first));
+        actions.enemyAttack([this, &socket, &pos] {
+            auto enemy = maze->enemyAttack(pos.first, pos.second);
+            sendNextEnemyTask(socket, static_cast<size_t>(enemy.first));
+            server->sendToClient(socket, QStringLiteral("Action attack %1").arg(enemy.first));
+        });
     }
 
 }

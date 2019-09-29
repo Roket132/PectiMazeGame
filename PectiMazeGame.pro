@@ -25,6 +25,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++17
 
 SOURCES += \
+        actions/inventoryactions.cpp \
+        actions/mazeactions.cpp \
         appsettings.cpp \
         client/client.cpp \
         client/clientinfo.cpp \
@@ -61,6 +63,8 @@ SOURCES += \
         windows/eventwindow.cpp
 
 HEADERS += \
+        actions/inventoryactions.h \
+        actions/mazeactions.h \
         appsettings.h \
         client/client.h \
         client/clientinfo.h \
