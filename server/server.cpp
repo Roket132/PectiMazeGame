@@ -85,7 +85,6 @@ void Server::slotReadClient()
         ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
         sendToClient(pClientSocket, serverSettings.getMapPlayerBySocket(pClientSocket) + ";");
     }
-
 }
 
 void Server::sendToClient(QTcpSocket* pSocket, const QString& str)

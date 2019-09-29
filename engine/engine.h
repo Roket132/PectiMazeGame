@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QPushButton>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QLabel>
 #include <vector>
 
@@ -14,8 +16,7 @@ class Engine : public QObject {
 Q_OBJECT
 public:
     explicit Engine(std::vector<QLabel*> scenes_);
-    explicit Engine(std::vector<QLabel*> scenes_, std::vector<QPushButton*> invScenes_);
-    explicit Engine(std::vector<QLabel*> scenes_, std::vector<QPushButton*> invScenes_, std::vector<QLabel*> infoInvScenes_);
+    explicit Engine(std::vector<QLabel*> scenes_, std::vector<QPushButton*> invScenes_, std::vector<QLabel*> infoInvScenes_, QLabel* s_lay);
 
     void stopEngine();
 
@@ -23,6 +24,8 @@ private:
     std::vector<QLabel*> scenes;
     std::vector<QPushButton*> invScenes;
     std::vector<QLabel*> infoInvScenes;
+
+    QLabel* score;
 
     bool _STOP_ = false;
 

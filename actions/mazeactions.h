@@ -21,7 +21,7 @@ public:
 
     void enemyAttack(std::function<void()> f_send = nullptr);
 
-    void addPoints(const int &value, std::function<void()> f_send = nullptr);
+    void addPoints(const long long &value, std::function<void()> f_send = nullptr);
 
     void winUponEnemy(size_t enemyLvl, std::function<void()> f_send = nullptr);
 

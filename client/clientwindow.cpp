@@ -57,7 +57,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     }
 
     thread = new QThread(this);
-    eng = new Engine(scenes, invScenes, infoInvScenes);
+    eng = new Engine(scenes, invScenes, infoInvScenes, ui->scoreLabel);
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawClientMap()));
     thread->start();

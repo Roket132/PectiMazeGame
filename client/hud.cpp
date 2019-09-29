@@ -8,7 +8,7 @@
 #include "engine/Objects/pectiarrow.h"
 #include "appsettings.h"
 
-HUD::HUD() : mutex_(new std::mutex) {
+HUD::HUD() : points(0), mutex_(new std::mutex) {
 }
 
 HUD::~HUD() {
@@ -58,6 +58,14 @@ void HUD::removeInventoryObject(MazeObject *obj, int cnt) {
     }
 }
 
+void HUD::changePoints(const long long &dt) {
+    points += dt;
+}
+
+long long HUD::getPoints(){
+    return points;
+}
+
 void HUD::parseRequest(QString req_) {
     std::vector<QString> req = pars::parseRequest(req_);
     if (req[1] == "add") {
@@ -66,6 +74,8 @@ void HUD::parseRequest(QString req_) {
     } else if (req[1] == "del") {
         MazeObject* obj = pars::createObjectByType(req[2], 80);
         removeInventoryObject(obj, req[3].toInt());
+    } else if (req[1] == "changePoints") {
+        changePoints(req[2].toLongLong());
     }
 }
 

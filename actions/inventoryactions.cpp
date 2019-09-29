@@ -19,4 +19,5 @@ void InventoryActions::send(const std::function<void ()> &f_send) {
 
 void InventoryActions::addPionts(const long long &value) {
     player_->addScore(value);
+    server_->sendToClient(socket_, QString("HUD changePoints %1").arg(value));
 }

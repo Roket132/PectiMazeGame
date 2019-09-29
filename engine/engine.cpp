@@ -5,10 +5,8 @@
 
 Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {}
 
-Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_) : scenes(scenes_), invScenes(invScenes_) {}
-
-Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_, std::vector<QLabel *> infoInvScenes_) :
-    scenes(scenes_), invScenes(invScenes_), infoInvScenes(infoInvScenes_) {}
+Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_, std::vector<QLabel *> infoInvScenes_, QLabel* s_lay) :
+    scenes(scenes_), invScenes(invScenes_), infoInvScenes(infoInvScenes_), score(s_lay) {}
 
 void Engine::stopEngine() {
     _STOP_ = true;
@@ -26,6 +24,12 @@ void Engine::drawClientMap() {
             invScenes[i]->setIcon(QIcon());
             infoInvScenes[i]->setText("");
         }
+
+        //points
+
+        score->setText(QString("Очков: %1").arg(hud->getPoints()));
+
+        //inventory
 
         size_t used = 0;
         for (auto it : hud->inventory) {
