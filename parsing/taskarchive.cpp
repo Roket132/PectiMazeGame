@@ -37,7 +37,7 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
 
     std::fstream file;
     try {
-        file.open(path.string());
+        file.open(path.string(), std::ifstream::in);
     } catch (std::ifstream::failure e) {
         std::cerr << "Cannot readFile for TaskArchive" << std::endl;
         return false;
@@ -58,9 +58,10 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
     std::string lvl;
     std::vector<std::string> answers;
 
+
+
     while (file) {
         file.read(buffer.get(), bufferSize);
-        std::cerr << "ahahahah" << std::endl;
 
         for (size_t i = 0; i < bufferSize; i++) {
             if (buffer.get()[i] == '<') {
@@ -105,7 +106,7 @@ bool TaskArchive::readFile(std::experimental::filesystem::__cxx11::path path) {
 void TaskArchive::addTask(std::shared_ptr<Task> task) {
     std::lock_guard<std::mutex> lg(*mutex_);
     auto lvl = task->getLvl();
-    std::cerr << "AddTask lvl = " << lvl << " " << task->getName() << " " << task->getText() << std::endl;
+    //std::cerr << "AddTask lvl = " << lvl << " " << task->getName() << " " << task->getText() << std::endl;
     if (tasks.size() <= lvl) {
         tasks.resize(lvl + 1);
         currentTask.resize(lvl + 1, 0);

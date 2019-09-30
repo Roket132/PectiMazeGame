@@ -1,6 +1,9 @@
 #include "serversettings.h"
 #include "appsettings.h"
 
+#include <QFile>
+#include <QTemporaryDir>
+
 #include "actions/mazeactions.h"
 #include "actions/inventoryactions.h"
 
@@ -25,6 +28,17 @@ void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
 
 void ServerSettings::createTasksArchives() {
     AppSettings &settings = AppSettings::getAppSettings();
+    QTemporaryDir tempDir;
+    if (tempDir.isValid()) {
+        const QString enemyFile = tempDir.path() + "/enemyTasks.txt";
+        const QString arrowFile = tempDir.path() + "/arrowTasks.txt";
+        if (QFile::copy(":/files/tasks/enemyTasks.txt", enemyFile)) {
+            archiveEnemyTasks.readFile(enemyFile.toStdString());
+        }
+        if (QFile::copy(":/files/tasks/arrowTasks.txt", arrowFile)) {
+            archiveArrowTasks.readFile(arrowFile.toStdString());
+        }
+    }
     for (auto path : *settings.getPathForEnemyTasks()) {
         archiveEnemyTasks.readFile(path.toStdString());
     }

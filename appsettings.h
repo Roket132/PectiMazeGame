@@ -1,7 +1,7 @@
 #ifndef APPSETTINGS_H
 #define APPSETTINGS_H
 
-#include <vector>
+#include <set>
 #include <QString>
 
 class AppSettings
@@ -16,8 +16,8 @@ public:
     size_t getAvatar();
     void setAvatar(size_t type);
 
-    std::vector<QString>* getPathForEnemyTasks();
-    std::vector<QString>* getPathForArrowTasks();
+    std::set<QString>* getPathForEnemyTasks();
+    std::set<QString>* getPathForArrowTasks();
 
 private:
     AppSettings();
@@ -29,8 +29,8 @@ private:
     size_t selectedAvatar;
     size_t amountAvatarVariants;
 
-    std::vector<QString> pathForEnemyTasks = {"C:/Users/Dmitry/Desktop/QtProjects/tasks.txt"};
-    std::vector<QString> pathForArrowTasks = {"C:/Users/Dmitry/Desktop/QtProjects/arrowTasks.txt"};
+    std::set<QString> pathForEnemyTasks = {};
+    std::set<QString> pathForArrowTasks = {};
 };
 
 #endif // APPSETTINGS_H

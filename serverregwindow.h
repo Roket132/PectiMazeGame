@@ -27,6 +27,9 @@ private:
 
     void closeEvent(QCloseEvent *event) override;
 
+    std::set<QString>* enemyPaths;
+    std::set<QString>* arrowPaths;
+
 signals:
     void showMainWindow();
 
@@ -34,6 +37,10 @@ private slots:
     void on_choiseMazeButton_clicked();  //choice path for maze settings
     void on_startServerButton_clicked(); // start server with selected settings
     void on_backButton_clicked();
+    void on_addFileButton_clicked();
+    void on_deleteFileButton_clicked();
+    void on_addFileButton_2_clicked();
+    void on_deleteFileButton_2_clicked();
 };
 
 #endif // SERVERREGWINDOW_H

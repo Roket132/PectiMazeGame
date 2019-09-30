@@ -123,4 +123,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     avatars.qrc \
     image.qrc \
+    tasks.qrc \
     texture.qrc

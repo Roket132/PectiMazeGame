@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/files">
+        <file>tasks/arrowTasks.txt</file>
+        <file>tasks/enemyTasks.txt</file>
+    </qresource>
+</RCC>

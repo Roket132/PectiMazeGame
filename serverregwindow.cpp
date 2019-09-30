@@ -5,6 +5,9 @@
 #include <iostream>
 #include <QCloseEvent>
 #include <QFileDialog>
+#include <QListWidgetItem>
+
+#include "appsettings.h"
 
 ServerRegWindow::ServerRegWindow(QWidget *parent) :
     QWidget(parent),
@@ -12,6 +15,27 @@ ServerRegWindow::ServerRegWindow(QWidget *parent) :
 {    
     ui->setupUi(this);
     ui->unvisableBtn->hide();
+
+    //ui->commonSettingsTab->setf
+    ui->toolBox->setCurrentIndex(0);
+    ui->tabWidget->setCurrentIndex(0);
+
+
+    AppSettings &appSettings = AppSettings::getAppSettings();
+
+    enemyPaths = appSettings.getPathForEnemyTasks();
+    arrowPaths = appSettings.getPathForArrowTasks();
+
+    for (auto it : *appSettings.getPathForEnemyTasks()) {
+        ui->enemyTasksList->addItem(it);
+    }
+
+    for (auto it : *appSettings.getPathForArrowTasks()) {
+        ui->arrowTasksList->addItem(it);
+    }
+
+    ui->enemyTasksList->setSelectionMode(QAbstractItemView::ExtendedSelection);
+    ui->arrowTasksList->setSelectionMode(QAbstractItemView::ExtendedSelection);
 }
 
 ServerRegWindow::~ServerRegWindow()
@@ -57,4 +81,38 @@ void ServerRegWindow::on_backButton_clicked()
 {
     emit showMainWindow();
     this->close();
+}
+
+void ServerRegWindow::on_addFileButton_clicked() {
+    auto files = QFileDialog::getOpenFileNames(nullptr, "Выбор задач для боёв", "", "*.txt");
+    for (auto it : files) {
+        enemyPaths->insert(it);
+        ui->enemyTasksList->addItem(it);
+    }
+}
+
+void ServerRegWindow::on_deleteFileButton_clicked() {
+    auto items = ui->enemyTasksList->selectedItems();
+    for (auto it : items) {
+        auto name = it->text();
+        enemyPaths->erase(name);
+        delete it;
+    }
+}
+
+void ServerRegWindow::on_addFileButton_2_clicked() {
+    auto files = QFileDialog::getOpenFileNames(nullptr, "Выбор задач для стрелок", "", "*.txt");
+    for (auto it : files) {
+        arrowPaths->insert(it);
+        ui->arrowTasksList->addItem(it);
+    }
+}
+
+void ServerRegWindow::on_deleteFileButton_2_clicked() {
+    auto items = ui->arrowTasksList->selectedItems();
+    for (auto it : items) {
+        auto name = it->text();
+        arrowPaths->erase(name);
+        delete it;
+    }
 }

@@ -1,0 +1,36 @@
+<Это моя задача на русском [2]>
+{
+В некотором царстве в некотором государстве жила была буква ааааааааааааааааааааааааааааааааааааааааааааааааааааааа
+И вот пришло время обедать! Но они не растсроились и:
+Если 2+2=5, то 5 + 5 = 10.
+
+Это интересный факт!
+
+А вот снизу это ответы на задачу. I think
+that if I write on English it will be work
+}
+[sdfdsf, asdfs, dsaf, Привет, lel]
+
+<Problem1[1]>
+{In this problem we should test my programm}
+[I, Hope,  We, Right]
+
+<Problem2[1]>
+{In thd test my programm}
+[I,We, Right]
+
+<undef_lvl>{
+	task without lvl
+}
+[lvl1]
+
+<kek[2]>
+{In sdf}
+[kek, kek2,kek3]
+
+<LVL3[3]>{
+ololololo
+}
+[lvl1, lvl2, vv]
+
+<!END!>

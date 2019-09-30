@@ -1,5 +1,7 @@
 #include "appsettings.h"
 
+#include <QTemporaryDir>
+
 AppSettings::AppSettings() : stylePrefix("default"), selectedAvatar(1), amountAvatarVariants(4) {}
 
 AppSettings::~AppSettings() {}
@@ -29,10 +31,10 @@ void AppSettings::setAvatar(size_t type) {
     selectedAvatar = type;
 }
 
-std::vector<QString> *AppSettings::getPathForEnemyTasks() {
+std::set<QString> *AppSettings::getPathForEnemyTasks() {
     return &pathForEnemyTasks;
 }
 
-std::vector<QString> *AppSettings::getPathForArrowTasks() {
+std::set<QString> *AppSettings::getPathForArrowTasks() {
     return &pathForArrowTasks;
 }
