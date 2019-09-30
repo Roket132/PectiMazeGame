@@ -86,8 +86,10 @@ void ServerRegWindow::on_backButton_clicked()
 void ServerRegWindow::on_addFileButton_clicked() {
     auto files = QFileDialog::getOpenFileNames(nullptr, "Выбор задач для боёв", "", "*.txt");
     for (auto it : files) {
-        enemyPaths->insert(it);
-        ui->enemyTasksList->addItem(it);
+        if (!enemyPaths->count(it)) {
+            enemyPaths->insert(it);
+            ui->enemyTasksList->addItem(it);
+        }
     }
 }
 
@@ -103,8 +105,10 @@ void ServerRegWindow::on_deleteFileButton_clicked() {
 void ServerRegWindow::on_addFileButton_2_clicked() {
     auto files = QFileDialog::getOpenFileNames(nullptr, "Выбор задач для стрелок", "", "*.txt");
     for (auto it : files) {
-        arrowPaths->insert(it);
-        ui->arrowTasksList->addItem(it);
+        if (!arrowPaths->count(it)) {
+            arrowPaths->insert(it);
+            ui->arrowTasksList->addItem(it);
+        }
     }
 }
 
