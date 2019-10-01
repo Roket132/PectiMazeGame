@@ -1,6 +1,8 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
+#include <iostream>
+
 #include "engine/dynamicobject.h"
 
 class Player : public DynamicObject {
@@ -31,6 +33,7 @@ public:
     bool canMove();
 
     QPixmap getAvatar();
+    void setAvatarByType(size_t type);
 
     std::pair<size_t, size_t> getCurEnemyPos() const;
     void setCurEnemyPos(const std::pair<size_t, size_t> &value);
@@ -56,6 +59,10 @@ private:
     QPixmap avatar;
 
     void update() override;
+
+public:
+    friend std::ostream& operator<< (std::ostream&, const Player&);
+    friend std::istream& operator>> (std::istream&, Player&);
 };
 
 #endif // PLAYER_H

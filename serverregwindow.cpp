@@ -66,7 +66,7 @@ void ServerRegWindow::on_startServerButton_clicked()
     }
 
     ServerSettings &serverSettings = ServerSettings::getServerSettings(); // first singleton call
-    serverSettings.startServer(ui->mazePathEdit->text().toStdString());
+    serverSettings.startServer(ui->mazePathEdit->text().toStdString(), ui->continueGame->checkState());
 
     serverWindow = new ServerWindow();
     connect(serverWindow, &ServerWindow::showServerRegWindow, this, &ServerRegWindow::show);

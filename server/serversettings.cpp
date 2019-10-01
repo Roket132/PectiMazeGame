@@ -1,6 +1,7 @@
 #include "serversettings.h"
 #include "appsettings.h"
 
+#include <fstream>
 #include <QFile>
 #include <QTemporaryDir>
 
@@ -11,6 +12,25 @@ ServerSettings::ServerSettings() : server(nullptr) {
 }
 
 ServerSettings::~ServerSettings() {
+}
+
+void ServerSettings::startServer(fs::path path, bool continueGame) {
+    server = new Server(1337);
+    if (!continueGame) {
+        maze = new Maze(path);
+    } else {
+        loadGame(path);
+    }
+
+    createTasksArchives();
+
+    bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
+    bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalClientExit(QString, QTcpSocket*)), this, SLOT(slotClientExit(QString, QTcpSocket*)));
+    connect(server, SIGNAL(signalCheckAnswer(QString, QTcpSocket*)), this, SLOT(slotCheckAnswer(QString, QTcpSocket*)));
+    Q_ASSERT(c1); Q_ASSERT(c2);
 }
 
 void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
@@ -56,22 +76,6 @@ void ServerSettings::createTasksArchives() {
 ServerSettings &ServerSettings::getServerSettings() {
     static ServerSettings instance;
     return instance;
-}
-
-void ServerSettings::startServer(fs::path path) {
-    server = new Server(1337);
-    maze = new Maze(path);
-
-    createTasksArchives();
-
-    bool c1 = connect(server, SIGNAL(signalRegNewClient(QString, QTcpSocket*)), this, SLOT(slotRegNewClient(QString, QTcpSocket*)));
-    bool c2 = connect(server, SIGNAL(signalEnterClient(QString, QTcpSocket*)), this, SLOT(slotEnterClient(QString, QTcpSocket*)));
-    connect(server, SIGNAL(signalMovePlayer(QString, QTcpSocket*)), this, SLOT(slotMovePlayer(QString, QTcpSocket*)));
-    connect(server, SIGNAL(signalUseInventory(QString, QTcpSocket*)), this, SLOT(slotUseInventory(QString, QTcpSocket*)));
-    connect(server, SIGNAL(signalClientExit(QString, QTcpSocket*)), this, SLOT(slotClientExit(QString, QTcpSocket*)));
-    connect(server, SIGNAL(signalCheckAnswer(QString, QTcpSocket*)), this, SLOT(slotCheckAnswer(QString, QTcpSocket*)));
-    Q_ASSERT(c1); Q_ASSERT(c2);
-
 }
 
 void ServerSettings::closeServer() {
@@ -185,8 +189,11 @@ Maze* ServerSettings::getMaze() {
 
 QString ServerSettings::getMapPlayerBySocket(QTcpSocket *socket) {
     for (auto it : clients) {
+        std::cerr << clients.size() << std::endl;
         if (it->getTcpSocket() == socket) {
-            std::pair<int, int> pl = it->getPlayer()->getPosition();
+            std::pair<size_t, size_t> pl = it->getPlayer()->getPosition();
+            std::cerr << "name player = " << it->getLogin().toStdString() << std::endl;
+            std::cerr << "pl = " << pl.first << std::endl;
             return getMapPlayerByPlace(pl.first, pl.second, it->getPlayer()->isExtraVis());
         }
     }
@@ -194,6 +201,7 @@ QString ServerSettings::getMapPlayerBySocket(QTcpSocket *socket) {
 }
 
 QString ServerSettings::getMapPlayerByPlace(int x, int y, bool extra) {
+    std::cerr << "get << " << x << " " << y << std::endl;
     QString ans = QStringLiteral("map %1 %2").arg(5).arg(5);
     for (int i = x - 2/*??*/; i <= x + 2; i++) {
         for (int j = y - 2; j <= y + 2; j++) {
@@ -294,4 +302,29 @@ void ServerSettings::sendNextArrowTask(QTcpSocket* socket, size_t lvl) {
 void ServerSettings::sendNextEnemyTask(QTcpSocket *socket, size_t lvl) {
     auto task = getNextEnemyTask(socket, static_cast<size_t>(lvl));
     server->sendToClient(socket, QStringLiteral("Task add enemy %1 %2").arg(lvl).arg(pars::prepareTaskForSend(task)));
+}
+
+bool ServerSettings::loadGame(std::experimental::filesystem::__cxx11::path path) {
+    std::fstream in;
+    try {
+        in.open(path.string(), std::ifstream::in);
+    } catch (std::ifstream::failure e) {
+        std::cerr << "Can't continue the game" << std::endl;
+        return false;
+    }
+    maze = new Maze();
+    in >> *maze;
+    size_t cnt;
+    in >> cnt;
+    for (size_t i = 0; i < cnt; i++) {
+        std::cerr << "read cl " << i << std::endl;
+        ClientInfo *cl = new ClientInfo();
+        in >> *cl;
+        clients.emplace_back(cl);
+    }
+    return true;
+}
+
+std::vector<ClientInfo *> ServerSettings::getClients() const {
+    return clients;
 }

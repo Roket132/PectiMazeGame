@@ -8,6 +8,10 @@
 #include <QString>
 #include <QTcpSocket>
 
+#include <iostream>
+using std::istream;
+using std::cin;
+
 /*
  *
  * class for save client on server,
@@ -18,6 +22,7 @@
 
 class ClientInfo {
 public:
+    ClientInfo();
     ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_);
     ~ClientInfo();
 
@@ -47,6 +52,9 @@ private:
 
 private:
     Player* player;
+public:
+    friend std::ostream& operator<< (std::ostream&, const ClientInfo&);
+    friend std::istream& operator>> (std::istream&, ClientInfo&);
 };
 
 #endif // CLIENTINFO_H

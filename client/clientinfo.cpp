@@ -2,6 +2,10 @@
 
 #include "appsettings.h"
 
+ClientInfo::ClientInfo() {
+
+}
+
 ClientInfo::ClientInfo(QString str, QTcpSocket* socket, int start_x, int start_y, int id_) : id(id_) {
     std::vector<QString> info = pars::parseRequest(str); // if reg then info has only 3(4) parametrs "type login password avatarType"
     login = info[1];
@@ -66,3 +70,39 @@ size_t ClientInfo::getCurrentArrowTask(size_t lvl, bool inc) {
         return currentArrowTask[lvl];
 }
 
+std::ostream &operator<<(std::ostream &out, const ClientInfo &cl) {
+    out << cl.id << ' ' << cl.avatarType << ' ' << cl.login.toStdString() << ' '
+               << cl.password.toStdString() << std::endl;
+    out << cl.currentEnemyTask.size() << std::endl;
+    for (auto it : cl.currentEnemyTask) {
+        out << it.first << ' ' << it.second << std::endl;
+    }
+    out << cl.currentArrowTask.size() << std::endl;
+    for (auto it : cl.currentArrowTask) {
+        out << it.first << ' ' << it.second << std::endl;
+    }
+    return out << *cl.player;
+}
+
+std::istream &operator>>(std::istream &in, ClientInfo &cl) {
+    std::string lg, ps;
+    in >> cl.id >> cl.avatarType >> lg >> ps;
+    cl.login = QString::fromStdString(lg);
+    cl.password = QString::fromStdString(ps);
+
+    int m;
+    size_t f, s;
+    in >> m;
+    for (int i = 0; i < m; i++) {
+        in >> f >> s;
+        cl.currentEnemyTask[f] = s;
+    }
+    in >> m;
+    for (int i = 0; i < m; i++) {
+        in >> f >> s;
+        cl.currentArrowTask[f] = s;
+    }
+    AppSettings &settings = AppSettings::getAppSettings();
+    cl.player = new Player(40, QPixmap(QStringLiteral(":/%1/src/avatars/%1/avatar_%2.jpg").arg(settings.getStyle()).arg(cl.avatarType)));
+    return in >> *cl.player;
+}

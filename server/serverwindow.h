@@ -54,6 +54,8 @@ private slots:
      void slotPlayerDisconnected(ClientInfo *clInfo);
      void autoFocus();
 
+     void on_saveButton_clicked();
+
 signals:
     void showServerRegWindow();
 

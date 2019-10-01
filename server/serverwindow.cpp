@@ -1,6 +1,7 @@
 #include "serverwindow.h"
 #include "ui_serverwindow.h"
 
+#include <fstream>
 #include <QThread>
 #include <QGridLayout>
 
@@ -165,4 +166,22 @@ void ServerWindow::autoFocus() {
             setFocusOnPlayer(focusPlayer);
         }
     }
+}
+
+void ServerWindow::on_saveButton_clicked() {
+    ServerSettings &serverSetting = ServerSettings::getServerSettings();
+    std::fstream out;
+    try {
+        out.open("C:/Users/Dmitry/Desktop/QtProjects/serverSave.txt", std::ifstream::out);
+    } catch (std::ifstream::failure e) {
+        std::cerr << "cannot save server" << std::endl;
+        return;;
+    }
+
+    out << *serverSetting.getMaze() << std::endl;
+    out << serverSetting.getClients().size() << std::endl;
+    for (auto cl : serverSetting.getClients()) {
+        out << *cl << std::endl;
+    }
+    std::cerr << "save successful" << std::endl;
 }

@@ -28,7 +28,7 @@ Q_OBJECT
 public:
     static ServerSettings &getServerSettings();
 
-    void startServer(fs::path path);
+    void startServer(fs::path path, bool continueGame);
     void closeServer();
 
     Maze* createMaze(fs::path);
@@ -53,6 +53,8 @@ public:
 
     void doCellAction(Player* player, QTcpSocket *socket); // check are there any actions on cell which player stay and do it;
 
+    std::vector<ClientInfo *> getClients() const;
+
 private:
     ServerSettings();
     ~ServerSettings();
@@ -65,6 +67,8 @@ private:
 
     void sendNextArrowTask(QTcpSocket* socket, size_t lvl = 1);
     void sendNextEnemyTask(QTcpSocket* socket, size_t lvl);
+
+    bool loadGame(fs::path path);
 
 private:
     Server *server;

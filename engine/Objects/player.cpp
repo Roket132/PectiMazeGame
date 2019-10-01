@@ -82,6 +82,10 @@ QPixmap Player::getAvatar() {
     return avatar;
 }
 
+void Player::setAvatarByType(size_t type) {
+
+}
+
 std::pair<size_t, size_t> Player::getCurEnemyPos() const {
     return curEnemyPos;
 }
@@ -110,4 +114,16 @@ bool Player::getExtraLight() const
 
 void Player::update() {
     
+}
+
+std::istream &operator>>(std::istream &stream, Player &p) {
+    return stream >> p.x_ >> p.y_ >>p.extraVisionTimer >> p.extraVision >> p.extraLight
+                  >> p.cntPectiArrow >> p.fight >> p.enemyDifficulty
+                  >> p.curEnemyPos.first >> p.curEnemyPos.second >> p.score;
+}
+
+std::ostream &operator<<(std::ostream &stream, const Player &p) {
+    return stream << p.x_ << ' ' << p.y_ << ' ' << p.extraVisionTimer << ' ' << p.extraVision << ' ' << p.extraLight << ' '
+                  << p.cntPectiArrow << ' ' << p.fight << ' ' << p.enemyDifficulty << ' '
+                  << p.curEnemyPos.first << ' ' << p.curEnemyPos.second << ' ' << p.score;
 }

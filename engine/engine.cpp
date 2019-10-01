@@ -61,6 +61,7 @@ void Engine::drawClientMap() {
 }
 
 void Engine::drawServerMap() {
+    std::cerr << "engine draw" << std::endl;
     ServerSettings &server = ServerSettings::getServerSettings();
     while (true) {
         if (_STOP_) return;
@@ -68,10 +69,13 @@ void Engine::drawServerMap() {
         Maze* maze = server.getMaze();
         size_t curScene = 0;
 
-        size_t focusX = serverWindow->getFocusX();
-        size_t focusY = serverWindow->getFocusY();
-        size_t shiftN = serverWindow->getShiftNegative();
-        size_t shiftP = serverWindow->getShiftPositive();
+        size_t focusX = 0, focusY = 0, shiftN = 0, shiftP = 0;
+        if (serverWindow != nullptr) {
+            focusX = serverWindow->getFocusX();
+            focusY = serverWindow->getFocusY();
+            shiftN = serverWindow->getShiftNegative();
+            shiftP = serverWindow->getShiftPositive();
+        }
 
         for (size_t i = focusX - shiftN; i < focusX + shiftP; i++) {
             for (size_t j = focusY - shiftN; j < focusY + shiftP; j++) {

@@ -18,21 +18,18 @@
 #include "appsettings.h"
 
 Maze::Maze() {
-
+    mutex_ = new std::mutex;
 }
 
-Maze::Maze(fs::path path) {
+Maze::Maze(fs::path path) : Maze() {
     // for Server
     std::fstream in;
     try {
-        in.open(path.string());
+        in.open(path.string(), std::ifstream::in);
     } catch (std::ifstream::failure e) {
         std::cerr << "error open maze file" << std::endl;
         return;
     }
-
-    mutex_ = new std::mutex;
-    std::lock_guard<std::mutex> lg(*mutex_);
 
     AppSettings &settings = AppSettings::getAppSettings();
     QString stylePrefix = settings.getStyle();
@@ -290,4 +287,49 @@ void Maze::ShapeFog() {
     Fog *fgl = dynamic_cast<Fog*>(maze[0][wi]);
     fgd->makeShape("down", 0); fgu->makeShape("up", 0);
     fgl->makeShape("left", 0); fgr->makeShape("right", 0);
+}
+
+std::istream &operator>>(std::istream &in, Maze &m) {
+    in >> m.h >> m.w;
+    m.maze.resize(m.h, std::vector<MazeObject*>(m.w));
+    m.enableStartPlaces.clear();
+    int cnt;
+    in >> cnt;
+    for (int i = 0; i < cnt; i++) {
+        int f, s;
+        bool b;
+        in >> f >> s >> b;
+        m.enableStartPlaces.push_back({{f,s},b});
+    }
+    for (size_t i = 0; i < m.h; i++) {
+        for (size_t j = 0; j < m.w; j++) {
+            std::string type;
+            in >> type;
+            if (type[0] > '0' && type[0] <= '9') {
+                m.maze[i][j] = pars::createEnemyByType(static_cast<size_t>(type[0] - 48), 40);
+                if (type[1] == 'd') {
+                    Enemy *enemy = dynamic_cast<Enemy*>(m.maze[i][j]);
+                    enemy->kill();
+                }
+            } else {
+                m.maze[i][j] = pars::createObjectByType(QString::fromStdString(type), 40);
+            }
+        }
+    }
+    return in;
+}
+
+std::ostream &operator<<(std::ostream &out, const Maze &m) {
+    out << m.h << " " << m.w << std::endl;
+    out << m.enableStartPlaces.size() << std::endl;
+    for (auto it : m.enableStartPlaces) {
+        out << it.first.first << " " << it.first.second << " " << it.second << std::endl;
+    }
+    for (int i = 0; i < m.h; i++) {
+        for (int j = 0; j < m.w; j++) {
+            out << m.maze[i][j]->getTypeObject().toStdString() << " ";
+        }
+        out << std::endl;
+    }
+    return out;
 }

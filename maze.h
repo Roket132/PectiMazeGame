@@ -46,6 +46,9 @@ private:
     void ShapeFog();
 
     std::mutex* mutex_;
+public:
+    friend std::ostream& operator<< (std::ostream&, const Maze&);
+    friend std::istream& operator>> (std::istream&, Maze&);
 };
 
 #endif // MAZE_H

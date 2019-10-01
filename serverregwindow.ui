@@ -169,7 +169,7 @@
         <enum>QTabWidget::North</enum>
        </property>
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <property name="usesScrollButtons">
         <bool>true</bool>
@@ -228,7 +228,7 @@
             </layout>
            </item>
            <item>
-            <widget class="QCheckBox" name="checkBox">
+            <widget class="QCheckBox" name="continueGame">
              <property name="text">
               <string>Продолжить игру</string>
              </property>
@@ -272,7 +272,7 @@
             <property name="geometry">
              <rect>
               <x>0</x>
-              <y>-15</y>
+              <y>0</y>
               <width>176</width>
               <height>122</height>
              </rect>
