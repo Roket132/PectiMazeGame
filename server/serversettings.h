@@ -40,7 +40,7 @@ public:
     std::shared_ptr<Task> getNextEnemyTask(QTcpSocket* socket, size_t lvl);
     std::shared_ptr<Task> getNextArrowTask(QTcpSocket* socket, size_t lvl);
 
-    Player* isPlayer(int x, int y);
+    Player* isPlayer(size_t x, size_t y);
     Player* getPlayerBySocket(QTcpSocket* socket);
     ClientInfo* getClientInfoBySocket(QTcpSocket* socket);
 
@@ -85,6 +85,7 @@ private slots:
 signals:
     void signalPlayerConnected(ClientInfo *clInfo);
     void signalPlayerDisconnected(ClientInfo *clInfo);
+    void signalAutoFocus();
 };
 
 #endif // SERVERSETTINGS_H

@@ -12,10 +12,12 @@
 #include"server/serversettings.h"
 #include "engine/mazeobject.h"
 
+class ServerWindow;
+
 class Engine : public QObject {
 Q_OBJECT
 public:
-    explicit Engine(std::vector<QLabel*> scenes_);
+    explicit Engine(std::vector<QLabel*> scenes_, ServerWindow* window);
     explicit Engine(std::vector<QLabel*> scenes_, std::vector<QPushButton*> invScenes_, std::vector<QLabel*> infoInvScenes_, QLabel* s_lay);
 
     void stopEngine();
@@ -26,6 +28,8 @@ private:
     std::vector<QLabel*> infoInvScenes;
 
     QLabel* score;
+
+    ServerWindow* serverWindow;
 
     bool _STOP_ = false;
 

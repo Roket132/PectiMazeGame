@@ -28,7 +28,7 @@ public:
 
     void setSocket(QTcpSocket* socket);
 
-    bool isPlayerPlace(int x, int y);
+    bool isPlayerPlace(size_t x, size_t y);
 
     Player* getPlayer();
     size_t getAvatarType();

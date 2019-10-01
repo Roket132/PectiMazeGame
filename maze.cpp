@@ -113,14 +113,14 @@ Maze::~Maze() {
 }
 
 
-int Maze::width() {
+size_t Maze::width() {
     std::lock_guard<std::mutex> lg(*mutex_);
-    return w;
+    return static_cast<size_t>(w);
 }
 
-int Maze::height() {
+size_t Maze::height() {
     std::lock_guard<std::mutex> lg(*mutex_);
-    return h;
+    return static_cast<size_t>(h);
 }
 
 void Maze::removeObjectFromCell(size_t x, size_t y) {

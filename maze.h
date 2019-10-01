@@ -25,8 +25,8 @@ public:
     QString getTypeObject(size_t x, size_t y); // Return Type of object in SmallFormat
     std::pair<int, int> getFreeStartPlace();
 
-    int width();
-    int height();
+    size_t width();
+    size_t height();
     void removeObjectFromCell(size_t x, size_t y);
     bool isPossibleToGoTo(size_t x, size_t y);
 

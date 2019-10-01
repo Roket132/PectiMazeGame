@@ -3,7 +3,9 @@
 #include <thread>
 #include "client/hud.h"
 
-Engine::Engine(std::vector<QLabel*> scenes_) : scenes(scenes_) {}
+#include "server/serverwindow.h"
+
+Engine::Engine(std::vector<QLabel*> scenes_, ServerWindow* window) : scenes(scenes_), serverWindow(window) {}
 
 Engine::Engine(std::vector<QLabel *> scenes_, std::vector<QPushButton *> invScenes_, std::vector<QLabel *> infoInvScenes_, QLabel* s_lay) :
     scenes(scenes_), invScenes(invScenes_), infoInvScenes(infoInvScenes_), score(s_lay) {}
@@ -47,8 +49,8 @@ void Engine::drawClientMap() {
         size_t curScene = 0;        
 
         if (maze == nullptr) continue;
-        for (int i = 0; i < maze->height(); i++) {
-            for (int j = 0; j < maze->width(); j++) {
+        for (size_t i = 0; i < maze->height(); i++) {
+            for (size_t j = 0; j < maze->width(); j++) {
                 MazeObject* Object = maze->getMazeObject(static_cast<size_t>(i), static_cast<size_t>(j));
                 scenes[curScene++]->setPixmap(Object->getTexture());
             }
@@ -66,9 +68,14 @@ void Engine::drawServerMap() {
         Maze* maze = server.getMaze();
         size_t curScene = 0;
 
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 25; j++) {
-                if (i >= maze->height() || j >= maze->width()) {
+        size_t focusX = serverWindow->getFocusX();
+        size_t focusY = serverWindow->getFocusY();
+        size_t shiftN = serverWindow->getShiftNegative();
+        size_t shiftP = serverWindow->getShiftPositive();
+
+        for (size_t i = focusX - shiftN; i < focusX + shiftP; i++) {
+            for (size_t j = focusY - shiftN; j < focusY + shiftP; j++) {
+                if (i >= static_cast<size_t>(maze->height()) || j >= static_cast<size_t>(maze->width())) {
                     //TODO set default picture
                     curScene++;
                     continue;

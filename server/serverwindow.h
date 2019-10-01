@@ -22,6 +22,16 @@ public:
     explicit ServerWindow(QWidget *parent = nullptr);
     ~ServerWindow() override;
 
+    size_t getFocusX() const;
+
+    size_t getFocusY() const;
+
+    size_t getShiftNegative() const;
+
+    size_t getShiftPositive() const;
+
+    size_t getDimensions() const;
+
 private:
     Ui::ServerWindow *ui;
     //QLabel* scenes[30*30];
@@ -31,6 +41,10 @@ private:
     QThread* thread;
     std::vector<QGridLayout*> playerLayouts;
 
+    size_t dimensions, shiftNegative, shiftPositive;
+    size_t focusX, focusY;
+    Player* focusPlayer;
+
      void closeEvent(QCloseEvent *event) override;
 
      void setFocusOnPlayer(Player* player);
@@ -38,6 +52,7 @@ private:
 private slots:
      void slotPlayerConnected(ClientInfo *clInfo);
      void slotPlayerDisconnected(ClientInfo *clInfo);
+     void autoFocus();
 
 signals:
     void showServerRegWindow();

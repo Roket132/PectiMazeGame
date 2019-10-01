@@ -11,29 +11,35 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ui(new Ui::ServerWindow)
 {
     ui->setupUi(this);
-    int dimensions = 25;
+
+    dimensions = 25;
+    focusX = static_cast<size_t>(dimensions / 2);
+    focusY = static_cast<size_t>(dimensions / 2);
+    shiftNegative = dimensions / 2 - 1;
+    shiftPositive = dimensions / 2 + dimensions % 2 + 1;
 
     //int cnt = 0;
-    for (int i = 0; i < dimensions; i ++) {
-        for (int j = 0; j < dimensions; j++) {
+    for (size_t i = 0; i < dimensions; i ++) {
+        for (size_t j = 0; j < dimensions; j++) {
             QLabel *cell = new QLabel(this);
             scenes.push_back(cell);
             cell->setFixedSize(40, 40);
             cell->setStyleSheet("QLabel { background-color : white; }");
-            ui->mapLayout->addWidget(cell, i + 1, j + 1);
+            ui->mapLayout->addWidget(cell, static_cast<int>(i + 1), static_cast<int>(j + 1));
         }
     }
     ui->mapLayout->setSpacing(0);
     // Vertical spacers
-    ui->mapLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 0, 0, 1, dimensions + 2);
-    ui->mapLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), dimensions + 1, 0, 1, dimensions + 2);
+    int dim = static_cast<int>(dimensions);
+    ui->mapLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), 0, 0, 1, dim + 2);
+    ui->mapLayout->addItem(new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding), dim + 1, 0, 1, dim + 2);
 
     // Horizontal spacers
-    ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dimensions, 1);
-    ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dimensions + 1, dimensions, 1);
+    ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, 0, dim, 1);
+    ui->mapLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum), 1, dim + 1, dim, 1);
 
     thread = new QThread(this);
-    eng = new Engine(scenes);
+    eng = new Engine(scenes, this);
     eng->moveToThread(thread);
     connect(thread, SIGNAL(started()), eng, SLOT(drawServerMap()));
     thread->start();
@@ -41,11 +47,37 @@ ServerWindow::ServerWindow(QWidget *parent) :
     ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
     connect(&serverSettings, SIGNAL(signalPlayerConnected(ClientInfo*)), this, SLOT(slotPlayerConnected(ClientInfo*)));
     connect(&serverSettings, SIGNAL(signalPlayerDisconnected(ClientInfo*)), this, SLOT(slotPlayerDisconnected(ClientInfo*)));
+    connect(&serverSettings, &ServerSettings::signalAutoFocus, this, &ServerWindow::autoFocus);
 }
 
 ServerWindow::~ServerWindow() {
     delete eng;
     delete ui;
+}
+
+size_t ServerWindow::getFocusX() const
+{
+    return focusX;
+}
+
+size_t ServerWindow::getFocusY() const
+{
+    return focusY;
+}
+
+size_t ServerWindow::getShiftNegative() const
+{
+    return shiftNegative;
+}
+
+size_t ServerWindow::getShiftPositive() const
+{
+    return shiftPositive;
+}
+
+size_t ServerWindow::getDimensions() const
+{
+    return dimensions;
 }
 
 
@@ -61,7 +93,12 @@ void ServerWindow::closeEvent(QCloseEvent *event)
 }
 
 void ServerWindow::setFocusOnPlayer(Player *player) {
-    std::cerr << "set Focus " << player->getPosition().first << std::endl;
+    focusPlayer = player;
+    ServerSettings &serverSettings = ServerSettings::getServerSettings(/*not first call*/);
+    focusX = std::max(shiftNegative, player->getPosition().first);
+    focusX = std::min(focusX, serverSettings.getMaze()->height() - shiftPositive - 1);
+    focusY = std::max(shiftNegative, player->getPosition().second);
+    focusY = std::min(focusY, serverSettings.getMaze()->width() - shiftPositive - 1);
 }
 
 void ServerWindow::slotPlayerConnected(ClientInfo *clInfo) {
@@ -111,5 +148,18 @@ void ServerWindow::slotPlayerDisconnected(ClientInfo *clInfo) {
             return;
         }
         pos++;
+    }
+}
+
+void ServerWindow::autoFocus() {
+    if (focusPlayer) {
+        auto fx = focusPlayer->getPosition().first;
+        auto fy = focusPlayer->getPosition().second;
+        if (fx + 3 > focusX + shiftPositive ||
+                fx - 2 < focusX - shiftNegative ||
+                fy + 3 > focusY + shiftPositive ||
+                fy - 2 < focusY - shiftNegative) {
+            setFocusOnPlayer(focusPlayer);
+        }
     }
 }

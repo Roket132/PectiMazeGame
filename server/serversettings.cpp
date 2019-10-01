@@ -128,6 +128,7 @@ void ServerSettings::slotMovePlayer(QString str, QTcpSocket *socket) {
     int dx = req[1].toInt();
     int dy = req[2].toInt();
     player->move(dx, dy);
+    emit signalAutoFocus();
     doCellAction(player, socket);
 }
 
@@ -248,7 +249,7 @@ void ServerSettings::doCellAction(Player *player, QTcpSocket *socket) {
 
 }
 
-Player* ServerSettings::isPlayer(int x, int y) {
+Player* ServerSettings::isPlayer(size_t x, size_t y) {
     for (auto it : clients) {
         if (it->isPlayerPlace(x, y)) {
             return it->getPlayer();
