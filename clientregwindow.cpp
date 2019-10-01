@@ -82,7 +82,7 @@ void ClientRegWindow::on_startClientButton_clicked() {
         return;
     }
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
-    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), 0, true);
+    clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), 0, ui->ipLine->text(), true);
     const Client* client = clientSettings.getClient();
     registrationConnects(client);
 }
@@ -102,7 +102,7 @@ void ClientRegWindow::on_registrationButton_clicked() {
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     if (ui->passwordEdit->text() == ui->repeatEdit->text()) {
         AppSettings &settings = AppSettings::getAppSettings();
-        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), settings.getAvatar());
+        clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), settings.getAvatar(), ui->ipLine->text());
         const Client* client = clientSettings.getClient();
         registrationConnects(client);
     } else {

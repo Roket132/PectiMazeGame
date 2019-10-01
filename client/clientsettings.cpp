@@ -17,7 +17,7 @@ ClientSettings::~ClientSettings() {
     delete client;
 }
 
-void ClientSettings::startClient(QString login_, QString password_, size_t avatarType, bool old) {
+void ClientSettings::startClient(QString login_, QString password_, size_t avatarType, QString ip, bool old) {
     // save input settings
     login = login_;
     password = password_;
@@ -27,7 +27,7 @@ void ClientSettings::startClient(QString login_, QString password_, size_t avata
 
     // start client;
 
-    client = new Client("localhost", 1337);
+    client = new Client(ip, 1337);
     client->sendToServer(QStringLiteral("%1 %2 %3 %4;").arg(old ? "enter" : "reg").arg(login_).arg(password_).arg(avatarType));
     clientConnects();
 }
