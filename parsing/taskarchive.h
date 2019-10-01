@@ -22,8 +22,8 @@ public:
 
     void addTask(std::shared_ptr<Task> task);
 
-    std::shared_ptr<Task> getNextTask(size_t lvl = 1);
-    std::shared_ptr<Task> getTask(size_t pos, size_t lvl = 1);
+    std::shared_ptr<Task> getNextTask(size_t lvl);
+    std::shared_ptr<Task> getTask(size_t pos, size_t lvl);
 
     bool checkAnswer(std::string answer, std::string taskName, size_t lvl);
 

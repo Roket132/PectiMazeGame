@@ -17,6 +17,7 @@ ServerWindow::ServerWindow(QWidget *parent) :
     focusY = static_cast<size_t>(dimensions / 2);
     shiftNegative = dimensions / 2 - 1;
     shiftPositive = dimensions / 2 + dimensions % 2 + 1;
+    focusPlayer = nullptr;
 
     //int cnt = 0;
     for (size_t i = 0; i < dimensions; i ++) {
@@ -152,7 +153,9 @@ void ServerWindow::slotPlayerDisconnected(ClientInfo *clInfo) {
 }
 
 void ServerWindow::autoFocus() {
-    if (focusPlayer) {
+    std::cerr << "ok " << std::endl;
+    if (focusPlayer != nullptr) {
+        std::cerr << "nullptr " << std::endl;
         auto fx = focusPlayer->getPosition().first;
         auto fy = focusPlayer->getPosition().second;
         if (fx + 3 > focusX + shiftPositive ||

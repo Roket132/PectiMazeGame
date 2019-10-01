@@ -98,6 +98,16 @@ long long Player::getScore(){
     return score;
 }
 
+bool Player::getExtraVision() const
+{
+    return extraVision;
+}
+
+bool Player::getExtraLight() const
+{
+    return extraLight;
+}
+
 void Player::update() {
     
 }

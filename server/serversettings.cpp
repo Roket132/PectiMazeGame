@@ -16,13 +16,19 @@ ServerSettings::~ServerSettings() {
 void ServerSettings::sendSettingsToClient(QTcpSocket *socket) {
     ClientInfo *info = getClientInfoBySocket(socket);
     Player *player = info->getPlayer();
-    QString settings = QStringLiteral("settings %1 %2 %3").arg(info->getAvatarType())
-            .arg(player->isExtraLight()).arg(player->getCntPectiArrow());
+    QString settings = QStringLiteral("settings %1 %2 %3 %4 %5 %6 %7 %8 %9 %10").arg(player->getExtraVisTimer())
+            .arg(player->getExtraVision()).arg(player->getExtraLight()).arg(player->getCntPectiArrow())
+            .arg(player->isFight() ? 1 : 0).arg(player->getEnemyDifficulty())
+            .arg(player->getCurEnemyPos().first).arg(player->getCurEnemyPos().second).arg(player->getScore()).arg(info->getAvatarType());
     server->sendToClient(socket, settings);
     if (player->isFight()) {
-        auto task = archiveEnemyTasks.getTask(info->getCurrentEnemyTask(player->getEnemyDifficulty(),false) - 1);
-        server->sendToClient(socket, QString("Task %1").arg(pars::prepareTaskForSend(task)));
+        auto task = archiveEnemyTasks.getTask(info->getCurrentEnemyTask(player->getEnemyDifficulty(), false) - 1, player->getEnemyDifficulty());
+        server->sendToClient(socket, QString("Task add enemy %1 %2").arg(player->getEnemyDifficulty()).arg(pars::prepareTaskForSend(task)));
         server->sendToClient(socket, QStringLiteral("Action attack %1").arg(player->getEnemyDifficulty()));
+    }
+    if (player->getCntPectiArrow() > 0) {
+        auto task = archiveArrowTasks.getTask(info->getCurrentArrowTask(1, false) - 1, 1);
+        server->sendToClient(socket, QString("Task add arrow %1 %2").arg(1).arg(pars::prepareTaskForSend(task)));
     }
 }
 

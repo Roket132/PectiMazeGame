@@ -34,6 +34,7 @@ void MazeActions::enemyAttack(std::function<void ()> f_send) {
 void MazeActions::addPoints(const long long &value, std::function<void ()> f_send) {
     player_->addScore(value);
     server_->sendToClient(socket_, QString("HUD changePoints %1").arg(value));
+    send(f_send);
 }
 
 void MazeActions::winUponEnemy(size_t enemy_lvl, std::function<void ()> f_send) {
@@ -41,6 +42,7 @@ void MazeActions::winUponEnemy(size_t enemy_lvl, std::function<void ()> f_send) 
     auto enemyPos = player_->getCurEnemyPos();
     maze_->killEnemy(enemyPos.first, enemyPos.second);
     addPoints(static_cast<int> (enemy_lvl) * 15);
+    send(f_send);
 }
 
 

@@ -38,6 +38,9 @@ public:
     void addScore(const long long &add);
     long long getScore();
 
+    bool getExtraVision() const;
+    bool getExtraLight() const;
+
 private:
     int extraVisionTimer; // if timer == 0 then extraVis  off
     bool extraVision; // if true then player can see more
