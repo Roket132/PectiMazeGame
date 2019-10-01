@@ -172,7 +172,7 @@ void ServerWindow::on_saveButton_clicked() {
     ServerSettings &serverSetting = ServerSettings::getServerSettings();
     std::fstream out;
     try {
-        out.open("C:/Users/Dmitry/Desktop/QtProjects/serverSave.txt", std::ifstream::out);
+        out.open("saveServer.txt", std::ifstream::out);
     } catch (std::ifstream::failure e) {
         std::cerr << "cannot save server" << std::endl;
         return;;
