@@ -85,7 +85,7 @@
         <widget class="QPushButton" name="upButton">
          <property name="styleSheet">
           <string notr="true">  background: gray;
-  border: 1px dashed black;
+  border: 1px dashed gray;
   height: 23px;
   width: 75px;
 
@@ -103,7 +103,7 @@
          </property>
          <property name="styleSheet">
           <string notr="true">  background: gray;
-  border: 1px dashed black;
+  border: 1px dashed gray;
   height: 23px;
   width: 75px;
 
@@ -118,7 +118,7 @@
         <widget class="QPushButton" name="leftButton">
          <property name="styleSheet">
           <string notr="true">  background: gray;
-  border: 1px dashed black;
+  border: 1px dashed gray;
   height: 23px;
   width: 75px;
 
@@ -146,7 +146,7 @@
         <widget class="QPushButton" name="rightButton">
          <property name="styleSheet">
           <string notr="true">  background: gray;
-  border: 1px dashed black;
+  border: 1px dashed gray;
   height: 23px;
   width: 75px;
 

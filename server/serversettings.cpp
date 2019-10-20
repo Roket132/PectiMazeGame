@@ -281,6 +281,14 @@ Player *ServerSettings::getPlayerBySocket(QTcpSocket *socket) {
     return nullptr;
 }
 
+Player *ServerSettings::getPlayerByLogin(QString login) {
+    for (auto cl : clients) {
+        if (cl->getLogin() == login)
+            return cl->getPlayer();
+    }
+    return nullptr;
+}
+
 ClientInfo *ServerSettings::getClientInfoBySocket(QTcpSocket *socket) {
     for (auto it : clients) {
         if (it->getTcpSocket() == socket) {

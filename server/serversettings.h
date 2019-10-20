@@ -42,6 +42,7 @@ public:
 
     Player* isPlayer(size_t x, size_t y);
     Player* getPlayerBySocket(QTcpSocket* socket);
+    Player* getPlayerByLogin(QString login);
     ClientInfo* getClientInfoBySocket(QTcpSocket* socket);
 
     /*

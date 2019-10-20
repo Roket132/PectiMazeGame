@@ -82,6 +82,16 @@ size_t ServerWindow::getDimensions() const
     return dimensions;
 }
 
+std::vector<QGridLayout *> ServerWindow::getPlayerLayouts() const
+{
+    return playerLayouts;
+}
+
+std::vector<std::pair<QString, QLabel *> > ServerWindow::getPointLayouts() const
+{
+    return pointLayouts;
+}
+
 
 void ServerWindow::closeEvent(QCloseEvent *event)
 {
@@ -128,13 +138,14 @@ void ServerWindow::slotPlayerConnected(ClientInfo *clInfo) {
     info->setText("Очки: ");
     points->setText(QStringLiteral("%1").arg(0));
 
-    lay->addWidget(avatar, 1, 1);
-    lay->addWidget(login, 1, 2);
-    lay->addWidget(info, 2, 1);
-    lay->addWidget(points, 2, 2);
+    lay->addWidget(avatar, 2, 1);
+    lay->addWidget(login, 1, 1);
+    lay->addWidget(info, 3, 1);
+    lay->addWidget(points, 3, 2);
     lay->setObjectName(clInfo->getLogin());
     ui->playerCellsLayout->addLayout(lay);
     playerLayouts.push_back(lay);
+    pointLayouts.push_back({clInfo->getLogin(), points});
 }
 
 void ServerWindow::slotPlayerDisconnected(ClientInfo *clInfo) {
@@ -147,6 +158,7 @@ void ServerWindow::slotPlayerDisconnected(ClientInfo *clInfo) {
             }
             delete it;
             playerLayouts.erase(playerLayouts.begin() + pos);
+            pointLayouts.erase(pointLayouts.begin() + pos);
             return;
         }
         pos++;

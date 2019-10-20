@@ -69,6 +69,10 @@ void Engine::drawServerMap() {
         Maze* maze = server.getMaze();
         size_t curScene = 0;
 
+        for (auto pl : serverWindow->getPointLayouts()) {
+            pl.second->setText(QString("%1").arg(server.getPlayerByLogin(pl.first)->getScore()));
+        }
+
         size_t focusX = 0, focusY = 0, shiftN = 0, shiftP = 0;
         if (serverWindow != nullptr) {
             focusX = serverWindow->getFocusX();

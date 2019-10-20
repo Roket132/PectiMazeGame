@@ -32,6 +32,10 @@ public:
 
     size_t getDimensions() const;
 
+    std::vector<QGridLayout *> getPlayerLayouts() const;
+
+    std::vector<std::pair<QString, QLabel *> > getPointLayouts() const;
+
 private:
     Ui::ServerWindow *ui;
     //QLabel* scenes[30*30];
@@ -40,6 +44,7 @@ private:
     Engine* eng;
     QThread* thread;
     std::vector<QGridLayout*> playerLayouts;
+    std::vector<std::pair<QString, QLabel*>> pointLayouts;
 
     size_t dimensions, shiftNegative, shiftPositive;
     size_t focusX, focusY;
