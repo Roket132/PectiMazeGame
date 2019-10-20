@@ -56,6 +56,13 @@ ClientWindow::ClientWindow(QWidget *parent) :
         });
     }
 
+    QLabel *logo = new QLabel(this);
+    logo->setPixmap(QPixmap(":/res/image/commonPicture/logoName.png"));
+    logo->setFixedSize(360, 40);
+    logo->setScaledContents(true);
+
+    ui->logoLayout->addWidget(logo);
+
     thread = new QThread(this);
     eng = new Engine(scenes, invScenes, infoInvScenes, ui->scoreLabel);
     eng->moveToThread(thread);
@@ -65,7 +72,7 @@ ClientWindow::ClientWindow(QWidget *parent) :
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     connect(&clientSettings, &ClientSettings::signalAttack, this, &ClientWindow::slotAttack);
     connect(&clientSettings, &ClientSettings::signalAnswerSuccessful, this, &ClientWindow::slotAnswerSuccessful);
-    connect(&clientSettings, &ClientSettings::signalAnswerIncorrect, this, &ClientWindow::slotAnswerIncorrect);
+    connect(&clientSettings, &ClientSettings::signalAnswerIncorrect, this, &ClientWindow::slotAnswerIncorrect);    
 }
 
 ClientWindow::~ClientWindow() {
@@ -170,7 +177,7 @@ void ClientWindow::slotAttack(int lvl) {
         return;
     }
 
-    addEventLayout(QPixmap(":/res/image/image_80/swords.png"),
+    addEventLayout(QPixmap(":/res/image/commonPicture/swords.png"),
                    task,
                 "Чтобы продолжить путешествие\n"
                 "надо победить врага!",
@@ -273,13 +280,17 @@ void ClientWindow::setActions() {
 bool ClientWindow::eventFilter(QObject *obj, QEvent *event) {
     if (event->type() == QEvent::KeyPress) {
         if (obj->objectName() == "ClientWindowWindow") {
+            QString pressedStyle = "background: gray;border: 1px dashed black; height: 23px;width: 75px;";
+            QString style = "background: gray;border: 1px dashed gray; height: 23px;width: 75px;";
+            ui->rightButton->setStyleSheet(style); ui->leftButton->setStyleSheet(style);
+            ui->downButton->setStyleSheet(style); ui->upButton->setStyleSheet(style);
             QKeyEvent* e = static_cast<QKeyEvent*>(event);
             if (e->isAutoRepeat()) return true;
             switch(e->key()) {
-            case Qt::Key_Up: ui->rightButton->setFocus(); on_upButton_clicked(); break;
-            case Qt::Key_Down: ui->rightButton->setFocus(); on_downButton_clicked(); break;
-            case Qt::Key_Left: ui->upButton->setFocus(); on_leftButton_clicked(); break;
-            case Qt::Key_Right: ui->upButton->setFocus(); on_rightButton_clicked(); break;
+            case Qt::Key_Up: ui->upButton->setStyleSheet(pressedStyle); on_upButton_clicked(); break;
+            case Qt::Key_Down: ui->downButton->setStyleSheet(pressedStyle); on_downButton_clicked(); break;
+            case Qt::Key_Left: ui->leftButton->setStyleSheet(pressedStyle); on_leftButton_clicked(); break;
+            case Qt::Key_Right: ui->rightButton->setStyleSheet(pressedStyle); on_rightButton_clicked(); break;
             }
         }
     }

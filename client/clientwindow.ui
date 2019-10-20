@@ -61,6 +61,12 @@
          </item>
          <item>
           <widget class="QLabel" name="scoreLabel">
+           <property name="font">
+            <font>
+             <family>Gadugi</family>
+             <pointsize>24</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>TextLabel</string>
            </property>
@@ -78,7 +84,12 @@
        <item row="1" column="3">
         <widget class="QPushButton" name="upButton">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">  background: gray;
+  border: 1px dashed black;
+  height: 23px;
+  width: 75px;
+
+</string>
          </property>
          <property name="text">
           <string>Up</string>
@@ -91,7 +102,12 @@
           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;pre style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:20px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:150%; font-family:'Courier New'; background-color:#f5f2f0;&quot;&gt;&lt;br/&gt;&lt;/pre&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">  background: gray;
+  border: 1px dashed black;
+  height: 23px;
+  width: 75px;
+
+</string>
          </property>
          <property name="text">
           <string>Down</string>
@@ -101,7 +117,12 @@
        <item row="2" column="0">
         <widget class="QPushButton" name="leftButton">
          <property name="styleSheet">
-          <string notr="true"/>
+          <string notr="true">  background: gray;
+  border: 1px dashed black;
+  height: 23px;
+  width: 75px;
+
+</string>
          </property>
          <property name="text">
           <string>Left</string>
@@ -123,6 +144,14 @@
        </item>
        <item row="2" column="4">
         <widget class="QPushButton" name="rightButton">
+         <property name="styleSheet">
+          <string notr="true">  background: gray;
+  border: 1px dashed black;
+  height: 23px;
+  width: 75px;
+
+</string>
+         </property>
          <property name="text">
           <string>Right</string>
          </property>

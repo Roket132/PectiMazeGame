@@ -29,7 +29,7 @@ void Engine::drawClientMap() {
 
         //points
 
-        score->setText(QString("Очков: %1").arg(hud->getPoints()));
+        score->setText(QString("Очки: %1").arg(hud->getPoints()));
 
         //inventory
 
