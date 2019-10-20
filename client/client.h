@@ -27,6 +27,7 @@ private slots:
     void slotConnected   (                            );
 
 signals:
+    void signalRegFaild();
     void signalSignInFaild();
     void signalSignInSuccess();
     void signalSetMap(QString);

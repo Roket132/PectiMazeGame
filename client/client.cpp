@@ -54,6 +54,8 @@ void Client::slotReadyRead()
                 emit signalSignInSuccess();
             } else if (req[0] == "faild") {
                 emit signalSignInFaild();
+            } else if (req[0] == "regFaild") {
+                emit signalRegFaild();
             } else if (req[0] == "map") {
                 emit signalSetMap(it);
             } else if (req[0] == "HUD") {

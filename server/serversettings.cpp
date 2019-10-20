@@ -93,6 +93,11 @@ Maze* ServerSettings::createMaze(std::experimental::filesystem::__cxx11::path pa
 }
 
 void ServerSettings::slotRegNewClient(QString str, QTcpSocket* socket) {
+    for (auto cl : clients) {
+        std::vector<QString> info = pars::parseRequest(str);
+        server->sendToClient(socket, "regFaild");
+        if (cl->getLogin() == info[1]) return;
+    }
     std::pair<int, int> stPlace = maze->getFreeStartPlace();
     ClientInfo* newClient = new ClientInfo(str, socket, stPlace.first, stPlace.second, static_cast<int>(clients.size()));
     clients.push_back(newClient);

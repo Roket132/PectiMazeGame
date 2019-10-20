@@ -72,6 +72,7 @@ void ClientRegWindow::on_regClientButton_clicked() {
 void ClientRegWindow::registrationConnects(const Client *client) {
     bool c1 = connect(client, SIGNAL(signalSignInFaild()), this, SLOT(slotSignInFaild()));
     bool c2 = connect(client, SIGNAL(signalSignInSuccess()), this, SLOT(slotSignInSuccess()));
+    bool c3 = connect(client, SIGNAL(signalRegFaild()), this, SLOT(slotRegFaild()));
      Q_ASSERT(c1); Q_ASSERT(c2);
 }
 
@@ -85,6 +86,11 @@ void ClientRegWindow::on_startClientButton_clicked() {
     clientSettings.startClient(ui->loginEdit->text(), ui->passwordEdit->text(), 0, ui->ipLine->text(), true);
     const Client* client = clientSettings.getClient();
     registrationConnects(client);
+}
+
+void ClientRegWindow::slotRegFaild() {
+    ui->messageLabel->setText("Логин занят");
+    ui->messageLabel->show();
 }
 
 void ClientRegWindow::on_registrationButton_clicked() {
@@ -120,6 +126,8 @@ void ClientRegWindow::slotSignInSuccess() {
     clientWindow->show();
     ui->loginEdit->clear();
     ui->passwordEdit->clear();
+    ui->messageLabel->clear();
+    ui->messageLabel->hide();
     this->hide();
     ClientSettings &clientSettings = ClientSettings::getClientSettings();
     clientSettings.getClient()->sendToServer("get map");
@@ -136,8 +144,6 @@ void ClientRegWindow::on_backButton_clicked() {
     emit showMainWindow();
     this->close();
 }
-
-
 
 void ClientRegWindow::on_backEnterButton_clicked() {
     //clear all edit

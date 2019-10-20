@@ -36,6 +36,7 @@ private slots:
     void on_regClientButton_clicked();
     void on_startClientButton_clicked();
 
+    void slotRegFaild();
     void slotSignInSuccess();
     void slotSignInFaild();
     void on_backButton_clicked();
